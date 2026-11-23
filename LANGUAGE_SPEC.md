@@ -274,6 +274,32 @@ button "Save" styled as: bg-blue-600 rounded px-4 py-2 text-white
 <button className="bg-blue-600 rounded px-4 py-2 text-white">Save</button>
 ```
 
+### 5.1 Named Styles (`styles:`)
+
+Write your Tailwind classes **once**, give them a name, and use the name anywhere,
+in any file. Put them in a file like `styles.bolt` (any file works, names are global).
+
+**Bolt Code:**
+```bolt
+// styles.bolt
+styles:
+    card: flex flex-col rounded-2xl border border-gray-100 bg-white
+    muted: text-xs text-gray-400
+    product-card: card hover:shadow-xl p-4      // styles can use other styles
+```
+
+```bolt
+// pages/home.bolt
+show product.title styled as: product-card mt-2     // names + normal Tailwind mix freely
+show product.note  styled as: md:muted              // variant prefixes work on names too
+```
+
+**Rules:**
+- A name expands to its classes at compile time, so the output is plain Tailwind.
+- Anything that is not a style name is passed through unchanged.
+- A style name wins over a Tailwind class with the same name.
+- Defining the same name twice, or a style that uses itself, is a compile error.
+
 ---
 
 ## 6. State Management
@@ -629,9 +655,25 @@ Bolt code is organized similarly to modern frameworks, utilizing imports seamles
 
 **Bolt Code:**
 ```bolt
-use components/*
-use pages/about
+use helpers        // finds helpers.js anywhere in the project
+use config         // finds config.json anywhere in the project
+use theme          // finds theme.css anywhere in the project
 ```
+
+`use <name>` takes **just the file name**, never a path. The compiler searches the
+whole project (skipping `node_modules`, `dist`, `.bolt-generated`) and works out the
+relative path for you.
+
+- `.js` / `.ts` files: use their exports as `helpers.money(5)`
+- `.json` files: use the data as `config.name`
+- `.css` files: loaded automatically
+- `.bolt` files: already merged project-wide, `use` just checks that the file exists
+- Names with dashes become camelCase: `use my-utils` gives `myUtils`
+- If two files share a name, you get an error listing both. Write the full file name
+  (`use helpers.js`) or rename one of them.
+- A typo gives a "Did you mean ...?" hint.
+
+The old form `use components/*` still works but is no longer needed.
 
 **Generated React Code:**
 ```jsx

@@ -84,6 +84,8 @@ What the compiler generates for you:
 - **Collections DSL:** `add`, `remove`, `count of`, `filtered by`, `sorted by`
 - **Design system block:** light/dark themes and component variants compile to CSS variables + Tailwind tokens
 - **Tailwind built in:** `styled as:` on any element
+- **Named styles:** define classes once in `styles:` and use the name anywhere
+- **Import by name:** `use helpers` finds `helpers.js` anywhere in the project, no paths
 - **Source maps and error overlay:** runtime crashes show the original `.bolt` file and line
 - **VS Code extension:** syntax highlighting in [`extensions/bolt-language-support`](extensions/bolt-language-support)
 - **Hot reload:** `bolt dev` with Vite HMR

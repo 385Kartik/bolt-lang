@@ -145,7 +145,7 @@ switch (command) {
       if (typeof sourceOrAst === 'string') {
         ast = compileToAST(sourceOrAst);
       }
-      buildProject(ast, join(resolvedFile, 'src', '.bolt-generated'), rawSource);
+      buildProject(ast, join(resolvedFile, 'src', '.bolt-generated'), rawSource, { projectRoot: resolvedFile });
 
       // 2. Check node_modules and npm install if needed
       if (!existsSync(join(resolvedFile, 'node_modules'))) {
@@ -184,7 +184,7 @@ switch (command) {
                 globalBody = globalBody.concat(fileAst.body);
               }
               const newAst = { type: 'Program', body: globalBody, line: 1 };
-              buildProject(newAst, join(resolvedFile, 'src', '.bolt-generated'), watcherRawSource);
+              buildProject(newAst, join(resolvedFile, 'src', '.bolt-generated'), watcherRawSource, { projectRoot: resolvedFile });
             } catch (err) {
               console.error(`  ❌ Rebuild failed:`, err.message);
             }
@@ -207,7 +207,7 @@ switch (command) {
       if (typeof sourceOrAst === 'string') {
         ast = compileToAST(sourceOrAst);
       }
-      buildProject(ast, join(resolvedFile, 'src', '.bolt-generated'), rawSource);
+      buildProject(ast, join(resolvedFile, 'src', '.bolt-generated'), rawSource, { projectRoot: resolvedFile });
     } catch (error) {
       const { formatError } = await import('../src/errors/errors.js');
       console.error(formatError(error, rawSource));

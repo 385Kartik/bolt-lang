@@ -65,6 +65,11 @@ export function FunctionCall(name, args, line) {
   return { type: 'FunctionCall', name, args, line };
 }
 
+// helpers.money(5)  (call on a member of an imported file)
+export function CallExpression(callee, args, line) {
+  return { type: 'CallExpression', callee, args, line };
+}
+
 export function BinaryExpression(operator, left, right, line) {
   return { type: 'BinaryExpression', operator, left, right, line };
 }
@@ -334,4 +339,10 @@ export function ClearStatement(name, line) {
 
 export function DesignSystemDef(config, line) {
   return { type: 'DesignSystemDef', config, line };
+}
+
+// ── Named Styles (reusable Tailwind class sets) ─────────────────────────────
+
+export function StylesDef(styles, line) {
+  return { type: 'StylesDef', styles, line };
 }

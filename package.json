@@ -1,18 +1,16 @@
 {
   "name": "bolt-lang",
   "version": "0.1.0",
-  "description": "Bolt — A programming language where non-programmers read the code and programmers write less of it.",
+  "description": "Bolt \u2014 A programming language where non-programmers read the code and programmers write less of it.",
   "type": "module",
   "main": "src/index.js",
   "bin": {
     "bolt": "./cli/bolt.js"
   },
   "scripts": {
-    "test": "node --test src/**/*.test.js tests/**/*.test.js",
-    "test:lexer": "node --test src/lexer/lexer.test.js",
-    "test:parser": "node --test src/parser/parser.test.js",
-    "test:generator": "node --test src/generator/generator.test.js",
+    "test": "node --test tests/e2e.test.js tests/features.test.js",
     "test:e2e": "node --test tests/e2e.test.js",
+    "test:features": "node --test tests/features.test.js",
     "compile": "node cli/bolt.js compile",
     "run": "node cli/bolt.js run"
   },

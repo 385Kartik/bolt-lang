@@ -4,6 +4,7 @@ import { tokenize } from '../lexer/lexer.js';
 import { parse } from '../parser/parser.js';
 import { generateNode } from '../generator/generator.js';
 import { SourceMapGenerator } from 'source-map';
+import { resolveUses, importLinesFor } from './resolve.js';
 
 function processMarkersAndSourceMaps(fileName, rawCode, prefixCode, rawSource = '') {
   const sourceMap = new SourceMapGenerator({ file: fileName });
@@ -43,7 +44,9 @@ function processMarkersAndSourceMaps(fileName, rawCode, prefixCode, rawSource = 
   return { finalCode, mapContent };
 }
 
-export function buildProject(ast, outDir = 'dist', rawSource = '') {
+export function buildProject(ast, outDir = 'dist', rawSource = '', options = {}) {
+  // Project root = where .bolt files live. Used to find `use <name>` files anywhere.
+  const projectRoot = options.projectRoot || path.resolve(outDir, '..', '..');
   console.log(`  ⚡ Building Bolt framework app in ./${outDir}...`);
   
   // 1. AST is already parsed and provided
@@ -56,6 +59,8 @@ export function buildProject(ast, outDir = 'dist', rawSource = '') {
   const globalStores = [];
   const others = [];
   const designSystems = [];
+  const stylesDefs = [];
+  const useNodes = [];
 
   for (const node of ast.body) {
     if (node.type === 'PageDef') {
@@ -70,6 +75,10 @@ export function buildProject(ast, outDir = 'dist', rawSource = '') {
       globalStores.push(node);
     } else if (node.type === 'DesignSystemDef') {
       designSystems.push(node);
+    } else if (node.type === 'StylesDef') {
+      stylesDefs.push(node);
+    } else if (node.type === 'UseStatement') {
+      useNodes.push(node);
     } else {
       others.push(node);
     }
@@ -79,7 +88,7 @@ export function buildProject(ast, outDir = 'dist', rawSource = '') {
   if (designSystems.length > 1) {
     throw new Error(`\n  ⚡ Compiler Error:\n     Only one 'design system' may exist per project.\n`);
   }
-  let designSystemConfig = { colors: {}, typography: {}, components: {} };
+  let designSystemConfig = { colors: {}, typography: {}, components: {}, themes: {} };
   if (designSystems.length === 1) {
     const ds = designSystems[0];
     if (ds.fileName && ds.fileName !== 'app' && ds.fileName !== 'design') {
@@ -93,7 +102,21 @@ export function buildProject(ast, outDir = 'dist', rawSource = '') {
     designSystemConfig.themes = designSystemConfig.themes || {};
   }
   
-  console.log("DEBUG: designSystemConfig =", JSON.stringify(designSystemConfig, null, 2));
+  // ── Named styles: merge every `styles:` block in the project ──────
+  const styleMap = {};
+  const styleOrigin = {};
+  for (const sd of stylesDefs) {
+    for (const [name, classes] of Object.entries(sd.styles)) {
+      if (Object.prototype.hasOwnProperty.call(styleMap, name)) {
+        throw new Error(`\n  ⚡ Compiler Error:\n     Style '${name}' is defined twice: in '${styleOrigin[name]}.bolt' and '${sd.fileName || 'unknown'}.bolt'.\n`);
+      }
+      styleMap[name] = classes;
+      styleOrigin[name] = sd.fileName || 'unknown';
+    }
+  }
+
+  // ── `use <name>`: find files by name anywhere in the project ──────
+  const resolvedUses = resolveUses(useNodes, projectRoot);
   
   // ── Phase 15: Global Theme (Light/Dark Mode) ──────────
   let cssVariables = '';
@@ -417,7 +440,8 @@ export function ThemeManager() {
 
   // 9. Generate Actions
   if (actions.length > 0) {
-    let actionsCode = `import { boltFetch } from './api.js';\n\n`;
+    let actionsCode = `import { boltFetch } from './api.js';\n`;
+    actionsCode += importLinesFor(resolvedUses, undefined, outDir) + '\n';
     for (const action of actions) {
       actionsCode += generateNode(action, registry, globalStores) + '\n\n';
     }
@@ -433,7 +457,8 @@ export function ThemeManager() {
       componentRegistry: registry, 
       isReact: true, 
       globalStoresList: globalStores,
-      designSystem: designSystemConfig
+      designSystem: designSystemConfig,
+      styles: styleMap
     });
     let prefixCode = `import React, { useState, useEffect } from 'react';\nimport { Link, useNavigate } from 'react-router-dom';\n`;
     if (reactCode.includes('boltFetch')) {
@@ -452,6 +477,7 @@ export function ThemeManager() {
       prefixCode += `import { useStore, updateStore } from '../store.js';\n`;
     }
     if (actions.length > 0) prefixCode += `import * as actions from '../actions.js';\n`;
+    prefixCode += importLinesFor(resolvedUses, comp.fileName, path.join(outDir, 'components'));
     const { finalCode, mapContent } = processMarkersAndSourceMaps(`${comp.name}.jsx`, reactCode, prefixCode, rawSource);
 
     fs.writeFileSync(path.join(outDir, 'components', `${comp.name}.jsx`), finalCode);
@@ -466,7 +492,8 @@ export function ThemeManager() {
       componentRegistry: registry, 
       isReact: true, 
       globalStoresList: globalStores,
-      designSystem: designSystemConfig
+      designSystem: designSystemConfig,
+      styles: styleMap
     });
     const pascalName = page.name.charAt(0).toUpperCase() + page.name.slice(1) + 'Page';
     
@@ -489,6 +516,7 @@ export function ThemeManager() {
       imports += `import { useStore, updateStore } from '../store.js';\n`;
     }
     if (actions.length > 0) imports += `import * as actions from '../actions.js';\n`;
+    imports += importLinesFor(resolvedUses, page.fileName, path.join(outDir, 'pages'));
     for (const compName of componentNames) {
       if (reactCode.includes(`<${compName}`)) {
         imports += `import ${compName} from '../components/${compName}.jsx';\n`;

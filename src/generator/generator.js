@@ -124,6 +124,29 @@ export function generate(ast, existingRegistry = null, globalStoresList = [], de
   const componentPropsRegistry = opts.componentRegistry ? opts.componentRegistry.__props : {};
   const globalStoresListOpt = opts.globalStoresList || [];
   const designSystem = opts.designSystem || { colors: {}, typography: {}, components: {} };
+  const styleMap = opts.styles || {};
+
+  // Expand named styles (from `styles:` blocks) into Tailwind classes.
+  // Supports composition (styles using styles) and variant prefixes (`md:card`).
+  function expandStyles(str, stack = [], line = null) {
+    return str.split(/\s+/).filter(Boolean).map(tok => {
+      let prefix = '';
+      let name = tok;
+      const m = tok.match(/^((?:[a-z0-9-]+:)+)(.+)$/);
+      if (m && Object.prototype.hasOwnProperty.call(styleMap, m[2])) {
+        prefix = m[1];
+        name = m[2];
+      }
+      if (!Object.prototype.hasOwnProperty.call(styleMap, name)) return tok;
+      if (stack.includes(name)) {
+        throw new GeneratorError(
+          `Style '${name}' uses itself: ${[...stack, name].join(' → ')}`,
+          line, null, 'Remove the circular reference in your styles: block.');
+      }
+      const expanded = expandStyles(styleMap[name], [...stack, name], line);
+      return prefix ? expanded.split(' ').map(c => prefix + c).join(' ') : expanded;
+    }).join(' ');
+  }
   
   if (!opts.componentRegistry && ast && ast.type === 'Program') {
     for (const node of ast.body) {
@@ -197,6 +220,8 @@ export function generate(ast, existingRegistry = null, globalStoresList = [], de
       // ── Expressions ───────────────────────────────────────────
       case 'FunctionCall':
         return genFunctionCall(node);
+      case 'CallExpression':
+        return `${gen(node.callee)}(${node.args.map(a => gen(a)).join(', ')})`;
       case 'BinaryExpression':
         return genBinaryExpression(node);
       case 'UnaryExpression':
@@ -819,7 +844,7 @@ ${indent()}})()}`;
     if (!styleNode) return '';
     let str = '';
     if (styleNode.type === 'RawStyle') {
-      str = styleNode.value;
+      str = expandStyles(styleNode.value, [], styleNode.line);
     }
     return str;
   }

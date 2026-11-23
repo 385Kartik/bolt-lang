@@ -158,6 +158,13 @@ export function parse(tokens) {
   function parseStatement() {
     const token = peek();
 
+    // Named styles block:  styles:  (contextual keyword, 'styles' stays a valid variable name elsewhere)
+    if (token.type === TokenType.IDENTIFIER && token.value === 'styles' &&
+        tokens[pos + 1] && tokens[pos + 1].type === TokenType.COLON &&
+        tokens[pos + 2] && tokens[pos + 2].type === TokenType.NEWLINE) {
+      return parseStylesDef();
+    }
+
     switch (token.type) {
       case TokenType.FUNCTION:    return parseFunctionDef();
       case TokenType.IF:          return parseIfStatement();
@@ -1341,6 +1348,21 @@ export function parse(tokens) {
       advance(); // consume DOT
       const prop = expectIdentifierLike('a property name after "."');
       object = AST.MemberExpression(object, prop.value, prop.line);
+
+      // Call on a member with parentheses, no space:  helpers.money(5, 2)
+      const open = peek();
+      const closeEnough = tokens[pos - 1] && open.line === tokens[pos - 1].line &&
+        open.column === tokens[pos - 1].column + String(tokens[pos - 1].value).length;
+      if (check(TokenType.LPAREN) && closeEnough) {
+        advance(); // consume (
+        const args = [];
+        if (!check(TokenType.RPAREN)) {
+          args.push(parseExpression());
+          while (match(TokenType.COMMA)) args.push(parseExpression());
+        }
+        expect(TokenType.RPAREN, "')' to close the call");
+        object = AST.CallExpression(object, args, prop.line);
+      }
     }
 
     // Check for postfix collection operations: X filtered by ..., X sorted by ...
@@ -1683,6 +1705,76 @@ export function parse(tokens) {
     
     expect(TokenType.DEDENT, "dedentation to end design system configuration");
     return config;
+  }
+
+  // ── Named Styles ──────────────────────────────────────────────────
+  //   styles:
+  //       card: flex flex-col rounded-2xl border
+  //       product-card: card hover:shadow-xl      (styles can use other styles)
+
+  function joinTokensByColumn(list) {
+    let out = '';
+    for (let i = 0; i < list.length; i++) {
+      const t = list[i];
+      if (i > 0) {
+        const prev = list[i - 1];
+        const spaces = t.column - (prev.column + String(prev.value).length);
+        if (spaces > 0) out += ' '.repeat(spaces);
+      }
+      out += String(t.value);
+    }
+    return out.trim();
+  }
+
+  function parseStylesDef() {
+    const startToken = advance(); // 'styles'
+    const line = startToken.line;
+    expect(TokenType.COLON, "':' after 'styles'");
+    expect(TokenType.NEWLINE, "a new line after 'styles:'");
+    if (!match(TokenType.INDENT)) {
+      throw new ParseError("Expected indented style definitions under 'styles:'", line, null,
+        "Example:\n    styles:\n        card: flex flex-col rounded-2xl");
+    }
+
+    const styles = {};
+    while (!check(TokenType.DEDENT) && !check(TokenType.EOF)) {
+      if (match(TokenType.NEWLINE)) continue;
+
+      const nameTokens = [];
+      const nameLine = peek().line;
+      while (!check(TokenType.COLON) && !check(TokenType.NEWLINE) && !check(TokenType.EOF)) {
+        nameTokens.push(advance());
+      }
+      const name = joinTokensByColumn(nameTokens);
+      if (!/^[A-Za-z_][A-Za-z0-9_-]*$/.test(name)) {
+        throw new ParseError(`Invalid style name '${name}'`, nameLine, null,
+          "Style names use letters, numbers, '-' or '_' (example: product-card).");
+      }
+      expect(TokenType.COLON, `':' after style name '${name}'`);
+
+      let value;
+      if (check(TokenType.STRING)) {
+        value = advance().value;
+      } else {
+        const valueTokens = [];
+        while (!check(TokenType.NEWLINE) && !check(TokenType.DEDENT) && !check(TokenType.EOF)) {
+          valueTokens.push(advance());
+        }
+        value = joinTokensByColumn(valueTokens);
+      }
+      if (!value) {
+        throw new ParseError(`Style '${name}' has no classes`, nameLine, null,
+          `Example: ${name}: flex gap-2 p-4`);
+      }
+      if (Object.prototype.hasOwnProperty.call(styles, name)) {
+        throw new ParseError(`Style '${name}' is defined twice`, nameLine);
+      }
+      styles[name] = value;
+      match(TokenType.NEWLINE);
+    }
+
+    expect(TokenType.DEDENT, "dedentation to end 'styles:' block");
+    return AST.StylesDef(styles, line);
   }
 
   // ── Run the parser ────────────────────────────────────────────────
