@@ -16,7 +16,7 @@ export default function ContactPage() {
           try {
             return <><Navbar /></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 6; }
+            if (!e.__boltLine) { e.__boltLine = 2; }
             throw e;
           }
         })()}
@@ -30,7 +30,7 @@ export default function ContactPage() {
               try {
                 return <><h1>Contact Us</h1></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 10; }
+                if (!e.__boltLine) { e.__boltLine = 6; }
                 throw e;
               }
             })()}
@@ -38,14 +38,14 @@ export default function ContactPage() {
               try {
                 return <><h2>We'd love to hear from you.</h2></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 11; }
+                if (!e.__boltLine) { e.__boltLine = 7; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 9; }
+              if (!e.__boltLine) { e.__boltLine = 5; }
               throw e;
             }
           })()}
@@ -62,7 +62,7 @@ export default function ContactPage() {
                   try {
                     return <><h1 className="text-2xl font-bold mb-6">Send a Message</h1></>;
                   } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 16; }
+                    if (!e.__boltLine) { e.__boltLine = 12; }
                     throw e;
                   }
                 })()}
@@ -92,21 +92,21 @@ export default function ContactPage() {
                   </form>;
                 })()}</>;
                   } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 17; }
+                    if (!e.__boltLine) { e.__boltLine = 13; }
                     throw e;
                   }
                 })()}
 
               </div></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 15; }
+                  if (!e.__boltLine) { e.__boltLine = 11; }
                   throw e;
                 }
               })()}
 
             </div></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 14; }
+                if (!e.__boltLine) { e.__boltLine = 10; }
                 throw e;
               }
             })()}
@@ -120,13 +120,39 @@ export default function ContactPage() {
                   try {
                     return <><h1 className="text-xl font-bold mb-4">Watch Our Story (Public Folder)</h1></>;
                   } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 29; }
+                    if (!e.__boltLine) { e.__boltLine = 25; }
                     throw e;
                   }
                 })()}
                 {(() => {
                   try {
                     return <><video src={"/demo.mp4"} controls playsInline className="w-full rounded-xl" /></>;
+                  } catch (e) {
+                    if (!e.__boltLine) { e.__boltLine = 26; }
+                    throw e;
+                  }
+                })()}
+
+              </div></>;
+                } catch (e) {
+                  if (!e.__boltLine) { e.__boltLine = 24; }
+                  throw e;
+                }
+              })()}
+              {(() => {
+                try {
+                  return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">
+                {(() => {
+                  try {
+                    return <><h1 className="text-xl font-bold mb-4">Our Headquarters (Public Folder)</h1></>;
+                  } catch (e) {
+                    if (!e.__boltLine) { e.__boltLine = 29; }
+                    throw e;
+                  }
+                })()}
+                {(() => {
+                  try {
+                    return <><img src={"/office.jpg"} alt="Image" className="w-full rounded-xl object-cover" /></>;
                   } catch (e) {
                     if (!e.__boltLine) { e.__boltLine = 30; }
                     throw e;
@@ -144,7 +170,7 @@ export default function ContactPage() {
                   return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">
                 {(() => {
                   try {
-                    return <><h1 className="text-xl font-bold mb-4">Our Headquarters (Public Folder)</h1></>;
+                    return <><h1 className="text-xl font-bold mb-4">Product Demo (External URL)</h1></>;
                   } catch (e) {
                     if (!e.__boltLine) { e.__boltLine = 33; }
                     throw e;
@@ -152,7 +178,7 @@ export default function ContactPage() {
                 })()}
                 {(() => {
                   try {
-                    return <><img src={"/office.jpg"} alt="Image" className="w-full rounded-xl object-cover" /></>;
+                    return <><video src={"https://www.w3schools.com/html/mov_bbb.mp4"} controls playsInline className="w-full rounded-xl" /></>;
                   } catch (e) {
                     if (!e.__boltLine) { e.__boltLine = 34; }
                     throw e;
@@ -170,7 +196,7 @@ export default function ContactPage() {
                   return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">
                 {(() => {
                   try {
-                    return <><h1 className="text-xl font-bold mb-4">Product Demo (External URL)</h1></>;
+                    return <><h1 className="text-xl font-bold mb-4">Remote Office (External URL)</h1></>;
                   } catch (e) {
                     if (!e.__boltLine) { e.__boltLine = 37; }
                     throw e;
@@ -178,7 +204,7 @@ export default function ContactPage() {
                 })()}
                 {(() => {
                   try {
-                    return <><video src={"https://www.w3schools.com/html/mov_bbb.mp4"} controls playsInline className="w-full rounded-xl" /></>;
+                    return <><img src={"https://picsum.photos/600/300"} alt="Image" className="w-full rounded-xl object-cover" /></>;
                   } catch (e) {
                     if (!e.__boltLine) { e.__boltLine = 38; }
                     throw e;
@@ -191,50 +217,24 @@ export default function ContactPage() {
                   throw e;
                 }
               })()}
-              {(() => {
-                try {
-                  return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">
-                {(() => {
-                  try {
-                    return <><h1 className="text-xl font-bold mb-4">Remote Office (External URL)</h1></>;
-                  } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 41; }
-                    throw e;
-                  }
-                })()}
-                {(() => {
-                  try {
-                    return <><img src={"https://picsum.photos/600/300"} alt="Image" className="w-full rounded-xl object-cover" /></>;
-                  } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 42; }
-                    throw e;
-                  }
-                })()}
-
-              </div></>;
-                } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 40; }
-                  throw e;
-                }
-              })()}
 
             </div></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 27; }
+                if (!e.__boltLine) { e.__boltLine = 23; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 13; }
+              if (!e.__boltLine) { e.__boltLine = 9; }
               throw e;
             }
           })()}
 
         </div></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 8; }
+            if (!e.__boltLine) { e.__boltLine = 4; }
             throw e;
           }
         })()}
@@ -242,7 +242,7 @@ export default function ContactPage() {
           try {
             return <><Footer /></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 44; }
+            if (!e.__boltLine) { e.__boltLine = 4; }
             throw e;
           }
         })()}
@@ -252,5 +252,5 @@ export default function ContactPage() {
   );
 }
 window.__BOLT_MAPS = window.__BOLT_MAPS || {};
-window.__BOLT_MAPS['ContactPage.jsx'] = {"7":2,"8":3,"9":4,"14":6,"22":8,"25":9,"28":10,"36":11,"51":13,"54":14,"57":15,"60":16,"68":17,"112":27,"115":28,"118":29,"126":30,"141":32,"144":33,"152":34,"167":36,"170":37,"178":38,"193":40,"196":41,"204":42,"240":44};
+window.__BOLT_MAPS['ContactPage.jsx'] = {"7":14,"8":15,"9":16,"14":2,"22":4,"25":5,"28":6,"36":7,"51":9,"54":10,"57":11,"60":12,"68":13,"112":23,"115":24,"118":25,"126":26,"141":28,"144":29,"152":30,"167":32,"170":33,"178":34,"193":36,"196":37,"204":38,"240":4};
 //# sourceMappingURL=ContactPage.jsx.map

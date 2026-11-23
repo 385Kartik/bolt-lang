@@ -14,7 +14,7 @@ export default function TestauthPage() {
           try {
             return <><p>You are not logged in!</p></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 3; }
+            if (!e.__boltLine) { e.__boltLine = 4; }
             throw e;
           }
         })()}
@@ -26,7 +26,7 @@ export default function TestauthPage() {
           })
           .catch(err => console.error(err)); }}>Login</button></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 4; }
+            if (!e.__boltLine) { e.__boltLine = 5; }
             throw e;
           }
         })()}
@@ -39,7 +39,7 @@ export default function TestauthPage() {
           try {
             return <><p>{(("Welcome, " + user.name) + "!")}</p></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 8; }
+            if (!e.__boltLine) { e.__boltLine = 9; }
             throw e;
           }
         })()}
@@ -47,7 +47,7 @@ export default function TestauthPage() {
           try {
             return <><button className="bg-primary text-white rounded-xl px-4 py-2" onClick={async () => { logoutUser(); }}>Logout</button></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 9; }
+            if (!e.__boltLine) { e.__boltLine = 10; }
             throw e;
           }
         })()}
@@ -60,5 +60,5 @@ export default function TestauthPage() {
   );
 }
 window.__BOLT_MAPS = window.__BOLT_MAPS || {};
-window.__BOLT_MAPS['TestauthPage.jsx'] = {"10":2,"12":3,"20":4,"35":7,"37":8,"45":9};
+window.__BOLT_MAPS['TestauthPage.jsx'] = {"10":3,"12":4,"20":5,"35":8,"37":9,"45":10};
 //# sourceMappingURL=TestauthPage.jsx.map

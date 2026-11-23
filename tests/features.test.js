@@ -208,3 +208,52 @@ test('fetch: your own loading/error blocks replace the defaults', () => {
   assert.doesNotMatch(page, /Loading\.\.\./);
   assert.doesNotMatch(page, /Something went wrong/);
 });
+
+test('check: reports parse errors with file and line, as data', async () => {
+  const { checkProject } = await import('../src/check.js');
+  const root = makeProject({
+    'src/pages/home.bolt': ['page home:', '    show "ok"', ''].join('\n'),
+    'src/pages/about.bolt': ['page about:', '    show @@', ''].join('\n')
+  });
+  const result = checkProject(root);
+  assert.equal(result.ok, false);
+  assert.equal(result.errors.length, 1);
+  assert.equal(result.errors[0].file, 'src/pages/about.bolt');
+  assert.equal(result.errors[0].line, 2);
+  assert.match(result.errors[0].message, /Unexpected character/);
+});
+
+test('check: reports project-level problems (missing use file) with a hint', async () => {
+  const { checkProject } = await import('../src/check.js');
+  const root = makeProject({
+    'lib/helpers.js': 'export const a = 1;',
+    'src/pages/home.bolt': ['use helpr', '', 'page home:', '    show "ok"', ''].join('\n')
+  });
+  const result = checkProject(root);
+  assert.equal(result.ok, false);
+  assert.match(result.errors[0].message, /Cannot find a file named 'helpr'/);
+  assert.match(result.errors[0].hint, /helpers/);
+});
+
+test('check: a good project passes and writes nothing into the project', async () => {
+  const { checkProject } = await import('../src/check.js');
+  const root = makeProject({ 'src/pages/home.bolt': ['page home:', '    show "ok"', ''].join('\n') });
+  const result = checkProject(root);
+  assert.equal(result.ok, true);
+  assert.equal(fs.existsSync(path.join(root, 'src', '.bolt-generated')), false);
+});
+
+test('stats: generated React is bigger than the Bolt source', async () => {
+  const { projectStats } = await import('../src/check.js');
+  const root = makeProject({ 'src/pages/home.bolt': ['page home:', '    show "ok" as title', ''].join('\n') });
+  const s = projectStats(root);
+  assert.equal(s.ok, true);
+  assert.ok(s.react.tokens > s.bolt.tokens);
+  assert.ok(s.ratio > 1);
+});
+
+test('CRLF (Windows) files compile the same as LF files', () => {
+  const lf = makeProject({ 'src/pages/home.bolt': ['page home:', '    show "ok"', ''].join('\n') });
+  const crlf = makeProject({ 'src/pages/home.bolt': ['page home:', '    show "ok"', ''].join('\r\n') });
+  assert.equal(read(build(lf), 'pages/HomePage.jsx'), read(build(crlf), 'pages/HomePage.jsx'));
+});

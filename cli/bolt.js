@@ -27,6 +27,9 @@ function showHelp() {
     bolt compile <file.bolt> -o <out>  Compile to JS file
     bolt tokens <file.bolt>            Show token stream (debug)
     bolt ast <file.bolt | dir>         Show AST (debug)
+    bolt check [dir] [--json]          Check the whole project, list every problem
+    bolt stats [dir] [--json]          Compare Bolt size with the React it generates
+    bolt spec                          Print the short language cheat-sheet (for AI)
     bolt help                          Show this message
 `);
 }
@@ -59,6 +62,59 @@ function findBoltFiles(dir) {
 if (!command || command === 'help' || command === '--help') {
   showHelp();
   process.exit(0);
+}
+
+// ── check / stats / spec: work on a whole project (default: current folder) ──
+if (command === 'check' || command === 'stats' || command === 'spec') {
+  const wantJson = args.includes('--json');
+  const target = args.slice(1).find(a => !a.startsWith('--')) || '.';
+
+  if (command === 'spec') {
+    const { fileURLToPath } = await import('url');
+    const specPath = join(fileURLToPath(new URL('..', import.meta.url)), 'llms.txt');
+    process.stdout.write(readFileSync(specPath, 'utf-8'));
+    process.exit(0);
+  }
+
+  const { checkProject, projectStats } = await import('../src/check.js');
+
+  if (command === 'check') {
+    const result = checkProject(target);
+    if (wantJson) {
+      console.log(JSON.stringify(result, null, 2));
+    } else if (result.ok) {
+      console.log(`\n  ✓ No problems found (${result.files} .bolt files checked).\n`);
+    } else {
+      console.log(`\n  ⚡ ${result.errors.length} problem${result.errors.length === 1 ? '' : 's'} found:\n`);
+      for (const e of result.errors) {
+        const where = e.file ? `${e.file}${e.line ? ':' + e.line : ''}` : (e.line ? `line ${e.line}` : 'project');
+        console.log(`  ✗ ${where}\n    ${e.message}`);
+        if (e.hint) console.log(`    💡 ${e.hint}`);
+        console.log('');
+      }
+    }
+    process.exit(result.ok ? 0 : 1);
+  }
+
+  const stats = projectStats(target);
+  if (wantJson) {
+    console.log(JSON.stringify(stats, null, 2));
+  } else if (!stats.ok) {
+    console.log(`\n  ⚡ Fix these problems first (run: bolt check):\n`);
+    for (const e of stats.errors) console.log(`  ✗ ${e.file || 'project'}${e.line ? ':' + e.line : ''}  ${e.message}`);
+    console.log('');
+  } else {
+    console.log(`
+  ⚡ Bolt size report (${stats.bolt.files} .bolt files)
+
+     Bolt source        ${String(stats.bolt.tokens).padStart(7)} tokens   ${String(stats.bolt.chars).padStart(8)} chars
+     Generated React    ${String(stats.react.tokens).padStart(7)} tokens   ${String(stats.react.chars).padStart(8)} chars
+     React is           ${stats.ratio}x bigger than the Bolt you write
+
+     (tokens are estimated: words, numbers and symbols each count as one)
+`);
+  }
+  process.exit(stats.ok ? 0 : 1);
 }
 
 if (!file) {

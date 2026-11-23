@@ -34,7 +34,7 @@ export default function ProductsPage() {
             try {
               return <><h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4">Our Collection</h1></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 5; }
+              if (!e.__boltLine) { e.__boltLine = 4; }
               throw e;
             }
           })()}
@@ -42,36 +42,36 @@ export default function ProductsPage() {
             try {
               return <><h2 className="text-gray-400 text-lg max-w-2xl mx-auto">Live products from FakeStore API — powered by Bolt's fetch keyword!</h2></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 7; }
+              if (!e.__boltLine) { e.__boltLine = 6; }
               throw e;
             }
           })()}
 
         </div></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 4; }
+            if (!e.__boltLine) { e.__boltLine = 3; }
             throw e;
           }
         })()}
-        {productsLoading ? (<>        /*__L:12*/{(() => {
+        {productsLoading ? (<>        /*__L:11*/{(() => {
           try {
             return <><p className="text-xl font-bold text-gray-500 animate-pulse text-center py-20">Loading amazing products...</p></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 12; }
+            if (!e.__boltLine) { e.__boltLine = 11; }
             throw e;
           }
         })()}</>) : (productsError ? ((() => { const err = productsError; return <>        {(() => {
           try {
             return <><p className="text-red-500 text-center py-20">{("Failed to load products: " + err)}</p></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 14; }
+            if (!e.__boltLine) { e.__boltLine = 13; }
             throw e;
           }
         })()}</>; })()) : ((!products || (Array.isArray(products) && products.length === 0)) ? (<>        {(() => {
           try {
             return <><p className="text-gray-500 text-center py-20">No products found in this category.</p></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 16; }
+            if (!e.__boltLine) { e.__boltLine = 15; }
             throw e;
           }
         })()}</>) : (<>        {(() => {
@@ -86,7 +86,7 @@ export default function ProductsPage() {
 
             }}>All Items</button></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 20; }
+                if (!e.__boltLine) { e.__boltLine = 19; }
                 throw e;
               }
             })()}
@@ -96,7 +96,7 @@ export default function ProductsPage() {
 
             }}>Electronics</button></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 21; }
+                if (!e.__boltLine) { e.__boltLine = 20; }
                 throw e;
               }
             })()}
@@ -106,7 +106,7 @@ export default function ProductsPage() {
 
             }}>Jewelry</button></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 22; }
+                if (!e.__boltLine) { e.__boltLine = 21; }
                 throw e;
               }
             })()}
@@ -116,14 +116,14 @@ export default function ProductsPage() {
 
             }}>Clothing</button></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 23; }
+                if (!e.__boltLine) { e.__boltLine = 22; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 19; }
+              if (!e.__boltLine) { e.__boltLine = 18; }
               throw e;
             }
           })()}
@@ -134,21 +134,21 @@ export default function ProductsPage() {
               try {
                 return <>{products.map((product, i) => <ProductCard key={i} product={product} />)}</>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 27; }
+                if (!e.__boltLine) { e.__boltLine = 26; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 26; }
+              if (!e.__boltLine) { e.__boltLine = 25; }
               throw e;
             }
           })()}
 
         </div></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 18; }
+            if (!e.__boltLine) { e.__boltLine = 17; }
             throw e;
           }
         })()}
@@ -156,7 +156,7 @@ export default function ProductsPage() {
           try {
             return <><Footer /></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 29; }
+            if (!e.__boltLine) { e.__boltLine = 4; }
             throw e;
           }
         })()}</>)))}
@@ -166,5 +166,5 @@ export default function ProductsPage() {
   );
 }
 window.__BOLT_MAPS = window.__BOLT_MAPS || {};
-window.__BOLT_MAPS['ProductsPage.jsx'] = {"8":10,"21":2,"29":4,"32":5,"40":7,"55":10,"62":14,"69":16,"76":18,"79":19,"82":20,"92":21,"102":22,"112":23,"129":26,"132":27,"154":29};
+window.__BOLT_MAPS['ProductsPage.jsx'] = {"8":9,"21":2,"29":3,"32":4,"40":6,"55":9,"62":13,"69":15,"76":17,"79":18,"82":19,"92":20,"102":21,"112":22,"129":25,"132":26,"154":4};
 //# sourceMappingURL=ProductsPage.jsx.map

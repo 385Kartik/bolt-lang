@@ -80,6 +80,8 @@ Every `.bolt` file in the project is merged automatically, so all pages, compone
 
 **Import by name (`src/builder/resolve.js`):** `use helpers` resolves `helpers.js` (or `.ts`, `.json`, `.css`, `.bolt`) anywhere in the project by file name. The resolver walks the project root (skipping `node_modules`, `dist`, `.bolt-generated`), reports missing names with "Did you mean" hints, reports ambiguous names with every matching path, and computes the relative import path for each generated page, component and `actions.js`.
 
+**Checker (`src/check.js`):** `bolt check` parses every `.bolt` file, then runs the full builder into a temp folder and returns each problem as `{file, line, column, message, hint}`. `bolt stats` reuses it to compare Bolt tokens with generated React tokens (estimated by counting words, numbers and symbols).
+
 **Layout:** the builder finds the single `LayoutDef`, validates it has exactly one `slot`, and injects each page's body into a copy of the layout body before code generation (pages with `layout none` are skipped).
 
 **Scaffold:** `bolt init` (`scaffoldProject` in `builder.js`) writes `src/styles.bolt` (the `DEFAULT_STYLES_BOLT` vocabulary) and `src/pages/home.bolt`.

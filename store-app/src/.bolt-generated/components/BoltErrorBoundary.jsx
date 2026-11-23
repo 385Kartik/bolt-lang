@@ -41,12 +41,12 @@ component Navbar:
         show "BoltStore" as title styled as: text-2xl font-black text-blue-600 tracking-tighter
         
         row styled as: flex gap-6 text-sm font-medium text-gray-600:
-            link "Home" to home styled as: hover:text-blue-600 transition-colors
-            link "Products" to products styled as: hover:text-blue-600 transition-colors
-            link "About" to about styled as: hover:text-blue-600 transition-colors
-            link "Contact" to contact styled as: hover:text-blue-600 transition-colors
-            link "Team" to team styled as: hover:text-blue-600 transition-colors
-            link "Admin" to admin styled as: hover:text-blue-600 transition-colors
+            link "Home" to home styled as: link-hover
+            link "Products" to products styled as: link-hover
+            link "About" to about styled as: link-hover
+            link "Contact" to contact styled as: link-hover
+            link "Team" to team styled as: link-hover
+            link "Admin" to admin styled as: link-hover
         
         row styled as: flex gap-4 items-center:
             if logged in:
@@ -63,7 +63,7 @@ component Navbar:
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\components\ProductCard.bolt ─── */
 component ProductCard for product:
     card styled as: flex flex-col p-0 bg-white border border-gray-100 rounded-2xl hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group cursor-pointer overflow-hidden:
-        container styled as: aspect-[4/3] bg-gray-50 overflow-hidden flex items-center justify-center p-6:
+        container styled as: aspect-[4/3] bg-gray-50 overflow-hidden center-flex p-6:
             image product.image styled as: h-full w-full object-contain group-hover:scale-110 transition-transform duration-500
                 
         column styled as: gap-2 p-5:
@@ -82,7 +82,7 @@ component ProductCard for product:
             row styled as: justify-between items-center mt-3 pt-3 border-t border-gray-100:
                 column:
                     show "Price" as label styled as: text-[10px] text-gray-400 uppercase tracking-wider font-medium
-                    show product.price as price styled as: font-black text-gray-900 text-xl
+                    show product.price as price styled as: heading-black text-xl
                 column styled as: items-end:
                     show "In Stock" as stock styled as: text-[10px] text-emerald-600 font-bold uppercase tracking-wider bg-emerald-50 px-2 py-0.5 rounded-full
             
@@ -106,7 +106,7 @@ component TeamCard for member:
 
         column styled as: p-6 gap-3:
             row styled as: gap-4 items-center:
-                container styled as: w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg:
+                container styled as: w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full center-flex text-white font-bold text-xl shadow-lg:
                     show member.name as avatar
                 column:
                     show member.name as name styled as: font-bold text-gray-900 text-lg
@@ -169,14 +169,20 @@ design system:
         button secondary: "bg-cardBg text-text border border-border rounded-xl px-4 py-2"
 
 
+/* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\layout.bolt ─── */
+layout:
+    show Navbar
+    slot
+    show Footer
+
+
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\about.bolt ─── */
 page about:
-    show Navbar
     
     section styled as: max-w-4xl mx-auto px-8 py-24:
         
         column styled as: text-center mb-16:
-            show "About BoltStore" as title styled as: text-5xl font-black text-gray-900 tracking-tight mb-6
+            show "About BoltStore" as title styled as: text-5xl heading-black tracking-tight mb-6
             show "We're pushing the boundaries of what's possible with modern web technologies." as subtitle styled as: text-xl text-gray-500
             
         column styled as: prose prose-lg prose-blue mx-auto text-gray-600 leading-relaxed:
@@ -188,22 +194,22 @@ page about:
             
             column styled as: gap-4 mb-12:
                 row styled as: gap-4 items-start:
-                    container styled as: w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0:
+                    container styled as: avatar-badge:
                         show "1" as idx1
                     show "Custom Lexer and Parser written from scratch." as desc1
                     
                 row styled as: gap-4 items-start:
-                    container styled as: w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0:
+                    container styled as: avatar-badge:
                         show "2" as idx2
                     show "Generates standard AST nodes." as desc2
                     
                 row styled as: gap-4 items-start:
-                    container styled as: w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0:
+                    container styled as: avatar-badge:
                         show "3" as idx3
                     show "Compiles directly to React and Tailwind CSS." as desc3
                     
                 row styled as: gap-4 items-start:
-                    container styled as: w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0:
+                    container styled as: avatar-badge:
                         show "4" as idx4
                     show "Supports multi-file architecture and automatic routing." as desc4
                     
@@ -211,7 +217,6 @@ page about:
             show "Ready to explore?" as ctaTitle styled as: text-3xl font-bold mb-6
             link "Start Shopping" to products styled as: inline-block px-8 py-4 bg-white text-gray-900 hover:bg-gray-100 rounded-xl font-bold transition-colors
             
-    show Footer
 
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\admin.bolt ─── */
@@ -228,12 +233,11 @@ page admin:
     remember newName = ""
     remember newPrice = "0"
     
-    show Navbar
 
     container styled as: max-w-4xl mx-auto px-8 py-16:
         // Phase 4: Authentication natively built in
         if not logged in:
-            card styled as: p-8 bg-gray-50 rounded-2xl mb-8:
+            card styled as: soft-panel:
                 show "Admin Login" as title styled as: text-3xl font-black mb-4
                 show "Please log in to access the dashboard." as desc styled as: text-gray-600 mb-6
                 
@@ -249,8 +253,8 @@ page admin:
             button "Logout" as secondary styled as: mb-8:
                 logout
                 
-            card styled as: p-8 bg-gray-50 rounded-2xl mb-8:
-                show "Add New Product" as stitle styled as: text-xl font-bold mb-4
+            card styled as: soft-panel:
+                show "Add New Product" as stitle styled as: section-title
                 
                 row styled as: gap-4 mb-4:
                     column:
@@ -266,8 +270,8 @@ page admin:
                     newName = ""
                     newPrice = "0"
 
-            card styled as: p-8 bg-gray-50 rounded-2xl mb-8:
-                show "Update/Delete Actions" as atitle styled as: text-xl font-bold mb-4
+            card styled as: soft-panel:
+                show "Update/Delete Actions" as atitle styled as: section-title
                 show "FakeStore API allows mocking these actions. Check network tab." as desc styled as: text-sm text-gray-500 mb-4
                 
                 row styled as: gap-4:
@@ -282,16 +286,11 @@ page admin:
                             success:
                                 show toast "Deleted successfully!" as success
 
-    show Footer
 
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\contact.bolt ─── */
 page contact:
-    store name = ""
-    store email = ""
-    store message = ""
     
-    show Navbar
     
     container styled as: py-12:
         hero styled as: bg-gray-900 text-white p-12 rounded-3xl text-center mb-12:
@@ -314,22 +313,21 @@ page contact:
                         
             column styled as: w-full lg:w-1/2 flex flex-col gap-6:
                 card:
-                    show "Watch Our Story (Public Folder)" as title styled as: text-xl font-bold mb-4
+                    show "Watch Our Story (Public Folder)" as title styled as: section-title
                     video "/demo.mp4" styled as: w-full rounded-xl
                     
                 card:
-                    show "Our Headquarters (Public Folder)" as title styled as: text-xl font-bold mb-4
+                    show "Our Headquarters (Public Folder)" as title styled as: section-title
                     image "/office.jpg" styled as: w-full rounded-xl object-cover
                     
                 card:
-                    show "Product Demo (External URL)" as title styled as: text-xl font-bold mb-4
+                    show "Product Demo (External URL)" as title styled as: section-title
                     video "https://www.w3schools.com/html/mov_bbb.mp4" styled as: w-full rounded-xl
                     
                 card:
-                    show "Remote Office (External URL)" as title styled as: text-xl font-bold mb-4
+                    show "Remote Office (External URL)" as title styled as: section-title
                     image "https://picsum.photos/600/300" styled as: w-full rounded-xl object-cover
                     
-    show Footer
 
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\home.bolt ─── */
@@ -337,7 +335,6 @@ page home:
     fetch "https://fakestoreapi.com/products?limit=4" into featured
     store showTestModal = false
 
-    show Navbar
     
     hero:
         container styled as: inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6:
@@ -352,7 +349,7 @@ page home:
             link "Learn More" to about styled as: px-8 py-4 bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-800 rounded-xl font-bold transition-all
 
     section styled as: max-w-7xl mx-auto px-8 py-20:
-        show "Theme Preferences" as title styled as: text-3xl font-black text-gray-900 mb-2
+        show "Theme Preferences" as title styled as: text-3xl heading-black mb-2
         row styled as: gap-4 mb-10:
             button "Light Theme":
                 theme = "light"
@@ -361,7 +358,7 @@ page home:
             button "System Theme":
                 theme = "system"
 
-        show "Featured Products" as title styled as: text-3xl font-black text-gray-900 mb-2
+        show "Featured Products" as title styled as: text-3xl heading-black mb-2
         show "Handpicked items fetched live from FakeStore API" as subtitle styled as: text-gray-400 mb-10
 
         if featured == null:
@@ -387,34 +384,33 @@ page home:
         grid 3 styled as: gap-8:
             
             card:
-                container styled as: w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl:
+                container styled as: icon-box:
                     show "⚡" as emoji1
-                show "Lightning Fast" as title1 styled as: font-bold text-xl mb-3
-                show "Compiled directly to React for maximum performance." as desc1 styled as: text-gray-500 leading-relaxed
+                show "Lightning Fast" as title1 styled as: card-title
+                show "Compiled directly to React for maximum performance." as desc1 styled as: body-text
                 
             card:
-                container styled as: w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl:
+                container styled as: icon-box:
                     show "🎨" as emoji2
-                show "Beautiful UI" as title2 styled as: font-bold text-xl mb-3
-                show "Styled with Tailwind CSS for perfect modern aesthetics." as desc2 styled as: text-gray-500 leading-relaxed
+                show "Beautiful UI" as title2 styled as: card-title
+                show "Styled with Tailwind CSS for perfect modern aesthetics." as desc2 styled as: body-text
                 
             card:
-                container styled as: w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl:
+                container styled as: icon-box:
                     show "📱" as emoji3
-                show "Responsive" as title3 styled as: font-bold text-xl mb-3
-                show "Looks amazing on any device, anywhere." as desc3 styled as: text-gray-500 leading-relaxed
+                show "Responsive" as title3 styled as: card-title
+                show "Looks amazing on any device, anywhere." as desc3 styled as: body-text
                 
-    show Footer
+
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\login.bolt ─── */
 page login:
-    store email = ""
-    store password = ""
+    layout none
     
     show Navbar
     
     section styled as: max-w-md mx-auto mt-20 p-8 bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100:
-        show "Welcome Back" as title styled as: text-3xl font-black text-gray-900 mb-2 text-center
+        show "Welcome Back" as title styled as: text-3xl heading-black mb-2 text-center
         show "Enter your details to access your account." as subtitle styled as: text-gray-500 mb-8 text-center
         
         form:
@@ -445,7 +441,6 @@ page login:
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\product.bolt ─── */
 page product(id):
-    show Navbar
     
     // Fetch product details based on the dynamic ID
     fetch "https://fakestoreapi.com/products/" + id into product:
@@ -467,16 +462,16 @@ page product(id):
                     column styled as: flex-1:
                         show product.category styled as: text-sm font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-3 py-1.5 rounded-full inline-block w-max mb-6
                         
-                        show product.title as title styled as: text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-6
+                        show product.title as title styled as: text-4xl md:text-5xl heading-black leading-tight mb-6
                         
                         row styled as: items-center gap-4 mb-8:
                             show "★ " + product.rating.rate styled as: text-lg font-bold text-yellow-500
                             show "(" + product.rating.count + " reviews)" styled as: text-gray-500
                         
-                        show "\$" + product.price as price styled as: text-5xl font-black text-gray-900 mb-8
+                        show "\$" + product.price as price styled as: text-5xl heading-black mb-8
                         
                         show "Description" as label styled as: text-lg font-bold text-gray-900 mb-3
-                        show product.description as text styled as: text-gray-500 leading-relaxed text-lg mb-10
+                        show product.description as text styled as: body-text text-lg mb-10
                         
                         row styled as: gap-4:
                             button "Add to Cart" as primary styled as: flex-1 py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-lg transition-colors:
@@ -490,12 +485,10 @@ page product(id):
                             button "Back to Home" as secondary styled as: py-4 px-8 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl font-bold transition-colors:
                                 go to home
 
-    show Footer
 
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\products.bolt ─── */
 page products:
-    show Navbar
     
     hero styled as: bg-gray-900 text-white py-20 px-8 text-center:
         show "Our Collection" as title styled as: text-4xl md:text-5xl font-black tracking-tight mb-4
@@ -514,26 +507,24 @@ page products:
             section styled as: max-w-7xl mx-auto px-8 py-16:
                 row styled as: flex-wrap gap-4 mb-12 border-b border-gray-100 pb-8:
                     button "All Items" styled as: px-6 py-2 bg-gray-900 text-white rounded-full text-sm font-medium
-                    button "Electronics" styled as: px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors
-                    button "Jewelry" styled as: px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors
-                    button "Clothing" styled as: px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors
+                    button "Electronics" styled as: pill-button
+                    button "Jewelry" styled as: pill-button
+                    button "Clothing" styled as: pill-button
                 
                 // Native loop rendering
                 grid 4 styled as: gap-6:
                     show ProductCard for each product in products
             
-    show Footer
 
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\signup.bolt ─── */
 page signup:
-    store email = ""
-    store password = ""
+    layout none
     
     show Navbar
     
     section styled as: max-w-md mx-auto mt-20 p-8 bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100:
-        show "Create Account" as title styled as: text-3xl font-black text-gray-900 mb-2 text-center
+        show "Create Account" as title styled as: text-3xl heading-black mb-2 text-center
         show "Join the future of shopping today." as subtitle styled as: text-gray-500 mb-8 text-center
         
         form:
@@ -575,6 +566,7 @@ component Header:
             show "Cart is empty!"
 
 page store_test:
+    layout none
     column:
         show Header
         show "Products" as title
@@ -596,7 +588,6 @@ page store_test:
 page team:
     fetch "https://jsonplaceholder.typicode.com/users" into members
 
-    show Navbar
 
     container styled as: py-12:
         hero styled as: bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white p-12 rounded-3xl text-center mb-12:
@@ -612,10 +603,25 @@ page team:
             grid 2 styled as: gap-6:
                 show TeamCard for each member in members
 
-    show Footer
+
+
+/* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\styles.bolt ─── */
+styles:
+    center-flex: flex items-center justify-center
+    avatar-badge: w-8 h-8 rounded-full bg-blue-100 text-blue-600 center-flex font-bold shrink-0
+    icon-box: w-12 h-12 bg-white rounded-xl shadow-sm center-flex mb-6 text-xl
+    pill-button: px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors
+    soft-panel: p-8 bg-gray-50 rounded-2xl mb-8
+    link-hover: hover:text-blue-600 transition-colors
+    heading-black: font-black text-gray-900
+    section-title: text-xl font-bold mb-4
+    card-title: font-bold text-xl mb-3
+    body-text: text-gray-500 leading-relaxed
+
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\testauth.bolt ─── */
 page testauth:
+    layout none
     if not logged in:
         show "You are not logged in!"
         button "Login":

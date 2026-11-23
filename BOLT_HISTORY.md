@@ -115,3 +115,10 @@
 - `fetch "/url" into data` now shows a default loading message and a default error message with no extra blocks
 - Fixed: a fetch without `loading:` / `error:` blocks rendered the page while the data was still `null`, which crashed on `products.map`
 - Your own `loading:` / `error:` blocks replace only their own default
+
+## Phase 19: AI & Beginner Tooling
+- `bolt check [dir] [--json]`: compiles the whole project into a temp folder and reports every problem as data (file, line, column, message, hint); writes nothing into the project
+- `bolt stats [dir] [--json]`: Bolt tokens vs generated React tokens (store-app: about 5.1x)
+- `bolt spec` and `llms.txt`: a one-page cheat-sheet to paste into an AI prompt
+- Fixed: `.bolt` files with Windows line endings (CRLF) failed with "Unexpected character"; the lexer now accepts both
+- New module `src/check.js`

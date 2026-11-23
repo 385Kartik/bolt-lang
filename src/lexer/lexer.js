@@ -42,6 +42,7 @@ import { LexerError } from '../errors/errors.js';
  * @returns {Token[]} — array of token objects
  */
 export function tokenize(source) {
+  source = source.replace(/\r\n?/g, '\n'); // Windows (CRLF) files work the same as Unix files
   const tokens = [];
   const indentStack = [0]; // Stack of indentation levels, starts at column 0
 

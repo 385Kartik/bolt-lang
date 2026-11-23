@@ -37,7 +37,7 @@ export default function AdminPage() {
           try {
             return <><Navbar /></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 14; }
+            if (!e.__boltLine) { e.__boltLine = 2; }
             throw e;
           }
         })()}
@@ -53,7 +53,7 @@ export default function AdminPage() {
               try {
                 return <><h1 className="text-3xl font-black mb-4">Admin Login</h1></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 20; }
+                if (!e.__boltLine) { e.__boltLine = 19; }
                 throw e;
               }
             })()}
@@ -61,7 +61,7 @@ export default function AdminPage() {
               try {
                 return <><p className="text-gray-600 mb-6">Please log in to access the dashboard.</p></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 21; }
+                if (!e.__boltLine) { e.__boltLine = 20; }
                 throw e;
               }
             })()}
@@ -73,14 +73,14 @@ export default function AdminPage() {
               })
               .catch(err => console.error(err)); }}>Mock Login</button></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 23; }
+                if (!e.__boltLine) { e.__boltLine = 22; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 19; }
+              if (!e.__boltLine) { e.__boltLine = 18; }
               throw e;
             }
           })()}
@@ -93,7 +93,7 @@ export default function AdminPage() {
             try {
               return <><h1 className="text-4xl font-black mb-2">Admin Dashboard</h1></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 28; }
+              if (!e.__boltLine) { e.__boltLine = 27; }
               throw e;
             }
           })()}
@@ -101,7 +101,7 @@ export default function AdminPage() {
             try {
               return <><p className="text-gray-500 mb-8">Welcome back!</p></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 30; }
+              if (!e.__boltLine) { e.__boltLine = 29; }
               throw e;
             }
           })()}
@@ -109,7 +109,7 @@ export default function AdminPage() {
             try {
               return <><button className="bg-primary text-white rounded-xl px-4 py-2 mb-8" onClick={async () => { logoutUser(); }}>Logout</button></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 32; }
+              if (!e.__boltLine) { e.__boltLine = 31; }
               throw e;
             }
           })()}
@@ -120,7 +120,7 @@ export default function AdminPage() {
               try {
                 return <><p className="text-xl font-bold mb-4">Add New Product</p></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 36; }
+                if (!e.__boltLine) { e.__boltLine = 35; }
                 throw e;
               }
             })()}
@@ -134,7 +134,7 @@ export default function AdminPage() {
                   try {
                     return <><p className="text-sm font-semibold text-gray-700 mb-1">Product Name</p></>;
                   } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 40; }
+                    if (!e.__boltLine) { e.__boltLine = 39; }
                     throw e;
                   }
                 })()}
@@ -144,14 +144,14 @@ export default function AdminPage() {
                   <input placeholder={"Enter name"} value={newName} onChange={(e) => setNewName(e.target.value)} className="px-4 py-2 border rounded-lg w-full" />
                 </div></>;
                   } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 41; }
+                    if (!e.__boltLine) { e.__boltLine = 40; }
                     throw e;
                   }
                 })()}
 
               </div></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 39; }
+                  if (!e.__boltLine) { e.__boltLine = 38; }
                   throw e;
                 }
               })()}
@@ -162,7 +162,7 @@ export default function AdminPage() {
                   try {
                     return <><p className="text-sm font-semibold text-gray-700 mb-1">Price</p></>;
                   } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 43; }
+                    if (!e.__boltLine) { e.__boltLine = 42; }
                     throw e;
                   }
                 })()}
@@ -172,21 +172,21 @@ export default function AdminPage() {
                   <input placeholder={"Enter price"} value={newPrice} onChange={(e) => setNewPrice(e.target.value)} className="px-4 py-2 border rounded-lg w-full" />
                 </div></>;
                   } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 44; }
+                    if (!e.__boltLine) { e.__boltLine = 43; }
                     throw e;
                   }
                 })()}
 
               </div></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 42; }
+                  if (!e.__boltLine) { e.__boltLine = 41; }
                   throw e;
                 }
               })()}
 
             </div></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 38; }
+                if (!e.__boltLine) { e.__boltLine = 37; }
                 throw e;
               }
             })()}
@@ -199,14 +199,14 @@ export default function AdminPage() {
               setNewPrice("0");
             }}>Submit Product</button></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 46; }
+                if (!e.__boltLine) { e.__boltLine = 45; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 35; }
+              if (!e.__boltLine) { e.__boltLine = 34; }
               throw e;
             }
           })()}
@@ -217,7 +217,7 @@ export default function AdminPage() {
               try {
                 return <><p className="text-xl font-bold mb-4">Update/Delete Actions</p></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 53; }
+                if (!e.__boltLine) { e.__boltLine = 52; }
                 throw e;
               }
             })()}
@@ -225,7 +225,7 @@ export default function AdminPage() {
               try {
                 return <><p className="text-sm text-gray-500 mb-4">FakeStore API allows mocking these actions. Check network tab.</p></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 54; }
+                if (!e.__boltLine) { e.__boltLine = 53; }
                 throw e;
               }
             })()}
@@ -239,7 +239,7 @@ export default function AdminPage() {
               addToast("Updated successfully!", "success");
                 }); }}>Update Product #1</button></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 57; }
+                  if (!e.__boltLine) { e.__boltLine = 56; }
                   throw e;
                 }
               })()}
@@ -253,21 +253,21 @@ export default function AdminPage() {
                   });
               }}>Delete Product #1</button></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 62; }
+                  if (!e.__boltLine) { e.__boltLine = 61; }
                   throw e;
                 }
               })()}
 
             </div></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 56; }
+                if (!e.__boltLine) { e.__boltLine = 55; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 52; }
+              if (!e.__boltLine) { e.__boltLine = 51; }
               throw e;
             }
           })()}
@@ -277,7 +277,7 @@ export default function AdminPage() {
 
         </div></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 16; }
+            if (!e.__boltLine) { e.__boltLine = 15; }
             throw e;
           }
         })()}
@@ -285,7 +285,7 @@ export default function AdminPage() {
           try {
             return <><Footer /></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 68; }
+            if (!e.__boltLine) { e.__boltLine = 4; }
             throw e;
           }
         })()}
@@ -295,5 +295,5 @@ export default function AdminPage() {
   );
 }
 window.__BOLT_MAPS = window.__BOLT_MAPS || {};
-window.__BOLT_MAPS['AdminPage.jsx'] = {"13":11,"22":12,"35":14,"43":16,"46":18,"48":19,"51":20,"59":21,"67":23,"89":27,"91":28,"99":30,"107":32,"115":35,"118":36,"126":38,"129":39,"132":40,"140":41,"157":42,"160":43,"168":44,"192":46,"212":52,"215":53,"223":54,"231":56,"234":57,"245":62,"283":68};
+window.__BOLT_MAPS['AdminPage.jsx'] = {"13":11,"22":12,"35":2,"43":15,"46":17,"48":18,"51":19,"59":20,"67":22,"89":26,"91":27,"99":29,"107":31,"115":34,"118":35,"126":37,"129":38,"132":39,"140":40,"157":41,"160":42,"168":43,"192":45,"212":51,"215":52,"223":53,"231":55,"234":56,"245":61,"283":4};
 //# sourceMappingURL=AdminPage.jsx.map

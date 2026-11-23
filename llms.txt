@@ -1,0 +1,48 @@
+# Bolt cheat-sheet (for AI and new developers)
+Bolt compiles .bolt files to React + Vite + Tailwind. Indentation (4 spaces) makes blocks.
+No imports, no hooks, no router setup. Run `bolt check` after writing, fix every problem, repeat.
+
+## Files
+- One page per file, page name = file name: pages/home.bolt holds `page home:`
+- Components live in components/. All .bolt files in the project merge automatically.
+- layout.bolt: `layout:` wraps every page. `slot` = where the page goes. A page says `layout none` to opt out.
+- styles.bolt: `styles:` block of named Tailwind class sets (name: classes). Use names in `styled as:`.
+- `use helpers` imports helpers.js / data.json / theme.css by file name from anywhere. Never write paths.
+
+## Pages and components
+page home:                       page product(id):   (URL /product/:id)
+component ProductCard for product:    (props come from `for`)
+
+## Show things
+show "Hello" as title            show product.price as price       show Navbar
+show all products                (renders ProductCard for each; matched by name)
+row: column: grid 3: card: hero: section: container:   (layout blocks)
+button "Save": ...actions...     link "Home" to home               go to product(1)
+image product.image              show toast "Saved" as success
+... styled as: name-or-tailwind classes (names from styles: expand, md:name works)
+
+## State (no declarations needed for inputs)
+store count = 0                  remember theme = "light"          global store cart = []
+add product to cart              input "Email" into email          (email is declared for you)
+when count changes: ...          if x: ... otherwise: ...          repeat 3 times:
+
+## Data
+fetch "/api/products" into products          (default Loading... and error UI included)
+fetch url into items:  loading: ...  error err: ...  empty: ...  success: ...   (optional blocks)
+submit "/api/x"   update "/api/x/1"   delete "/api/x/1"
+
+## Forms
+form:
+    input "Email" into email:
+        required
+        email
+    input "Password" into password:
+        min 8
+    submit "Login":
+        show toast "Welcome" as success
+
+## Auth
+if logged in: ... otherwise: ...
+
+## Tools
+bolt init app | bolt dev app | bolt build app | bolt check [--json] | bolt stats | bolt spec

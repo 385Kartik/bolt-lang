@@ -86,12 +86,28 @@ show product.title styled as: product-card mt-2
 show helpers.money(product.price)
 ```
 
+## Built for AI and for beginners
+
+AI tools spend tokens on every line they write. Bolt is short, so there is less to write and less to read.
+
+```bash
+bolt stats store-app
+#   Bolt source        6542 tokens
+#   Generated React   33440 tokens
+#   React is           5.11x bigger than the Bolt you write
+```
+
+- **`bolt spec`** prints a one-page cheat-sheet ([`llms.txt`](llms.txt)) you can paste into any AI prompt
+- **`bolt check --json`** lists every problem as data (file, line, message, hint) so an AI can fix them in a loop
+- **`bolt stats`** shows how much smaller your Bolt is than the React it generates (token counts are estimates)
+
 ## Features
 
 - **Zero boilerplate:** no hooks, no imports, no router config
 - **Automatic routing:** pages map to URLs, with dynamic params `page store(storeId, productId):`
 - **Compile-time route validation:** `go to product(1, 2)` is a compiler error, not a 404
 - **Fetch with defaults:** `fetch "/api/x" into x` handles loading and errors for you
+- **Windows friendly:** CRLF and LF files both work
 - **Layout:** one `layout:` block wraps every page (navbar, footer) with a `slot`
 - **Implicit form state:** `input "Email" into email` declares `email` for you
 - **State primitives:** `store` (local), `remember` (persisted to localStorage), `global store` (shared)
@@ -131,6 +147,9 @@ bolt run <file.bolt>               Compile and execute
 bolt compile <file.bolt> [-o out]  Compile to JS
 bolt tokens <file.bolt>            Show token stream (debug)
 bolt ast <file.bolt | dir>         Show AST (debug)
+bolt check [dir] [--json]          Check the whole project and list every problem
+bolt stats [dir] [--json]          Compare Bolt size with the React it generates
+bolt spec                          Print the short cheat-sheet (for AI)
 ```
 
 ### Tests

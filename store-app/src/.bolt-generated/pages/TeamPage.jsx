@@ -19,15 +19,15 @@ export default function TeamPage() {
   return (
     <main>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        {<>        /*__L:4*/{(() => {
+        {(() => {
           try {
             return <><Navbar /></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 4; }
+            if (!e.__boltLine) { e.__boltLine = 2; }
             throw e;
           }
         })()}
-        {(() => {
+        {membersLoading ? (<p className="text-gray-400 animate-pulse">Loading...</p>) : (membersError ? (<p className="text-red-500">Something went wrong: {membersError}</p>) : (<>        /*__L:5*/{(() => {
           try {
             return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12">
           {(() => {
@@ -37,7 +37,7 @@ export default function TeamPage() {
               try {
                 return <><h1 className="text-4xl md:text-5xl font-black mb-4">Our Team</h1></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 8; }
+                if (!e.__boltLine) { e.__boltLine = 7; }
                 throw e;
               }
             })()}
@@ -45,7 +45,7 @@ export default function TeamPage() {
               try {
                 return <><h2 className="text-purple-200 text-lg max-w-2xl mx-auto">Meet the people behind the brand — fetched live from JSONPlaceholder API</h2></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 9; }
+                if (!e.__boltLine) { e.__boltLine = 8; }
                 throw e;
               }
             })()}
@@ -53,14 +53,14 @@ export default function TeamPage() {
               try {
                 return <><p className="text-purple-300/60 text-sm mt-4 font-mono">This page demonstrates deeply nested API data: member.company.name, member.address.geo.lat, and more!</p></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 10; }
+                if (!e.__boltLine) { e.__boltLine = 9; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 7; }
+              if (!e.__boltLine) { e.__boltLine = 6; }
               throw e;
             }
           })()}
@@ -73,14 +73,14 @@ export default function TeamPage() {
               try {
                 return <><p className="text-gray-400 text-lg animate-pulse">Loading team members...</p></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 14; }
+                if (!e.__boltLine) { e.__boltLine = 13; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 13; }
+              if (!e.__boltLine) { e.__boltLine = 12; }
               throw e;
             }
           })()}
@@ -96,14 +96,14 @@ export default function TeamPage() {
               try {
                 return <>{members.map((member, i) => <TeamCard key={i} member={member} />)}</>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 18; }
+                if (!e.__boltLine) { e.__boltLine = 17; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 17; }
+              if (!e.__boltLine) { e.__boltLine = 16; }
               throw e;
             }
           })()}
@@ -113,7 +113,7 @@ export default function TeamPage() {
 
         </div></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 6; }
+            if (!e.__boltLine) { e.__boltLine = 5; }
             throw e;
           }
         })()}
@@ -121,15 +121,15 @@ export default function TeamPage() {
           try {
             return <><Footer /></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 20; }
+            if (!e.__boltLine) { e.__boltLine = 4; }
             throw e;
           }
-        })()}</>}
+        })()}</>))}
 
       </div>
     </main>
   );
 }
 window.__BOLT_MAPS = window.__BOLT_MAPS || {};
-window.__BOLT_MAPS['TeamPage.jsx'] = {"8":2,"21":2,"29":6,"32":7,"35":8,"43":9,"51":10,"66":12,"68":13,"71":14,"89":16,"91":17,"94":18,"119":20};
+window.__BOLT_MAPS['TeamPage.jsx'] = {"8":2,"21":2,"29":2,"32":6,"35":7,"43":8,"51":9,"66":11,"68":12,"71":13,"89":15,"91":16,"94":17,"119":4};
 //# sourceMappingURL=TeamPage.jsx.map

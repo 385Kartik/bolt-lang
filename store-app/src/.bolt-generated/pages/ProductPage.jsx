@@ -34,21 +34,21 @@ export default function ProductPage() {
             throw e;
           }
         })()}
-        {productLoading ? (<>        /*__L:7*/{(() => {
+        {productLoading ? (<>        /*__L:6*/{(() => {
           try {
             return <><div className="py-12 md:py-16 w-full max-w-7xl mx-auto px-8 py-32 text-center">
           {(() => {
             try {
               return <><p className="text-xl text-gray-500 animate-pulse">Loading product details...</p></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 8; }
+              if (!e.__boltLine) { e.__boltLine = 7; }
               throw e;
             }
           })()}
 
         </div></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 7; }
+            if (!e.__boltLine) { e.__boltLine = 6; }
             throw e;
           }
         })()}</>) : (productError ? ((() => { const err = productError; return <>        {(() => {
@@ -58,7 +58,7 @@ export default function ProductPage() {
             try {
               return <><h1 className="text-red-500 font-bold mb-4">Error loading product!</h1></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 11; }
+              if (!e.__boltLine) { e.__boltLine = 10; }
               throw e;
             }
           })()}
@@ -66,14 +66,14 @@ export default function ProductPage() {
             try {
               return <><h2 className="text-gray-500">{err}</h2></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 12; }
+              if (!e.__boltLine) { e.__boltLine = 11; }
               throw e;
             }
           })()}
 
         </div></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 10; }
+            if (!e.__boltLine) { e.__boltLine = 9; }
             throw e;
           }
         })()}</>; })()) : (<>        {(() => {
@@ -89,14 +89,14 @@ export default function ProductPage() {
                 try {
                   return <><img src={product.image} alt="Image" className="w-full h-auto max-h-[500px] object-contain" /></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 18; }
+                  if (!e.__boltLine) { e.__boltLine = 17; }
                   throw e;
                 }
               })()}
 
             </div></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 17; }
+                if (!e.__boltLine) { e.__boltLine = 16; }
                 throw e;
               }
             })()}
@@ -107,7 +107,7 @@ export default function ProductPage() {
                 try {
                   return <><p className="text-sm font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-3 py-1.5 rounded-full inline-block w-max mb-6">{product.category}</p></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 22; }
+                  if (!e.__boltLine) { e.__boltLine = 21; }
                   throw e;
                 }
               })()}
@@ -115,7 +115,7 @@ export default function ProductPage() {
                 try {
                   return <><h1 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-6">{product.title}</h1></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 24; }
+                  if (!e.__boltLine) { e.__boltLine = 23; }
                   throw e;
                 }
               })()}
@@ -126,7 +126,7 @@ export default function ProductPage() {
                   try {
                     return <><p className="text-lg font-bold text-yellow-500">{("★ " + product.rating.rate)}</p></>;
                   } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 27; }
+                    if (!e.__boltLine) { e.__boltLine = 26; }
                     throw e;
                   }
                 })()}
@@ -134,14 +134,14 @@ export default function ProductPage() {
                   try {
                     return <><p className="text-gray-500">{(("(" + product.rating.count) + " reviews)")}</p></>;
                   } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 28; }
+                    if (!e.__boltLine) { e.__boltLine = 27; }
                     throw e;
                   }
                 })()}
 
               </div></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 26; }
+                  if (!e.__boltLine) { e.__boltLine = 25; }
                   throw e;
                 }
               })()}
@@ -149,7 +149,7 @@ export default function ProductPage() {
                 try {
                   return <><p className="text-5xl font-black text-gray-900 mb-8">{("$" + product.price)}</p></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 30; }
+                  if (!e.__boltLine) { e.__boltLine = 29; }
                   throw e;
                 }
               })()}
@@ -157,7 +157,7 @@ export default function ProductPage() {
                 try {
                   return <><label className="text-lg font-bold text-gray-900 mb-3">Description</label></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 32; }
+                  if (!e.__boltLine) { e.__boltLine = 31; }
                   throw e;
                 }
               })()}
@@ -165,7 +165,7 @@ export default function ProductPage() {
                 try {
                   return <><p className="text-gray-500 leading-relaxed text-lg mb-10">{product.description}</p></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 33; }
+                  if (!e.__boltLine) { e.__boltLine = 32; }
                   throw e;
                 }
               })()}
@@ -182,7 +182,7 @@ export default function ProductPage() {
                   navigate('/login');
                 }; }}>Add to Cart</button></>;
                   } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 36; }
+                    if (!e.__boltLine) { e.__boltLine = 35; }
                     throw e;
                   }
                 })()}
@@ -190,35 +190,35 @@ export default function ProductPage() {
                   try {
                     return <><button className="bg-primary text-white rounded-xl px-4 py-2 py-4 px-8 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl font-bold transition-colors" onClick={async () => { navigate('/'); }}>Back to Home</button></>;
                   } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 44; }
+                    if (!e.__boltLine) { e.__boltLine = 43; }
                     throw e;
                   }
                 })()}
 
               </div></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 35; }
+                  if (!e.__boltLine) { e.__boltLine = 34; }
                   throw e;
                 }
               })()}
 
             </div></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 21; }
+                if (!e.__boltLine) { e.__boltLine = 20; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 15; }
+              if (!e.__boltLine) { e.__boltLine = 14; }
               throw e;
             }
           })()}
 
         </div></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 14; }
+            if (!e.__boltLine) { e.__boltLine = 13; }
             throw e;
           }
         })()}
@@ -226,7 +226,7 @@ export default function ProductPage() {
           try {
             return <><Footer /></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 47; }
+            if (!e.__boltLine) { e.__boltLine = 4; }
             throw e;
           }
         })()}</>))}
@@ -236,5 +236,5 @@ export default function ProductPage() {
   );
 }
 window.__BOLT_MAPS = window.__BOLT_MAPS || {};
-window.__BOLT_MAPS['ProductPage.jsx'] = {"15":5,"28":2,"36":5,"39":8,"53":10,"56":11,"64":12,"78":14,"81":15,"84":17,"87":18,"102":21,"105":22,"113":24,"121":26,"124":27,"132":28,"147":30,"155":32,"163":33,"171":35,"174":36,"188":44,"224":47};
+window.__BOLT_MAPS['ProductPage.jsx'] = {"15":4,"28":2,"36":4,"39":7,"53":9,"56":10,"64":11,"78":13,"81":14,"84":16,"87":17,"102":20,"105":21,"113":23,"121":25,"124":26,"132":27,"147":29,"155":31,"163":32,"171":34,"174":35,"188":43,"224":4};
 //# sourceMappingURL=ProductPage.jsx.map

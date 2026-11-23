@@ -19,7 +19,7 @@ export default function SignupPage() {
           try {
             return <><Navbar /></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 5; }
+            if (!e.__boltLine) { e.__boltLine = 4; }
             throw e;
           }
         })()}
@@ -30,7 +30,7 @@ export default function SignupPage() {
             try {
               return <><h1 className="text-3xl font-black text-gray-900 mb-2 text-center">Create Account</h1></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 8; }
+              if (!e.__boltLine) { e.__boltLine = 7; }
               throw e;
             }
           })()}
@@ -38,7 +38,7 @@ export default function SignupPage() {
             try {
               return <><h2 className="text-gray-500 mb-8 text-center">Join the future of shopping today.</h2></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 9; }
+              if (!e.__boltLine) { e.__boltLine = 8; }
               throw e;
             }
           })()}
@@ -84,7 +84,7 @@ export default function SignupPage() {
             </form>;
           })()}</>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 11; }
+              if (!e.__boltLine) { e.__boltLine = 10; }
               throw e;
             }
           })()}
@@ -95,7 +95,7 @@ export default function SignupPage() {
               try {
                 return <><p className="text-gray-500">Already have an account?</p></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 33; }
+                if (!e.__boltLine) { e.__boltLine = 32; }
                 throw e;
               }
             })()}
@@ -103,21 +103,21 @@ export default function SignupPage() {
               try {
                 return <><Link to="/login" className="font-bold text-blue-600 hover:text-blue-700">Log in</Link></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 34; }
+                if (!e.__boltLine) { e.__boltLine = 33; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 32; }
+              if (!e.__boltLine) { e.__boltLine = 31; }
               throw e;
             }
           })()}
 
         </div></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 7; }
+            if (!e.__boltLine) { e.__boltLine = 6; }
             throw e;
           }
         })()}
@@ -127,5 +127,5 @@ export default function SignupPage() {
   );
 }
 window.__BOLT_MAPS = window.__BOLT_MAPS || {};
-window.__BOLT_MAPS['SignupPage.jsx'] = {"11":2,"12":3,"17":5,"25":7,"28":8,"36":9,"44":11,"90":32,"93":33,"101":34};
+window.__BOLT_MAPS['SignupPage.jsx'] = {"11":11,"12":15,"17":4,"25":6,"28":7,"36":8,"44":10,"90":31,"93":32,"101":33};
 //# sourceMappingURL=SignupPage.jsx.map
