@@ -93,3 +93,9 @@
 - Converted the demo store to `styles:` (`store-app/src/styles.bolt`, 10 shared styles such as `avatar-badge`, `pill-button`, `heading-black`)
 - Generated React is byte-identical before and after, so the conversion is behavior-neutral
 - Measured: Bolt source went from 31,158 to 30,417 characters (about 4% fewer approximate tokens, including the styles file itself). Most Tailwind strings in the app are unique, so extracting repeats saves little; the bigger savings come from a shared vocabulary that new pages reuse
+
+## Phase 15: Default Style Vocabulary & Working `bolt init`
+- `bolt init` now creates `src/styles.bolt` with a starter vocabulary (`page-wrap`, `stack`, `cluster`, `center`, `card`, `panel`, `heading`, `subheading`, `body`, `muted`, `link`, `button-primary`, `button-secondary`, `field`, `badge`)
+- `bolt init` now creates `src/pages/home.bolt` that uses those names
+- Fixed: a freshly scaffolded project failed to build (`app.bolt` held `page home`, but a page must match its file name)
+- Added a test that scaffolds a project, builds it and checks the vocabulary expands

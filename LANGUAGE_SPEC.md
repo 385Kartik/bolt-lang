@@ -294,6 +294,15 @@ show product.title styled as: product-card mt-2     // names + normal Tailwind m
 show product.note  styled as: md:muted              // variant prefixes work on names too
 ```
 
+**Default vocabulary:** `bolt init` creates `src/styles.bolt` with ready-made names, so new pages never start from raw Tailwind. Edit or delete any of them.
+
+| Group | Names |
+|---|---|
+| Layout | `page-wrap`, `stack`, `cluster`, `center` |
+| Surfaces | `card`, `panel` |
+| Text | `heading`, `subheading`, `body`, `muted`, `link` |
+| Controls | `button-primary`, `button-secondary`, `field`, `badge` |
+
 **Rules:**
 - A name expands to its classes at compile time, so the output is plain Tailwind.
 - Anything that is not a style name is passed through unchanged.

@@ -75,7 +75,7 @@ What the compiler generates for you:
 ## Write less: named styles and import-by-name
 
 ```bolt
-// styles.bolt: write Tailwind once, use the name anywhere
+// styles.bolt (created by `bolt init` with ready-made names): write Tailwind once, use the name anywhere
 styles:
     card: flex flex-col rounded-2xl border bg-white
     product-card: card hover:shadow-xl p-4

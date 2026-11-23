@@ -816,6 +816,34 @@ export default class BoltErrorBoundary extends React.Component {
   console.log(`  ✓ Successfully compiled to ${outDir}`);
 }
 
+// ── Default style vocabulary shipped with `bolt init` ──────────────────
+// Short, readable names so new pages (and AI) never repeat raw Tailwind.
+export const DEFAULT_STYLES_BOLT = `
+styles:
+    // Layout
+    page-wrap: max-w-5xl mx-auto px-6 py-12
+    stack: flex flex-col gap-4
+    cluster: flex flex-row flex-wrap items-center gap-3
+    center: flex items-center justify-center
+
+    // Surfaces
+    card: bg-white border border-gray-100 rounded-2xl shadow-sm p-6
+    panel: bg-gray-50 rounded-2xl p-6
+
+    // Text
+    heading: text-4xl font-extrabold tracking-tight text-gray-900
+    subheading: text-xl font-bold text-gray-900
+    body: text-base text-gray-600 leading-relaxed
+    muted: text-sm text-gray-400
+    link: text-blue-600 hover:text-blue-700 transition-colors
+
+    // Controls
+    button-primary: px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors
+    button-secondary: px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl font-semibold transition-colors
+    field: w-full px-4 py-2 border border-gray-200 rounded-lg
+    badge: inline-block px-3 py-1 text-xs font-bold uppercase tracking-wide bg-blue-50 text-blue-600 rounded-full
+`.trimStart();
+
 export function scaffoldProject(outDir) {
   fs.mkdirSync(outDir, { recursive: true });
   fs.mkdirSync(path.join(outDir, 'src'), { recursive: true });
@@ -936,14 +964,20 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 `.trim();
   fs.writeFileSync(path.join(outDir, 'src', 'styles', 'global.css'), globalCss);
 
-  // 7. Write an initial app.bolt file
-  const appBolt = `
+  // 7. Starter files: default style vocabulary + a home page that uses it
+  fs.mkdirSync(path.join(outDir, 'src', 'pages'), { recursive: true });
+  fs.writeFileSync(path.join(outDir, 'src', 'styles.bolt'), DEFAULT_STYLES_BOLT);
+
+  const homeBolt = `
 page home:
-    hero:
-        show "Welcome to Bolt!" as title styled as: text-5xl font-extrabold tracking-tight mb-4 text-blue-600
-        show "Edit src/app.bolt and save to see changes instantly." as subtitle styled as: text-xl text-gray-600
+    column styled as: page-wrap gap-4:
+        show "Welcome to Bolt!" as title styled as: heading
+        show "Edit src/pages/home.bolt and save to see changes instantly." as subtitle styled as: body
+
+        button "Get started" styled as: button-primary:
+            show toast "Hello from Bolt!" as success
 `.trim();
-  fs.writeFileSync(path.join(outDir, 'src', 'app.bolt'), appBolt);
+  fs.writeFileSync(path.join(outDir, 'src', 'pages', 'home.bolt'), homeBolt);
 
   console.log(`  ✓ Successfully scaffolded Bolt project in ./${outDir}`);
   console.log(`\n  Next steps:`);

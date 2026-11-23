@@ -80,6 +80,8 @@ Every `.bolt` file in the project is merged automatically, so all pages, compone
 
 **Import by name (`src/builder/resolve.js`):** `use helpers` resolves `helpers.js` (or `.ts`, `.json`, `.css`, `.bolt`) anywhere in the project by file name. The resolver walks the project root (skipping `node_modules`, `dist`, `.bolt-generated`), reports missing names with "Did you mean" hints, reports ambiguous names with every matching path, and computes the relative import path for each generated page, component and `actions.js`.
 
+**Scaffold:** `bolt init` (`scaffoldProject` in `builder.js`) writes `src/styles.bolt` (the `DEFAULT_STYLES_BOLT` vocabulary) and `src/pages/home.bolt`.
+
 **Named styles:** `styles:` blocks (parsed as `StylesDef`) from every file are merged into one style map by the builder (duplicates are errors) and passed to the generator, which expands style names into Tailwind classes in `styled as:` (supports composition, `md:`/`hover:` prefixes and circular-reference detection).
 
 ## Generator Architecture

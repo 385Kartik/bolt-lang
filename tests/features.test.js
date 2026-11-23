@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { compileToAST } from '../src/index.js';
-import { buildProject } from '../src/builder/builder.js';
+import { buildProject, scaffoldProject } from '../src/builder/builder.js';
 
 function makeProject(files) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bolt-test-'));
@@ -110,4 +110,19 @@ test('use <name>: legacy path/glob form is still accepted', () => {
     'src/pages/home.bolt': 'use components/*\n\npage home:\n    show "A"\n'
   });
   assert.doesNotThrow(() => build(root));
+});
+
+test('bolt init: scaffolded project builds and uses the default style vocabulary', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bolt-init-'));
+  const log = console.log;
+  console.log = () => {};
+  try { scaffoldProject(root); } finally { console.log = log; }
+
+  assert.ok(fs.existsSync(path.join(root, 'src', 'styles.bolt')));
+  assert.ok(fs.existsSync(path.join(root, 'src', 'pages', 'home.bolt')));
+
+  const page = read(build(root), 'pages/HomePage.jsx');
+  assert.match(page, /text-4xl font-extrabold tracking-tight text-gray-900/);   // heading
+  assert.match(page, /max-w-5xl mx-auto px-6 py-12/);                           // page-wrap
+  assert.match(page, /rounded-xl font-semibold/);                               // button-primary
 });
