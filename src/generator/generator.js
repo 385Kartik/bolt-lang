@@ -1305,7 +1305,23 @@ ${indent()}})()}`;
     return output;
   }
 
+  // Inside a component, `slot` is where the children go (same word the layout uses).
+  function replaceSlotWithChildren(nodes) {
+    return nodes.map(n => {
+      if (n && n.type === 'ExpressionStatement' && n.expression &&
+          n.expression.type === 'Identifier' && n.expression.name === 'slot') {
+        return { type: 'ShowStatement', value: { type: 'Identifier', name: 'children', line: n.line }, hint: null, body: null, props: [], line: n.line, style: null };
+      }
+      const copy = { ...n };
+      for (const [k, v] of Object.entries(copy)) {
+        if (Array.isArray(v) && v.length > 0 && v.every(x => x && typeof x === 'object')) copy[k] = replaceSlotWithChildren(v);
+      }
+      return copy;
+    });
+  }
+
   function genComponentDef(node) {
+    node = { ...node, body: replaceSlotWithChildren(node.body) };
     node = withImplicitState(node, [...(node.forVars || []), ...(node.takes || []), 'children']);
     const propsList = node.forVars ? [...node.forVars] : [];
     if (node.takes) {

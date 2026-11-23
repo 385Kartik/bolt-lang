@@ -340,3 +340,45 @@ test('markers: a fetch with a success body leaves no stray line markers in the p
   });
   assert.doesNotMatch(read(build(root), 'pages/HomePage.jsx'), /__L:/);
 });
+
+test('children: `Card:` wraps content, `slot` inside a component receives it, nesting works', () => {
+  const root = makeProject({
+    'src/components/Card.bolt': ['component Card takes title:', '    column:', '        show title as subtitle', '        slot', ''].join('\n'),
+    'src/components/Box.bolt': ['component Box:', '    column:', '        slot', ''].join('\n'),
+    'src/pages/home.bolt': [
+      'page home:',
+      '    Card with title="Hi":',
+      '        show "Body"',
+      '        Box:',
+      '            show "Nested"',
+      ''
+    ].join('\n')
+  });
+  const out = build(root);
+  const home = read(out, 'pages/HomePage.jsx');
+  assert.match(home, /<Card title=\{"Hi"\}>/);
+  assert.match(home, /<Box>/);
+  assert.ok(home.indexOf('<Card') < home.indexOf('<Box>'));
+  assert.ok(home.indexOf('</Box>') < home.indexOf('</Card>'));
+  assert.match(read(out, 'components/Card.jsx'), /Card\(\{ title, children \}\)/);
+  assert.match(read(out, 'components/Card.jsx'), /\{children\}/);
+  assert.match(read(out, 'components/Box.jsx'), /\{children\}/);
+});
+
+test('children: `show Card:` and `show children` (the long form) still work', () => {
+  const root = makeProject({
+    'src/components/Card.bolt': ['component Card:', '    column:', '        show children', ''].join('\n'),
+    'src/pages/home.bolt': ['page home:', '    show Card:', '        show "Body"', ''].join('\n')
+  });
+  const out = build(root);
+  assert.match(read(out, 'pages/HomePage.jsx'), /<Card>/);
+  assert.match(read(out, 'components/Card.jsx'), /\{children\}/);
+});
+
+test('children: a block for an unknown component is a clear error with a suggestion', () => {
+  const root = makeProject({
+    'src/components/Box.bolt': ['component Box:', '    column:', '        slot', ''].join('\n'),
+    'src/pages/home.bolt': ['page home:', '    Bx:', '        show "x"', ''].join('\n')
+  });
+  assert.throws(() => build(root), /no component named 'Bx'[\s\S]*Did you mean Box/);
+});

@@ -99,6 +99,44 @@ page cart:
 
 Actions are async, so `total` is `null` for a moment and then fills in with the result.
 
+### 1.2.2 Components with children (wrappers)
+
+A component can wrap other content: modals, cards, panels, accordions. Put `slot` where the
+wrapped content goes. To use it, write the component name followed by `:` and indent the content.
+
+**Bolt Code:**
+```bolt
+// components/Card.bolt
+component Card takes title:
+    column styled as: card:
+        show title as subtitle
+        slot
+
+// pages/home.bolt
+page home:
+    Card with title="Settings":
+        show "Everything inside goes into the slot."
+        Box:
+            show "Wrappers can be nested."
+```
+
+**Generated React Code:**
+```jsx
+function Card({ title, children }) {
+  return <div className="..."><h2>{title}</h2>{children}</div>;
+}
+
+<Card title={"Settings"}>
+  <p>Everything inside goes into the slot.</p>
+  <Box><p>Wrappers can be nested.</p></Box>
+</Card>
+```
+
+- A component name starts with a capital letter. `Card:` and `show Card:` mean the same thing.
+- `slot` inside a component and `show children` are the same. `slot` is also the word used by `layout:`.
+- Props work as before: `Card with title="Hi":`.
+- Using `Nope:` when no component `Nope` exists is a compile error with a "Did you mean ..." hint.
+
 ### 1.3 Dynamic Pages (URL Parameters)
 Pages can accept URL parameters for dynamic routing. The compiler generates React Router's `useParams()` automatically.
 

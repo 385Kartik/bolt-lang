@@ -147,3 +147,10 @@
 - Fixed: line markers could be left in the page as visible text (for example `/*__L:1*/`) when a fetch wrapped the page
 - Fixed: an empty `theme.css` made Vite print a warning
 - New tests: `tests/api.test.js` (server) and a marker test; the suite now has 27 tests
+
+## Phase 24: Component Children (Wrappers)
+- `Card:` / `Card with title="Hi":` followed by an indented block wraps content in a component, with no `show` needed (`show Card:` still works)
+- `slot` inside a component marks where the wrapped content goes (same word as `layout:`; `show children` still works)
+- Nesting works (`Card:` containing `Box:`)
+- A block for a component that does not exist is a compile error with a "Did you mean ..." suggestion
+- Verified in a real browser with a nested Card and Box

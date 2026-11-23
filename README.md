@@ -111,6 +111,7 @@ bolt stats store-app
 - **Fetch with defaults:** `fetch "/api/x" into x` handles loading and errors for you
 - **Windows friendly:** CRLF and LF files both work
 - **Layout:** one `layout:` block wraps every page (navbar, footer) with a `slot`
+- **Wrapper components:** `Card:` with indented content, `slot` inside the component (modals, panels, layouts)
 - **Implicit form state:** `input "Email" into email` declares `email` for you
 - **State primitives:** `store` (local), `remember` (persisted to localStorage), `global store` (shared)
 - **Smart forms:** built-in validation pipeline

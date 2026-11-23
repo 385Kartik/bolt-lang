@@ -4,7 +4,7 @@ import { tokenize } from '../lexer/lexer.js';
 import { parse } from '../parser/parser.js';
 import { generateNode } from '../generator/generator.js';
 import { SourceMapGenerator } from 'source-map';
-import { resolveUses, importLinesFor } from './resolve.js';
+import { resolveUses, importLinesFor, editDistance } from './resolve.js';
 import { expandResource } from './resource.js';
 
 function processMarkersAndSourceMaps(fileName, rawCode, prefixCode, rawSource = '') {
@@ -387,6 +387,15 @@ export function buildProject(ast, outDir = 'dist', rawSource = '', options = {})
             );
           }
         }
+      } else if (nodes.body && nodes.body.length > 0 && /^[A-Z]/.test(compName)) {
+        // `Nope:` with children, but no component with that name exists
+        const names = Object.keys(registry).filter(k => registry[k] === k);
+        const near = names.filter(n => editDistance(n.toLowerCase(), compName.toLowerCase()) <= 2 || n.toLowerCase().includes(compName.toLowerCase()) || compName.toLowerCase().includes(n.toLowerCase()));
+        throw new Error(
+          `\n  ⚡ Component Error on line ${nodes.line}:\n` +
+          `     There is no component named '${compName}'.\n` +
+          `\n  💡 Hint: ${near.length ? 'Did you mean ' + near.join(', ') + '?' : "Create it with 'component " + compName + ":' in any .bolt file."}\n`
+        );
       } else if (nodes.props && nodes.props.length > 0) {
          throw new Error(
             `\n  ⚡ Prop Error on line ${nodes.line}:\n` +

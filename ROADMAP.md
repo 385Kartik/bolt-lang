@@ -32,7 +32,7 @@ Based on the core necessity of building real-world applications (like e-commerce
 - Support async actions and await inference natively (e.g. `store user = run getUser(id)`).
 - **Why #2?** Business logic currently relies on side effects. Returning values allows clean, logical data flow.
 
-## [ ] Phase 11: Component Composition
+## [x] Phase 11: Component Composition ✅
 - Add support for the `children` prop.
 - Example:
   ```bolt

@@ -86,6 +86,8 @@ Every `.bolt` file in the project is merged automatically, so all pages, compone
 
 **API server (`src/server/api.js`):** `bolt serve` and `bolt dev` read every `ResourceDef` (`findResources` in `src/check.js`) and start a small `node:http` server that implements the REST shape each resource expects, saving records as JSON files. `bolt dev` keeps it in sync when `.bolt` files change.
 
+**Children:** a capitalized name followed by `:` (or `with`) is parsed as an implicit `show`, so a component call with a block becomes a `ShowStatement` with a body. Inside a component, `slot` is rewritten to `show children` before generation. The builder rejects blocks for unknown components.
+
 **Layout:** the builder finds the single `LayoutDef`, validates it has exactly one `slot`, and injects each page's body into a copy of the layout body before code generation (pages with `layout none` are skipped).
 
 **Scaffold:** `bolt init` (`scaffoldProject` in `builder.js`) writes `src/styles.bolt` (the `DEFAULT_STYLES_BOLT` vocabulary) and `src/pages/home.bolt`.

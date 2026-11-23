@@ -25,7 +25,7 @@ function walk(dir, out) {
   }
 }
 
-function editDistance(a, b) {
+export function editDistance(a, b) {
   const dp = Array.from({ length: a.length + 1 }, (_, i) => [i]);
   for (let j = 1; j <= b.length; j++) dp[0][j] = j;
   for (let i = 1; i <= a.length; i++) {

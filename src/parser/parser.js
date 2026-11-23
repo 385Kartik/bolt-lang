@@ -158,6 +158,14 @@ export function parse(tokens) {
   function parseStatement() {
     const token = peek();
 
+    // Component with children, no `show` needed:   Card:   /   Card with title="Hi":
+    if (token.type === TokenType.IDENTIFIER && /^[A-Z]/.test(String(token.value)) && tokens[pos + 1] &&
+        tokens[pos + 1].line === token.line &&
+        (tokens[pos + 1].type === TokenType.WITH ||
+         (tokens[pos + 1].type === TokenType.COLON && tokens[pos + 2] && tokens[pos + 2].type === TokenType.NEWLINE))) {
+      return parseShowStatement(true);
+    }
+
     // Resource block:  resource products at "/api/products":
     if (token.type === TokenType.IDENTIFIER && token.value === 'resource' &&
         tokens[pos + 1] && tokens[pos + 1].line === token.line &&
@@ -685,8 +693,9 @@ export function parse(tokens) {
   // show all products
   // show all products as list
   // show ComponentName for each item in items
-  function parseShowStatement() {
-    const showToken = advance(); // consume SHOW
+  function parseShowStatement(implicit = false) {
+    // `implicit` = shorthand without the word `show`:  Card:  /  Card with title="Hi":
+    const showToken = implicit ? peek() : advance(); // consume SHOW
     const line = showToken.line;
 
     if (match(TokenType.TOAST)) {

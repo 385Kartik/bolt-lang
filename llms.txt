@@ -11,7 +11,9 @@ No imports, no hooks, no router setup. Run `bolt check` after writing, fix every
 
 ## Pages and components
 page home:                       page product(id):   (URL /product/:id)
-component ProductCard for product:    (props come from `for`)
+component ProductCard for product:    (props come from `for`)   component Card takes title, size:
+component Card:  column: slot      (slot = where wrapped content goes)
+Card with title="Hi":              (wrapper block: content indented under it goes into the slot)
 
 ## Show things
 show "Hello" as title            show product.price as price       show Navbar
