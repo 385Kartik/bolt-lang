@@ -154,3 +154,11 @@
 - Nesting works (`Card:` containing `Box:`)
 - A block for a component that does not exist is a compile error with a "Did you mean ..." suggestion
 - Verified in a real browser with a nested Card and Box
+
+## Phase 25: Design System Polish
+- Your `styled as:` classes now always override Bolt's defaults (`src/generator/tailwind.js`): `bg-red-600` removes the default blue background and its blue hover, `p-8` replaces `px-4 py-2`, `flex-col` replaces `flex-row`, duplicates are dropped
+- `bolt init` ships `src/design.bolt` (light and dark themes with named colors: background, surface, ink, soft, line, brand, onbrand) and a default style vocabulary written with those names, so dark mode works with no extra code
+- Starter page has a dark mode toggle; the first visit follows the device theme, and a click switches at once (before, the first click could do nothing)
+- Page background and text color follow the theme
+- Verified in a real browser: starts dark on a dark device, one click switches to light, the choice is saved
+- New tests: `tests/tailwind.test.js` and theme and override tests (38 tests in all)

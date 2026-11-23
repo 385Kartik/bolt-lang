@@ -126,7 +126,7 @@ test('bolt init: scaffolded project builds and uses the default style vocabulary
   assert.ok(css.trimStart().startsWith("@import '../.bolt-generated/theme.css';"));
 
   const page = read(build(root), 'pages/HomePage.jsx');
-  assert.match(page, /text-4xl font-extrabold tracking-tight text-gray-900/);   // heading
+  assert.match(page, /text-4xl font-extrabold tracking-tight text-ink/);        // heading
   assert.match(page, /max-w-5xl mx-auto px-6 py-12/);                           // page-wrap
   assert.match(page, /rounded-xl font-semibold/);                               // button-primary
 });
@@ -381,4 +381,25 @@ test('children: a block for an unknown component is a clear error with a suggest
     'src/pages/home.bolt': ['page home:', '    Bx:', '        show "x"', ''].join('\n')
   });
   assert.throws(() => build(root), /no component named 'Bx'[\s\S]*Did you mean Box/);
+});
+
+test('styles: your classes beat Bolt defaults (a red button is not blue)', () => {
+  const source = ['page home:', '    button "Delete" styled as: bg-red-600 hover:bg-red-800:', '        print "x"', ''].join('\n');
+  const root = makeProject({ 'src/pages/home.bolt': source });
+  const page = read(build(root), 'pages/HomePage.jsx');
+  assert.match(page, /bg-red-600 hover:bg-red-800/);
+  assert.doesNotMatch(page, /bg-blue-600/);
+});
+
+test('bolt init: includes a light and dark design system and a theme toggle', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bolt-init-'));
+  const log = console.log;
+  console.log = () => {};
+  try { scaffoldProject(root); } finally { console.log = log; }
+  const out = build(root);
+  const css = read(out, 'theme.css');
+  assert.match(css, /:root \{[\s\S]*--color-background/);
+  assert.match(css, /\.dark \{[\s\S]*--color-background/);
+  assert.match(read(out, 'pages/HomePage.jsx'), /s\.theme = "dark"/);
+  assert.match(read(out, 'store.js'), /prefers-color-scheme: dark/);
 });

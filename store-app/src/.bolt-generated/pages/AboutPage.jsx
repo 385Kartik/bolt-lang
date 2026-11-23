@@ -17,7 +17,7 @@ export default function AboutPage() {
         })()}
         {(() => {
           try {
-            return <><div className="py-12 md:py-16 w-full max-w-4xl mx-auto px-8 py-24">
+            return <><div className="md:py-16 w-full max-w-4xl mx-auto px-8 py-24">
           {(() => {
             try {
               return <><div className="flex flex-col text-center mb-16">
@@ -79,7 +79,7 @@ export default function AboutPage() {
                   return <><div className="flex flex-row flex-wrap gap-4 items-start">
                 {(() => {
                   try {
-                    return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0">
+                    return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0">
                   {(() => {
                     try {
                       return <><p>1</p></>;
@@ -115,7 +115,7 @@ export default function AboutPage() {
                   return <><div className="flex flex-row flex-wrap gap-4 items-start">
                 {(() => {
                   try {
-                    return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0">
+                    return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0">
                   {(() => {
                     try {
                       return <><p>2</p></>;
@@ -151,7 +151,7 @@ export default function AboutPage() {
                   return <><div className="flex flex-row flex-wrap gap-4 items-start">
                 {(() => {
                   try {
-                    return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0">
+                    return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0">
                   {(() => {
                     try {
                       return <><p>3</p></>;
@@ -187,7 +187,7 @@ export default function AboutPage() {
                   return <><div className="flex flex-row flex-wrap gap-4 items-start">
                 {(() => {
                   try {
-                    return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0">
+                    return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0">
                   {(() => {
                     try {
                       return <><p>4</p></>;
@@ -234,7 +234,7 @@ export default function AboutPage() {
           })()}
           {(() => {
             try {
-              return <><div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 px-6 md:px-12 text-center rounded-3xl shadow-xl my-8 mt-20 p-12 bg-gray-900 rounded-3xl text-center text-white">
+              return <><div className="bg-gradient-to-r from-blue-600 to-indigo-700 md:px-12 shadow-xl my-8 mt-20 p-12 bg-gray-900 rounded-3xl text-center text-white">
             {(() => {
               try {
                 return <><p className="text-3xl font-bold mb-6">Ready to explore?</p></>;

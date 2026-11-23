@@ -88,6 +88,8 @@ Every `.bolt` file in the project is merged automatically, so all pages, compone
 
 **Children:** a capitalized name followed by `:` (or `with`) is parsed as an implicit `show`, so a component call with a block becomes a `ShowStatement` with a body. Inside a component, `slot` is rewritten to `show children` before generation. The builder rejects blocks for unknown components.
 
+**Class merging (`src/generator/tailwind.js`):** `mergeClasses(defaults, yours)` classifies every Tailwind class by what it sets (background, text size, padding side, flex direction ...) plus its variant (`md:`, `hover:`), and drops a default when you set the same thing. Your recolor also removes the default hover and focus color of that kind. Used by `styled as:` on elements, layout blocks and buttons.
+
 **Layout:** the builder finds the single `LayoutDef`, validates it has exactly one `slot`, and injects each page's body into a copy of the layout body before code generation (pages with `layout none` are skipped).
 
 **Scaffold:** `bolt init` (`scaffoldProject` in `builder.js`) writes `src/styles.bolt` (the `DEFAULT_STYLES_BOLT` vocabulary) and `src/pages/home.bolt`.

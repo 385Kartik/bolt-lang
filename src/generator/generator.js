@@ -6,6 +6,7 @@
 // and maps Bolt operators/constructs to their JavaScript equivalents.
 
 import { GeneratorError } from '../errors/errors.js';
+import { mergeClasses } from './tailwind.js';
 
 // ── Operator mappings ───────────────────────────────────────────────
 
@@ -901,7 +902,7 @@ ${indent()}})()}`;
     }
     
     if (finalClass && inlineClass) {
-      finalClass += ' ' + inlineClass;
+      finalClass = mergeClasses(finalClass, inlineClass);
     } else if (inlineClass) {
       finalClass = inlineClass;
     }
@@ -960,7 +961,7 @@ ${indent()}})()}`;
     if (node.style) {
       const userStyle = genStyleProp(node.style);
       if (userStyle) {
-        finalClass += ' ' + userStyle;
+        finalClass = mergeClasses(finalClass, userStyle);
       }
     }
     
@@ -1290,7 +1291,7 @@ ${indent()}})()}`;
     let cls = mergeClass('', fakeStyleNode);
     if (node.style) {
       const userCls = mergeClass('', node.style).replace(' className="', '');
-      if (userCls) cls = ` className="${baseClass} ${userCls.replace('"', '')}"`;
+      if (userCls) cls = ` className="${mergeClasses(baseClass, userCls.replace('"', ''))}"`;
     }
 
     if (node.body.length === 1) {

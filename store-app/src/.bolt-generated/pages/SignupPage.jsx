@@ -25,7 +25,7 @@ export default function SignupPage() {
         })()}
         {(() => {
           try {
-            return <><div className="py-12 md:py-16 w-full max-w-md mx-auto mt-20 p-8 bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100">
+            return <><div className="md:py-16 w-full max-w-md mx-auto mt-20 p-8 bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100">
           {(() => {
             try {
               return <><h1 className="text-3xl font-black text-gray-900 mb-2 text-center">Create Account</h1></>;
@@ -60,7 +60,7 @@ export default function SignupPage() {
               return isValid;
             };
             return <form onSubmit={async (e) => { e.preventDefault(); if (validateForm()) { return boltFetch("http://localhost:3001/api/signup", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email, password: password }) })
-            .then(res => res.json()).then(async res => {
+            .then(res => res.text().then(t => (t ? JSON.parse(t) : null))).then(async res => {
           if (res.error) {
             addToast(res.error, "danger");
           } else {

@@ -25,7 +25,7 @@ export default function ContactPage() {
             return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12">
           {(() => {
             try {
-              return <><div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 px-6 md:px-12 text-center rounded-3xl shadow-xl my-8 bg-gray-900 text-white p-12 rounded-3xl text-center mb-12">
+              return <><div className="bg-gradient-to-r from-blue-600 to-indigo-700 md:px-12 shadow-xl my-8 bg-gray-900 text-white p-12 rounded-3xl text-center mb-12">
             {(() => {
               try {
                 return <><h1>Contact Us</h1></>;
@@ -83,7 +83,7 @@ export default function ContactPage() {
                   <div className="flex flex-col gap-1">
                     <input placeholder={"Your Message"} value={message} onChange={(e) => setMessage(e.target.value)} className="p-3 border rounded-lg w-full min-h-[120px]" />
                   </div>
-                  <button className="bg-primary text-white rounded-xl px-4 py-2 w-full py-3 mt-4" onClick={async () => {
+                  <button className="bg-primary text-white rounded-xl px-4 w-full py-3 mt-4" onClick={async () => {
                     return boltFetch("https://jsonplaceholder.typicode.com/posts", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name, email: email, message: message }) });
                     setName("");
                     setEmail("");
@@ -112,7 +112,7 @@ export default function ContactPage() {
             })()}
             {(() => {
               try {
-                return <><div className="flex flex-col w-full lg:w-1/2 flex flex-col gap-6">
+                return <><div className="w-full lg:w-1/2 flex flex-col gap-6">
               {(() => {
                 try {
                   return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">

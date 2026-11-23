@@ -29,7 +29,7 @@ export default function ProductsPage() {
         })()}
         {(() => {
           try {
-            return <><div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 px-6 md:px-12 text-center rounded-3xl shadow-xl my-8 bg-gray-900 text-white py-20 px-8 text-center">
+            return <><div className="bg-gradient-to-r from-blue-600 to-indigo-700 md:px-12 rounded-3xl shadow-xl my-8 bg-gray-900 text-white py-20 px-8 text-center">
           {(() => {
             try {
               return <><h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4">Our Collection</h1></>;
@@ -53,7 +53,7 @@ export default function ProductsPage() {
             throw e;
           }
         })()}
-        {productsLoading ? (<>        /*__L:11*/{(() => {
+        {productsLoading ? (<>        {(() => {
           try {
             return <><p className="text-xl font-bold text-gray-500 animate-pulse text-center py-20">Loading amazing products...</p></>;
           } catch (e) {
@@ -76,13 +76,13 @@ export default function ProductsPage() {
           }
         })()}</>) : (<>        {(() => {
           try {
-            return <><div className="py-12 md:py-16 w-full max-w-7xl mx-auto px-8 py-16">
+            return <><div className="md:py-16 w-full max-w-7xl mx-auto px-8 py-16">
           {(() => {
             try {
-              return <><div className="flex flex-row flex-wrap flex-wrap gap-4 mb-12 border-b border-gray-100 pb-8">
+              return <><div className="flex flex-row flex-wrap gap-4 mb-12 border-b border-gray-100 pb-8">
             {(() => {
               try {
-                return <><button className="bg-primary text-white rounded-xl px-4 py-2 px-6 py-2 bg-gray-900 text-white rounded-full text-sm font-medium" onClick={async () => {
+                return <><button className="px-6 py-2 bg-gray-900 text-white rounded-full text-sm font-medium" onClick={async () => {
 
             }}>All Items</button></>;
               } catch (e) {
@@ -92,7 +92,7 @@ export default function ProductsPage() {
             })()}
             {(() => {
               try {
-                return <><button className="bg-primary text-white rounded-xl px-4 py-2 px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors" onClick={async () => {
+                return <><button className="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors" onClick={async () => {
 
             }}>Electronics</button></>;
               } catch (e) {
@@ -102,7 +102,7 @@ export default function ProductsPage() {
             })()}
             {(() => {
               try {
-                return <><button className="bg-primary text-white rounded-xl px-4 py-2 px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors" onClick={async () => {
+                return <><button className="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors" onClick={async () => {
 
             }}>Jewelry</button></>;
               } catch (e) {
@@ -112,7 +112,7 @@ export default function ProductsPage() {
             })()}
             {(() => {
               try {
-                return <><button className="bg-primary text-white rounded-xl px-4 py-2 px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors" onClick={async () => {
+                return <><button className="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors" onClick={async () => {
 
             }}>Clothing</button></>;
               } catch (e) {

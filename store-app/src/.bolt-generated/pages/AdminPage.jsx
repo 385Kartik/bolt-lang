@@ -43,12 +43,12 @@ export default function AdminPage() {
         })()}
         {(() => {
           try {
-            return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-4xl mx-auto px-8 py-16">
+            return <><div className="sm:px-6 lg:px-8 w-full max-w-4xl mx-auto px-8 py-16">
           {(!isLoggedIn) && (
             <>
           {(() => {
             try {
-              return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6 p-8 bg-gray-50 rounded-2xl mb-8">
+              return <><div className="text-text border border-border shadow-sm p-8 bg-gray-50 rounded-2xl mb-8">
             {(() => {
               try {
                 return <><h1 className="text-3xl font-black mb-4">Admin Login</h1></>;
@@ -115,7 +115,7 @@ export default function AdminPage() {
           })()}
           {(() => {
             try {
-              return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6 p-8 bg-gray-50 rounded-2xl mb-8">
+              return <><div className="text-text border border-border shadow-sm p-8 bg-gray-50 rounded-2xl mb-8">
             {(() => {
               try {
                 return <><p className="text-xl font-bold mb-4">Add New Product</p></>;
@@ -212,7 +212,7 @@ export default function AdminPage() {
           })()}
           {(() => {
             try {
-              return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6 p-8 bg-gray-50 rounded-2xl mb-8">
+              return <><div className="text-text border border-border shadow-sm p-8 bg-gray-50 rounded-2xl mb-8">
             {(() => {
               try {
                 return <><p className="text-xl font-bold mb-4">Update/Delete Actions</p></>;
@@ -235,7 +235,7 @@ export default function AdminPage() {
               {(() => {
                 try {
                   return <><button className="bg-primary text-white rounded-xl px-4 py-2" onClick={async () => { return boltFetch("https://fakestoreapi.com/products/1", { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title: "Updated Name", price: 99.99 }) })
-                .then(res => res.json()).then(async res => {
+                .then(res => res.text().then(t => (t ? JSON.parse(t) : null))).then(async res => {
               addToast("Updated successfully!", "success");
                 }); }}>Update Product #1</button></>;
                 } catch (e) {
@@ -245,10 +245,10 @@ export default function AdminPage() {
               })()}
               {(() => {
                 try {
-                  return <><button className="bg-primary text-white rounded-xl px-4 py-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-colors" onClick={async () => {
+                  return <><button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-colors" onClick={async () => {
                 if (!(await showModal("Are you sure you want to delete this product?"))) return;
                 return boltFetch("https://fakestoreapi.com/products/1", { method: 'DELETE' })
-                  .then(res => res.json()).then(async res => {
+                  .then(res => res.text().then(t => (t ? JSON.parse(t) : null))).then(async res => {
                 addToast("Deleted successfully!", "success");
                   });
               }}>Delete Product #1</button></>;

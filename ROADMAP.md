@@ -57,7 +57,7 @@ Based on the core necessity of building real-world applications (like e-commerce
   ```
 - **Why #5?** Killer feature for real-time search, filters, and debounced API calls.
 
-## [ ] Phase 14: Design System & Theming
+## [x] Phase 14: Design System & Theming ✅
 - Introduce a `design system:` block for defining global tokens (colors, typography, spacing).
 - Native Dark Mode support and semantic color mapping.
 

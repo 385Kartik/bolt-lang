@@ -390,6 +390,57 @@ show product.note  styled as: md:muted              // variant prefixes work on 
 
 ---
 
+### 5.2 Your classes always win
+
+Bolt gives elements default classes (a button is blue, a `row` is a flex row). When you write
+`styled as:`, your classes replace the default ones of the same kind, so what you write is what
+you get:
+
+```bolt
+button "Delete" styled as: bg-red-600 hover:bg-red-800
+```
+
+The default blue background (and the default blue hover color) are removed. Defaults you did not
+touch (padding, rounded corners ...) stay. `p-8` replaces default `px-4 py-2`, `flex-col` replaces
+`flex-row`, and so on. Breakpoints are kept apart (`md:p-8` only replaces a default `md:p-*`).
+
+### 5.3 Colors and dark mode (design system)
+
+`bolt init` creates `src/design.bolt` with a light and a dark theme using named colors:
+
+```bolt
+design system:
+    themes:
+        light:
+            background: "#ffffff"
+            surface: "#f8fafc"
+            ink: "#0f172a"
+            soft: "#64748b"
+            line: "#e2e8f0"
+            brand: "#2563eb"
+            onbrand: "#ffffff"
+        dark:
+            background: "#0b1220"
+            ...
+```
+
+Every name becomes a Tailwind color that switches with the theme: `bg-surface`, `text-ink`,
+`border-line`, `bg-brand`. The default style vocabulary (`card`, `heading`, `button-primary` ...)
+is written with these names, so dark mode works with no extra work. Add or rename colors freely.
+
+Switch the theme from any page. The first visit follows the device setting, and the choice is
+remembered:
+
+```bolt
+button "Toggle dark mode":
+    if theme == "dark":
+        theme = "light"
+    otherwise:
+        theme = "dark"
+```
+
+---
+
 ## 6. State Management
 
 Bolt handles all state management without manual `useState` or `useEffect` hooks.

@@ -34,9 +34,9 @@ export default function ProductPage() {
             throw e;
           }
         })()}
-        {productLoading ? (<>        /*__L:6*/{(() => {
+        {productLoading ? (<>        {(() => {
           try {
-            return <><div className="py-12 md:py-16 w-full max-w-7xl mx-auto px-8 py-32 text-center">
+            return <><div className="md:py-16 w-full max-w-7xl mx-auto px-8 py-32 text-center">
           {(() => {
             try {
               return <><p className="text-xl text-gray-500 animate-pulse">Loading product details...</p></>;
@@ -53,7 +53,7 @@ export default function ProductPage() {
           }
         })()}</>) : (productError ? ((() => { const err = productError; return <>        {(() => {
           try {
-            return <><div className="py-12 md:py-16 w-full max-w-7xl mx-auto px-8 py-32 text-center">
+            return <><div className="md:py-16 w-full max-w-7xl mx-auto px-8 py-32 text-center">
           {(() => {
             try {
               return <><h1 className="text-red-500 font-bold mb-4">Error loading product!</h1></>;
@@ -78,13 +78,13 @@ export default function ProductPage() {
           }
         })()}</>; })()) : (<>        {(() => {
           try {
-            return <><div className="py-12 md:py-16 w-full max-w-7xl mx-auto px-8 py-24">
+            return <><div className="md:py-16 w-full max-w-7xl mx-auto px-8 py-24">
           {(() => {
             try {
-              return <><div className="flex flex-row flex-wrap items-start gap-12 flex-col md:flex-row">
+              return <><div className="flex flex-wrap items-start gap-12 flex-col md:flex-row">
             {(() => {
               try {
-                return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 bg-white p-12 rounded-3xl border border-gray-100 shadow-sm">
+                return <><div className="max-w-7xl mx-auto sm:px-6 lg:px-8 w-full flex-1 bg-white p-12 rounded-3xl border border-gray-100 shadow-sm">
               {(() => {
                 try {
                   return <><img src={product.image} alt="Image" className="w-full h-auto max-h-[500px] object-contain" /></>;
@@ -174,7 +174,7 @@ export default function ProductPage() {
                   return <><div className="flex flex-row flex-wrap gap-4">
                 {(() => {
                   try {
-                    return <><button className="bg-primary text-white rounded-xl px-4 py-2 flex-1 py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-lg transition-colors" onClick={async () => { if (isLoggedIn) {
+                    return <><button className="px-4 flex-1 py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-lg transition-colors" onClick={async () => { if (isLoggedIn) {
                   updateStore(s => { s.cart.push(product); });
                   addToast("Added to cart!", "success");
                 } else {
@@ -188,7 +188,7 @@ export default function ProductPage() {
                 })()}
                 {(() => {
                   try {
-                    return <><button className="bg-primary text-white rounded-xl px-4 py-2 py-4 px-8 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl font-bold transition-colors" onClick={async () => { navigate('/'); }}>Back to Home</button></>;
+                    return <><button className="py-4 px-8 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl font-bold transition-colors" onClick={async () => { navigate('/'); }}>Back to Home</button></>;
                   } catch (e) {
                     if (!e.__boltLine) { e.__boltLine = 43; }
                     throw e;

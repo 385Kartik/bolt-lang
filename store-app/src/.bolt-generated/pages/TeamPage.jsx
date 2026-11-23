@@ -27,12 +27,12 @@ export default function TeamPage() {
             throw e;
           }
         })()}
-        {membersLoading ? (<p className="text-gray-400 animate-pulse">Loading...</p>) : (membersError ? (<p className="text-red-500">Something went wrong: {membersError}</p>) : (<>        /*__L:5*/{(() => {
+        {membersLoading ? (<p className="text-gray-400 animate-pulse">Loading...</p>) : (membersError ? (<p className="text-red-500">Something went wrong: {membersError}</p>) : (<>        {(() => {
           try {
             return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12">
           {(() => {
             try {
-              return <><div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 px-6 md:px-12 text-center rounded-3xl shadow-xl my-8 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white p-12 rounded-3xl text-center mb-12">
+              return <><div className="from-blue-600 to-indigo-700 md:px-12 shadow-xl my-8 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white p-12 rounded-3xl text-center mb-12">
             {(() => {
               try {
                 return <><h1 className="text-4xl md:text-5xl font-black mb-4">Our Team</h1></>;

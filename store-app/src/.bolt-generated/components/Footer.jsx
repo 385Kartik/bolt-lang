@@ -7,7 +7,7 @@ export default function Footer({ children }) {
     <div>
       {(() => {
         try {
-          return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full bg-gray-50 pt-16 pb-8 px-8 border-t border-gray-200 mt-20">
+          return <><div className="max-w-7xl mx-auto sm:px-6 lg:px-8 w-full bg-gray-50 pt-16 pb-8 px-8 border-t border-gray-200 mt-20">
         {(() => {
           try {
             return <><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto gap-12">
@@ -113,7 +113,7 @@ export default function Footer({ children }) {
                 return <><div className="flex flex-row flex-wrap gap-2">
               {(() => {
                 try {
-                  return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 bg-gray-100 rounded-lg px-4 py-2 text-sm text-gray-400">
+                  return <><div className="max-w-7xl mx-auto sm:px-6 lg:px-8 w-full flex-1 bg-gray-100 rounded-lg px-4 py-2 text-sm text-gray-400">
                 {(() => {
                   try {
                     return <><p>Email address...</p></>;
@@ -131,7 +131,7 @@ export default function Footer({ children }) {
               })()}
               {(() => {
                 try {
-                  return <><button className="bg-primary text-white rounded-xl px-4 py-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700" onClick={async () => {
+                  return <><button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700" onClick={async () => {
 
               }}>Join</button></>;
                 } catch (e) {

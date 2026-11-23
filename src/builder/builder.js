@@ -437,7 +437,7 @@ export async function boltFetch(url, options = {}) {
   }
   
   // Phase 15: Always inject built-in global 'theme' store
-  storeInitObj += `  theme: (typeof window !== 'undefined' && localStorage.getItem('bolt_theme')) || 'system',\n`;
+  storeInitObj += `  theme: (typeof window !== 'undefined' && (localStorage.getItem('bolt_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))) || 'light',\n`;
   storeInitObj += '}';
   
   const storeJsCode = `
@@ -887,22 +887,45 @@ styles:
     cluster: flex flex-row flex-wrap items-center gap-3
     center: flex items-center justify-center
 
-    // Surfaces
-    card: bg-white border border-gray-100 rounded-2xl shadow-sm p-6
-    panel: bg-gray-50 rounded-2xl p-6
+    // Surfaces (colors come from design.bolt, so dark mode works automatically)
+    card: bg-surface border border-line rounded-2xl shadow-sm p-6
+    panel: bg-surface rounded-2xl p-6
 
     // Text
-    heading: text-4xl font-extrabold tracking-tight text-gray-900
-    subheading: text-xl font-bold text-gray-900
-    body: text-base text-gray-600 leading-relaxed
-    muted: text-sm text-gray-400
-    link: text-blue-600 hover:text-blue-700 transition-colors
+    heading: text-4xl font-extrabold tracking-tight text-ink
+    subheading: text-xl font-bold text-ink
+    body: text-base text-soft leading-relaxed
+    muted: text-sm text-soft
+    link: text-brand hover:opacity-80 transition-colors
 
     // Controls
-    button-primary: px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors
-    button-secondary: px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl font-semibold transition-colors
-    field: w-full px-4 py-2 border border-gray-200 rounded-lg
-    badge: inline-block px-3 py-1 text-xs font-bold uppercase tracking-wide bg-blue-50 text-blue-600 rounded-full
+    button-primary: px-5 py-2.5 bg-brand hover:opacity-90 text-onbrand rounded-xl font-semibold transition-colors
+    button-secondary: px-5 py-2.5 bg-surface hover:opacity-80 text-ink border border-line rounded-xl font-semibold transition-colors
+    field: w-full px-4 py-2 border border-line bg-background text-ink rounded-lg
+    badge: inline-block px-3 py-1 text-xs font-bold uppercase tracking-wide bg-surface text-brand border border-line rounded-full
+`.trimStart();
+
+// ── Default design system shipped with `bolt init` (light + dark) ──────
+export const DEFAULT_DESIGN_BOLT = `
+design system:
+    themes:
+        light:
+            background: "#ffffff"
+            surface: "#f8fafc"
+            ink: "#0f172a"
+            soft: "#64748b"
+            line: "#e2e8f0"
+            brand: "#2563eb"
+            onbrand: "#ffffff"
+
+        dark:
+            background: "#0b1220"
+            surface: "#111a2e"
+            ink: "#f1f5f9"
+            soft: "#94a3b8"
+            line: "#26324a"
+            brand: "#3b82f6"
+            onbrand: "#ffffff"
 `.trimStart();
 
 export function scaffoldProject(outDir) {
@@ -1025,12 +1048,18 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-ink);
+}
 `.trim();
   fs.writeFileSync(path.join(outDir, 'src', 'styles', 'global.css'), globalCss);
 
   // 7. Starter files: default style vocabulary + a home page that uses it
   fs.mkdirSync(path.join(outDir, 'src', 'pages'), { recursive: true });
   fs.writeFileSync(path.join(outDir, 'src', 'styles.bolt'), DEFAULT_STYLES_BOLT);
+  fs.writeFileSync(path.join(outDir, 'src', 'design.bolt'), DEFAULT_DESIGN_BOLT);
 
   const homeBolt = `
 page home:
@@ -1038,8 +1067,14 @@ page home:
         show "Welcome to Bolt!" as title styled as: heading
         show "Edit src/pages/home.bolt and save to see changes instantly." as subtitle styled as: body
 
-        button "Get started" styled as: button-primary:
-            show toast "Hello from Bolt!" as success
+        row styled as: cluster:
+            button "Get started" styled as: button-primary:
+                show toast "Hello from Bolt!" as success
+            button "Toggle dark mode" styled as: button-secondary:
+                if theme == "dark":
+                    theme = "light"
+                otherwise:
+                    theme = "dark"
 `.trim();
   fs.writeFileSync(path.join(outDir, 'src', 'pages', 'home.bolt'), homeBolt);
 

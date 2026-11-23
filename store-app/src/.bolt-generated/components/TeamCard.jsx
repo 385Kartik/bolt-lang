@@ -7,7 +7,7 @@ export default function TeamCard({ member, children }) {
     <div>
       {(() => {
         try {
-          return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6 p-0 bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group">
+          return <><div className="text-text shadow-sm p-0 bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group">
         {(() => {
           try {
             return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
@@ -34,7 +34,7 @@ export default function TeamCard({ member, children }) {
               return <><div className="flex flex-row flex-wrap gap-4 items-center">
             {(() => {
               try {
-                return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">
               {(() => {
                 try {
                   return <><p>{member.name}</p></>;
@@ -85,7 +85,7 @@ export default function TeamCard({ member, children }) {
           })()}
           {(() => {
             try {
-              return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-px bg-gray-100 w-full my-1">
+              return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-px bg-gray-100 w-full my-1">
             {(() => {
               try {
                 return <><p></p></>;
@@ -234,7 +234,7 @@ export default function TeamCard({ member, children }) {
               return <><div className="flex flex-row flex-wrap gap-4 mt-2">
             {(() => {
               try {
-                return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 bg-gray-50 rounded-lg p-3 text-center">
+                return <><div className="max-w-7xl mx-auto sm:px-6 lg:px-8 w-full flex-1 bg-gray-50 rounded-lg p-3 text-center">
               {(() => {
                 try {
                   return <><p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">LAT</p></>;
@@ -260,7 +260,7 @@ export default function TeamCard({ member, children }) {
             })()}
             {(() => {
               try {
-                return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 bg-gray-50 rounded-lg p-3 text-center">
+                return <><div className="max-w-7xl mx-auto sm:px-6 lg:px-8 w-full flex-1 bg-gray-50 rounded-lg p-3 text-center">
               {(() => {
                 try {
                   return <><p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">LNG</p></>;

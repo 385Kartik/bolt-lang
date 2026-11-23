@@ -14,10 +14,10 @@ export default function ProductCard({ product, children }) {
     <div>
       {(() => {
         try {
-          return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6 flex flex-col p-0 bg-white border border-gray-100 rounded-2xl hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group cursor-pointer overflow-hidden">
+          return <><div className="text-text shadow-sm flex flex-col p-0 bg-white border border-gray-100 rounded-2xl hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group cursor-pointer overflow-hidden">
         {(() => {
           try {
-            return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full aspect-[4/3] bg-gray-50 overflow-hidden flex items-center justify-center p-6">
+            return <><div className="max-w-7xl mx-auto sm:px-6 lg:px-8 w-full aspect-[4/3] bg-gray-50 overflow-hidden flex items-center justify-center p-6">
           {(() => {
             try {
               return <><img src={product.image} alt="Image" className="h-full w-full object-contain group-hover:scale-110 transition-transform duration-500" /></>;
@@ -179,7 +179,7 @@ export default function ProductCard({ product, children }) {
               return <><div className="flex flex-row flex-wrap gap-2 mt-3">
             {(() => {
               try {
-                return <><button className="bg-primary text-white rounded-xl px-4 py-2 flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg font-medium text-sm transition-colors" onClick={async () => { navigate(`/product/${product.id}`); }}>View Details</button></>;
+                return <><button className="px-4 flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg font-medium text-sm transition-colors" onClick={async () => { navigate(`/product/${product.id}`); }}>View Details</button></>;
               } catch (e) {
                 if (!e.__boltLine) { e.__boltLine = 27; }
                 throw e;
@@ -187,7 +187,7 @@ export default function ProductCard({ product, children }) {
             })()}
             {(() => {
               try {
-                return <><button className="bg-primary text-white rounded-xl px-4 py-2 flex-1 py-2.5 bg-gray-900 hover:bg-black text-white rounded-lg font-medium text-sm transition-colors" onClick={async () => { if (isLoggedIn) {
+                return <><button className="px-4 flex-1 py-2.5 bg-gray-900 hover:bg-black text-white rounded-lg font-medium text-sm transition-colors" onClick={async () => { if (isLoggedIn) {
               updateStore(s => { s.cart.push(product); });
               addToast("Added to cart", "success");
             } else {

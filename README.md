@@ -109,6 +109,8 @@ bolt stats store-app
 - **One-line CRUD:** `resource products at "/api/products":` builds a list, add form and delete buttons
 - **Built-in API:** `bolt dev` / `bolt serve` run a ready REST API for every `resource` (data in plain JSON files)
 - **Fetch with defaults:** `fetch "/api/x" into x` handles loading and errors for you
+- **Dark mode out of the box:** `bolt init` ships a light/dark design system and a theme toggle
+- **Your classes win:** `styled as:` overrides Bolt's default classes (a red button is red)
 - **Windows friendly:** CRLF and LF files both work
 - **Layout:** one `layout:` block wraps every page (navbar, footer) with a `slot`
 - **Wrapper components:** `Card:` with indented content, `slot` inside the component (modals, panels, layouts)

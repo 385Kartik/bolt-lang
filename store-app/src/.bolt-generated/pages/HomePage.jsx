@@ -30,12 +30,12 @@ export default function HomePage() {
             throw e;
           }
         })()}
-        {featuredLoading ? (<p className="text-gray-400 animate-pulse">Loading...</p>) : (featuredError ? (<p className="text-red-500">Something went wrong: {featuredError}</p>) : (<>        /*__L:6*/{(() => {
+        {featuredLoading ? (<p className="text-gray-400 animate-pulse">Loading...</p>) : (featuredError ? (<p className="text-red-500">Something went wrong: {featuredError}</p>) : (<>        {(() => {
           try {
             return <><div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 px-6 md:px-12 text-center rounded-3xl shadow-xl my-8">
           {(() => {
             try {
-              return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6">
+              return <><div className="max-w-7xl mx-auto sm:px-6 lg:px-8 w-full inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6">
             {(() => {
               try {
                 return <><p>🚀 Built with Bolt Language</p></>;
@@ -102,7 +102,7 @@ export default function HomePage() {
         })()}
         {(() => {
           try {
-            return <><div className="py-12 md:py-16 w-full max-w-7xl mx-auto px-8 py-20">
+            return <><div className="md:py-16 w-full max-w-7xl mx-auto px-8 py-20">
           {(() => {
             try {
               return <><h1 className="text-3xl font-black text-gray-900 mb-2">Theme Preferences</h1></>;
@@ -263,7 +263,7 @@ export default function HomePage() {
         })()}
         {(() => {
           try {
-            return <><div className="py-12 md:py-16 w-full max-w-7xl mx-auto px-8 py-20">
+            return <><div className="md:py-16 w-full max-w-7xl mx-auto px-8 py-20">
           {(() => {
             try {
               return <><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -272,7 +272,7 @@ export default function HomePage() {
                 return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">
               {(() => {
                 try {
-                  return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl">
+                  return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl">
                 {(() => {
                   try {
                     return <><p>⚡</p></>;
@@ -316,7 +316,7 @@ export default function HomePage() {
                 return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">
               {(() => {
                 try {
-                  return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl">
+                  return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl">
                 {(() => {
                   try {
                     return <><p>🎨</p></>;
@@ -360,7 +360,7 @@ export default function HomePage() {
                 return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">
               {(() => {
                 try {
-                  return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl">
+                  return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl">
                 {(() => {
                   try {
                     return <><p>📱</p></>;

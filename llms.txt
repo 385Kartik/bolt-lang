@@ -2,6 +2,11 @@
 Bolt compiles .bolt files to React + Vite + Tailwind. Indentation (4 spaces) makes blocks.
 No imports, no hooks, no router setup. Run `bolt check` after writing, fix every problem, repeat.
 
+## Colors
+design.bolt has light/dark themes with names: background surface ink soft line brand onbrand.
+Use them as Tailwind colors (bg-surface text-ink border-line bg-brand); dark mode switches automatically.
+Your `styled as:` classes always override Bolt's defaults. Toggle: if theme == "dark": theme = "light" otherwise: theme = "dark"
+
 ## Files
 - One page per file, page name = file name: pages/home.bolt holds `page home:`
 - Components live in components/. All .bolt files in the project merge automatically.

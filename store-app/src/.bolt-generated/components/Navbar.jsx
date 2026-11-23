@@ -13,7 +13,7 @@ export default function Navbar({ children }) {
     <div>
       {(() => {
         try {
-          return <><div className="flex flex-row flex-wrap flex justify-between items-center py-4 px-8 bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+          return <><div className="flex-row flex-wrap flex justify-between items-center py-4 px-8 bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
         {(() => {
           try {
             return <><h1 className="text-2xl font-black text-blue-600 tracking-tighter">BoltStore</h1></>;
@@ -24,7 +24,7 @@ export default function Navbar({ children }) {
         })()}
         {(() => {
           try {
-            return <><div className="flex flex-row flex-wrap flex gap-6 text-sm font-medium text-gray-600">
+            return <><div className="flex-row flex-wrap flex gap-6 text-sm font-medium text-gray-600">
           {(() => {
             try {
               return <><Link to="/" className="hover:text-blue-600 transition-colors">Home</Link></>;
@@ -82,12 +82,12 @@ export default function Navbar({ children }) {
         })()}
         {(() => {
           try {
-            return <><div className="flex flex-row flex-wrap flex gap-4 items-center">
+            return <><div className="flex-row flex-wrap flex gap-4 items-center">
           {(isLoggedIn) ? (
             <>
           {(() => {
             try {
-              return <><button className="bg-primary text-white rounded-xl px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-900" onClick={async () => {
+              return <><button className="bg-primary rounded-xl px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-900" onClick={async () => {
             logoutUser();
             addToast("Logged out", "success");
           }}>Logout</button></>;
@@ -121,7 +121,7 @@ export default function Navbar({ children }) {
           )}
           {(() => {
             try {
-              return <><button className="bg-primary text-white rounded-xl px-4 py-2 bg-gray-900 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-800 transition-all" onClick={async () => {
+              return <><button className="bg-gray-900 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-800 transition-all" onClick={async () => {
 
           }}>{(("Cart (" + cart.length) + ")")}</button></>;
             } catch (e) {
