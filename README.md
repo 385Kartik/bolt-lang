@@ -153,7 +153,7 @@ See [ROADMAP.md](ROADMAP.md).
 
 ## Status
 
-Bolt is **experimental (v0.1)**. The language is evolving quickly and some end-to-end tests are out of date with the generator. Expect rough edges. Issues and ideas are welcome, see [CONTRIBUTING.md](CONTRIBUTING.md).
+Bolt is **experimental (v0.1)**. The e2e suite passes (`node --test tests/e2e.test.js`). The language is evolving quickly. Expect rough edges. Issues and ideas are welcome, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
