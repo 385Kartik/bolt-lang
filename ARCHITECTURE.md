@@ -82,6 +82,8 @@ Every `.bolt` file in the project is merged automatically, so all pages, compone
 
 **Checker (`src/check.js`):** `bolt check` parses every `.bolt` file, then runs the full builder into a temp folder and returns each problem as `{file, line, column, message, hint}`. `bolt stats` reuses it to compare Bolt tokens with generated React tokens (estimated by counting words, numbers and symbols).
 
+**Resource (`src/builder/resource.js`):** a `ResourceDef` is turned into Bolt source for a page (fetch list, form, `for every` rows, delete buttons) and parsed with the normal parser, so it flows through the same layout, styles and validation as any page.
+
 **Layout:** the builder finds the single `LayoutDef`, validates it has exactly one `slot`, and injects each page's body into a copy of the layout body before code generation (pages with `layout none` are skipped).
 
 **Scaffold:** `bolt init` (`scaffoldProject` in `builder.js`) writes `src/styles.bolt` (the `DEFAULT_STYLES_BOLT` vocabulary) and `src/pages/home.bolt`.

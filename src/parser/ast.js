@@ -357,3 +357,10 @@ export function LayoutDef(body, line) {
 export function NoLayout(line) {
   return { type: 'NoLayout', line };
 }
+
+// ── Resource (one-line CRUD page) ───────────────────────────────────────────
+
+export function ResourceDef(name, url, fields, line) {
+  // resource products at "/api/products":  title text required
+  return { type: 'ResourceDef', name, url, fields, line };
+}

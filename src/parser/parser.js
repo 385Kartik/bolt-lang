@@ -158,6 +158,13 @@ export function parse(tokens) {
   function parseStatement() {
     const token = peek();
 
+    // Resource block:  resource products at "/api/products":
+    if (token.type === TokenType.IDENTIFIER && token.value === 'resource' &&
+        tokens[pos + 1] && tokens[pos + 1].line === token.line &&
+        tokens[pos + 2] && tokens[pos + 2].value === 'at') {
+      return parseResourceDef();
+    }
+
     // Layout block:  layout:   /   page opt-out:  layout none
     if (token.type === TokenType.IDENTIFIER && token.value === 'layout' && tokens[pos + 1]) {
       const nxt = tokens[pos + 1];
@@ -1790,6 +1797,62 @@ export function parse(tokens) {
 
     expect(TokenType.DEDENT, "dedentation to end 'styles:' block");
     return AST.StylesDef(styles, line);
+  }
+
+  // ── Resource ──────────────────────────────────────────────────────
+  //   resource products at "/api/products":
+  //       title text required
+  //       price number
+  //       email email
+
+  function parseResourceDef() {
+    const startToken = advance(); // 'resource'
+    const line = startToken.line;
+    const name = advance().value;
+    advance(); // 'at'
+    if (!check(TokenType.STRING)) {
+      throw new ParseError("Expected the API address in quotes after 'at'", line, null,
+        'Example: resource products at "/api/products":');
+    }
+    const url = advance().value;
+    expect(TokenType.COLON, "':' after the resource address");
+    expect(TokenType.NEWLINE, "a new line after the resource header");
+    if (!match(TokenType.INDENT)) {
+      throw new ParseError(`Resource '${name}' needs at least one field`, line, null,
+        'Example:\n    resource products at "/api/products":\n        title text required\n        price number');
+    }
+
+    const fields = [];
+    while (!check(TokenType.DEDENT) && !check(TokenType.EOF)) {
+      if (match(TokenType.NEWLINE)) continue;
+      const fieldLine = peek().line;
+      const words = [];
+      while (!check(TokenType.NEWLINE) && !check(TokenType.DEDENT) && !check(TokenType.EOF)) {
+        words.push(String(advance().value));
+      }
+      match(TokenType.NEWLINE);
+      const [fieldName, type = 'text', ...flags] = words;
+      if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(fieldName)) {
+        throw new ParseError(`Invalid field name '${fieldName}'`, fieldLine, null,
+          'Field names use letters, numbers and _ (example: title text required).');
+      }
+      if (!['text', 'number', 'email'].includes(type)) {
+        throw new ParseError(`Unknown field type '${type}' for '${fieldName}'`, fieldLine, null,
+          'Field types are: text, number, email.');
+      }
+      for (const f of flags) {
+        if (f !== 'required') {
+          throw new ParseError(`Unknown field option '${f}' for '${fieldName}'`, fieldLine, null,
+            "The only option is 'required'.");
+        }
+      }
+      fields.push({ name: fieldName, type, required: flags.includes('required') });
+    }
+    expect(TokenType.DEDENT, "dedentation to end the resource block");
+    if (fields.length === 0) {
+      throw new ParseError(`Resource '${name}' needs at least one field`, line);
+    }
+    return AST.ResourceDef(name, url, fields, line);
   }
 
   // ── Run the parser ────────────────────────────────────────────────

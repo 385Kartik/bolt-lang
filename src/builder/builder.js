@@ -5,6 +5,7 @@ import { parse } from '../parser/parser.js';
 import { generateNode } from '../generator/generator.js';
 import { SourceMapGenerator } from 'source-map';
 import { resolveUses, importLinesFor } from './resolve.js';
+import { expandResource } from './resource.js';
 
 function processMarkersAndSourceMaps(fileName, rawCode, prefixCode, rawSource = '') {
   const sourceMap = new SourceMapGenerator({ file: fileName });
@@ -51,6 +52,9 @@ export function buildProject(ast, outDir = 'dist', rawSource = '', options = {})
   
   // 1. AST is already parsed and provided
   
+  // 1.5 `resource` blocks become ordinary pages
+  ast = { ...ast, body: ast.body.map(n => (n.type === 'ResourceDef' ? expandResource(n) : n)) };
+
   // 2. Separate AST nodes
   const pages = [];
   const components = [];

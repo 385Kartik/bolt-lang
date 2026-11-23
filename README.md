@@ -106,6 +106,7 @@ bolt stats store-app
 - **Zero boilerplate:** no hooks, no imports, no router config
 - **Automatic routing:** pages map to URLs, with dynamic params `page store(storeId, productId):`
 - **Compile-time route validation:** `go to product(1, 2)` is a compiler error, not a 404
+- **One-line CRUD:** `resource products at "/api/products":` builds a list, add form and delete buttons
 - **Fetch with defaults:** `fetch "/api/x" into x` handles loading and errors for you
 - **Windows friendly:** CRLF and LF files both work
 - **Layout:** one `layout:` block wraps every page (navbar, footer) with a `slot`

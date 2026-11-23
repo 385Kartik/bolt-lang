@@ -6,13 +6,13 @@ Based on the core necessity of building real-world applications (like e-commerce
 - `input ... into email` declares `email` automatically
 - `layout:` wraps every page with Navbar/Footer (`slot`, `layout none`)
 - `fetch` shows default loading and error UI without extra blocks
+- `resource` block: one-line CRUD page (list, add, delete)
 - AI tooling: `bolt check --json`, `bolt stats`, `bolt spec` and `llms.txt`
 - `bolt init` ships a starter `styles.bolt` (card, heading, button-primary, ...)
 - `styles:` blocks for reusable Tailwind classes, usable by name in any file
 - `use <name>` imports files by name from anywhere in the project
 
 ## [ ] Next: Simpler, Smaller Bolt (fewer tokens for people and AI)
-- `resource` block for one-line CRUD (`resource products at "/api/products"`)
 - Backend: `model` / `api` blocks that generate an Express + SQLite server
 
 ## [x] Phase 9: Dynamic Routing ✅

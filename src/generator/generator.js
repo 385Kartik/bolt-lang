@@ -708,11 +708,11 @@ export function generate(ast, existingRegistry = null, globalStoresList = [], de
     
     const setterName = 'set' + capitalize(target);
     if (scopes.isDeclared(setterName)) {
-      return `${indent()}${setterName}(prev => prev.filter(item => item !== ${value}));`;
+      return `${indent()}${setterName}(prev => prev.filter(_item => _item !== ${value}));`;
     }
 
     if (isGlobalStore(target)) {
-      return `${indent()}updateStore(s => { s.${target} = s.${target}.filter(item => item !== ${value}); });`;
+      return `${indent()}updateStore(s => { s.${target} = s.${target}.filter(_item => _item !== ${value}); });`;
     }
 
     return `${indent()}${target}.splice(${target}.indexOf(${value}), 1);`;
@@ -809,6 +809,20 @@ export function generate(ast, existingRegistry = null, globalStoresList = [], de
 
     if (stmt.type === 'FetchStatement') {
       return `${indent()}${marker}{${genFetchConditional(stmt)}}`;
+    }
+
+    // `for every item in items:` inside a page or component draws the body once per item
+    if (stmt.type === 'ForEvery') {
+      const iterable = gen(stmt.iterable);
+      scopes.push([stmt.variable]);
+      indentLevel++;
+      const body = genUIList(stmt.body);
+      indentLevel--;
+      scopes.pop();
+      return `${indent()}${marker}{(${iterable} || []).map((${stmt.variable}, _i) => (
+${indent()}  <React.Fragment key={_i}>
+${body}${indent()}  </React.Fragment>
+${indent()}))}`;
     }
 
     const inner = gen(stmt).trim();
@@ -1440,7 +1454,7 @@ ${indent()}})()}`;
     let output = `${indent()}return boltFetch(${urlCode}, { method: 'POST', headers: { 'Content-Type': 'application/json' }${bodyCode} })`;
     if (node.successBody) {
       const resVar = node.successVar || 'res';
-      output += `\n${indent()}  .then(res => res.json()).then(async ${resVar} => {\n${node.successBody.map(s => gen(s)).join('\n')}\n${indent()}  })`;
+      output += `\n${indent()}  .then(res => res.text().then(t => (t ? JSON.parse(t) : null))).then(async ${resVar} => {\n${node.successBody.map(s => gen(s)).join('\n')}\n${indent()}  })`;
     }
     if (node.errorBody) {
       const errVar = node.errorVar || 'err';
@@ -1455,7 +1469,7 @@ ${indent()}})()}`;
     let output = `${indent()}return boltFetch(${urlCode}, { method: 'PUT', headers: { 'Content-Type': 'application/json' }${bodyCode} })`;
     if (node.successBody) {
       const resVar = node.successVar || 'res';
-      output += `\n${indent()}  .then(res => res.json()).then(async ${resVar} => {\n${node.successBody.map(s => gen(s)).join('\n')}\n${indent()}  })`;
+      output += `\n${indent()}  .then(res => res.text().then(t => (t ? JSON.parse(t) : null))).then(async ${resVar} => {\n${node.successBody.map(s => gen(s)).join('\n')}\n${indent()}  })`;
     }
     if (node.errorBody) {
       const errVar = node.errorVar || 'err';
@@ -1469,7 +1483,7 @@ ${indent()}})()}`;
     let output = `${indent()}return boltFetch(${urlCode}, { method: 'DELETE' })`;
     if (node.successBody) {
       const resVar = node.successVar || 'res';
-      output += `\n${indent()}  .then(res => res.json()).then(async ${resVar} => {\n${node.successBody.map(s => gen(s)).join('\n')}\n${indent()}  })`;
+      output += `\n${indent()}  .then(res => res.text().then(t => (t ? JSON.parse(t) : null))).then(async ${resVar} => {\n${node.successBody.map(s => gen(s)).join('\n')}\n${indent()}  })`;
     }
     if (node.errorBody) {
       const errVar = node.errorVar || 'err';

@@ -132,3 +132,10 @@
 - `store total = run calculateTotal(cart)` now works: the value loads after the first render (starts as `null`, then fills in)
 - Fixed: this used to generate `useState(await ...)`, which is invalid inside a React component
 - Multi-prop components (`component Card takes a, b:`) and `when x changes:` effects were verified working and ticked off the roadmap
+
+## Phase 22: Resource (one-block CRUD)
+- `resource products at "/api/products":` with field lines (`title text required`, `price number`, `contact email`) builds a full page: list, add form with validation and toasts, delete buttons
+- Expansion: the builder writes the page as Bolt source and parses it (`src/builder/resource.js`), so layout, styles and route checks apply as for any hand-written page
+- `for every item in items:` now works inside pages and components (draws the body once per item)
+- Fixed: `remove item from items` inside a loop that names its variable `item` removed nothing
+- Fixed: `submit`/`update`/`delete` handlers crashed when the server answered with an empty body

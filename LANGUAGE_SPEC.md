@@ -607,6 +607,38 @@ await fetch("/api/users/1", {
 
 ---
 
+### 9.3 Resource (a whole CRUD page in one block)
+
+`resource` builds a page that lists records, adds new ones and deletes them. You only
+describe the data.
+
+**Bolt Code:**
+```bolt
+resource products at "/api/products":
+    title text required
+    price number
+    contact email
+```
+
+Each field line is `name type` plus the optional word `required`. Types: `text`, `number`, `email`
+(`email` also checks the format).
+
+**What you get:** a page at `/products` with the list, an "Add" form (with validation, a toast on
+success or failure) and a Delete button on every row. It is a normal page, so `layout:` and named
+styles work with it, and the page name (`products`) cannot clash with another page.
+
+**Your API should follow the usual REST shape:**
+
+| Action | Request | Expected answer |
+|---|---|---|
+| List | `GET /api/products` | a list of records |
+| Add | `POST /api/products` | the new record (with its `id`) |
+| Delete | `DELETE /api/products/<id>` | anything, an empty answer is fine |
+
+Field names `items`, `item` and `created` are reserved. `number` fields are sent as numbers.
+
+---
+
 ## 10. Authentication
 
 Bolt handles conditional UI access and integrates with a generated AuthProvider.
@@ -674,6 +706,15 @@ repeat 5 times:
 
 for every user in users:
     print user.name
+```
+
+Inside a page or component, `for every` draws its body once for each item:
+
+```bolt
+page team:
+    store people = [{name: "Asha"}, {name: "Ravi"}]
+    for every person in people:
+        show person.name
 ```
 
 **Generated React Code:**
@@ -801,6 +842,10 @@ UseStatement
 
 CallExpression
     := Identifier ('.' IDENTIFIER)+ '(' (Expression (',' Expression)*)? ')'   // no space before '('
+
+ResourceDef
+    := resource IDENTIFIER at StringLiteral : INDENT (IDENTIFIER Type required?)+ DEDENT
+    Type := text | number | email
 
 Block
     := INDENT Statement* DEDENT

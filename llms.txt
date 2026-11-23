@@ -41,6 +41,13 @@ form:
     submit "Login":
         show toast "Welcome" as success
 
+## One-line CRUD
+resource products at "/api/products":
+    title text required
+    price number
+(page with list + add form + delete. API: GET list, POST returns record, DELETE /api/products/<id>.
+ field types: text number email. reserved field names: items item created)
+
 ## Auth
 if logged in: ... otherwise: ...
 

@@ -279,3 +279,57 @@ test('actions: `store x = run action()` loads asynchronously instead of using aw
   assert.match(page, /actions\.total\(\)\.then\(setT\)/);
   assert.doesNotMatch(page, /useState\(await/);
 });
+
+test('resource: one block becomes a working list + add form + delete page', () => {
+  const root = makeProject({
+    'src/products.bolt': [
+      'resource products at "/api/products":',
+      '    title text required',
+      '    price number',
+      ''
+    ].join('\n')
+  });
+  const out = build(root);
+  const page = read(out, 'pages/ProductsPage.jsx');
+  assert.match(page, /export default function ProductsPage/);
+  assert.match(page, /boltFetch\("\/api\/products"\)/);                       // loads the list
+  assert.match(page, /method: 'POST'/);                                        // add form
+  assert.match(page, /price: \(price \* 1\)/);                                 // number field is sent as a number
+  assert.match(page, /method: 'DELETE'/);                                      // delete button
+  assert.match(page, /\(items \|\| \[\]\)\.map\(\(item, _i\)/);                // one row per item
+  assert.match(page, /if \(!title \|\| title\.trim\(\) === ''\)/);             // required check
+  assert.match(read(out, 'App.jsx'), /path="\/products"/);                     // route exists
+});
+
+test('resource: bad field type, reserved name and duplicate page are errors', () => {
+  const badType = makeProject({ 'src/p.bolt': 'resource p at "/api/p":\n    title banana\n' });
+  assert.throws(() => build(badType), /Unknown field type 'banana'/);
+
+  const reserved = makeProject({ 'src/p.bolt': 'resource p at "/api/p":\n    items text\n' });
+  assert.throws(() => build(reserved), /uses a name Bolt needs/);
+
+  const dup = makeProject({
+    'src/p.bolt': 'resource p at "/api/p":\n    title text\n',
+    'src/pages/p.bolt': 'page p:\n    show "x"\n'
+  });
+  assert.throws(() => build(dup), /p/);
+});
+
+test('for every: draws the body once per item inside a page', () => {
+  const source = ['page home:', '    store names = ["a", "b"]', '    for every n in names:', '        show n', ''].join('\n');
+  const root = makeProject({ 'src/pages/home.bolt': source });
+  assert.match(read(build(root), 'pages/HomePage.jsx'), /\(names \|\| \[\]\)\.map\(\(n, _i\)/);
+});
+
+test('remove: loop variable named item does not break removal', () => {
+  const source = [
+    'page home:',
+    '    store items = [1, 2]',
+    '    for every item in items:',
+    '        button "x":',
+    '            remove item from items',
+    ''
+  ].join('\n');
+  const root = makeProject({ 'src/pages/home.bolt': source });
+  assert.match(read(build(root), 'pages/HomePage.jsx'), /prev\.filter\(_item => _item !== item\)/);
+});
