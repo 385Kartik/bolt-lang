@@ -1,0 +1,38 @@
+{
+  "name": "bolt-language-support",
+  "displayName": "Bolt Language Support",
+  "description": "Language support for the Bolt programming language",
+  "version": "1.0.0",
+  "publisher": "bolt-framework",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "main": "./extension.js",
+  "activationEvents": [
+    "onLanguage:bolt"
+  ],
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "bolt",
+        "aliases": ["Bolt", "bolt"],
+        "extensions": [".bolt"],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icon.png",
+          "dark": "./icon.png"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "bolt",
+        "scopeName": "source.bolt",
+        "path": "./syntaxes/bolt.tmLanguage.json"
+      }
+    ]
+  }
+}

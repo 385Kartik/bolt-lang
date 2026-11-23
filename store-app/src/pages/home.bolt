@@ -1,0 +1,72 @@
+page home:
+    fetch "https://fakestoreapi.com/products?limit=4" into featured
+    store showTestModal = false
+
+    show Navbar
+    
+    hero:
+        container styled as: inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6:
+            show "🚀 Built with Bolt Language" as text
+            
+        show "The Future of Shopping" as title styled as: text-5xl md:text-7xl font-black tracking-tight text-gray-900 mb-6 leading-tight
+        
+        show "Experience blazing fast performance with our new generated e-commerce platform. No more bloated JavaScript." as subtitle styled as: text-xl text-gray-500 max-w-2xl mb-10 leading-relaxed
+        
+        row styled as: gap-4:
+            link "Shop Collection" to products styled as: px-8 py-4 bg-primary hover:bg-blue-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-200
+            link "Learn More" to about styled as: px-8 py-4 bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-800 rounded-xl font-bold transition-all
+
+    section styled as: max-w-7xl mx-auto px-8 py-20:
+        show "Theme Preferences" as title styled as: text-3xl font-black text-gray-900 mb-2
+        row styled as: gap-4 mb-10:
+            button "Light Theme":
+                theme = "light"
+            button "Dark Theme":
+                theme = "dark"
+            button "System Theme":
+                theme = "system"
+
+        show "Featured Products" as title styled as: text-3xl font-black text-gray-900 mb-2
+        show "Handpicked items fetched live from FakeStore API" as subtitle styled as: text-gray-400 mb-10
+
+        if featured == null:
+            show "Loading featured products..." as loading styled as: text-center text-gray-400 py-12 animate-pulse
+
+        // Phase 11: Wrapper Component Test
+        button "Test Modal Component" as secondary:
+            showTestModal = true
+            
+        if showTestModal:
+            show Modal with title="Warning":
+                show "Are you sure you want to delete this item? This action cannot be undone." as text styled as: text-gray-600 mb-6
+                row styled as: gap-3 justify-end:
+                    button "Cancel" as secondary:
+                        showTestModal = false
+                    button "Delete" as danger:
+                        showTestModal = false
+        if featured != null:
+            grid 4 styled as: gap-6:
+                show ProductCard for each product in featured
+            
+    section styled as: max-w-7xl mx-auto px-8 py-20:
+        grid 3 styled as: gap-8:
+            
+            card:
+                container styled as: w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl:
+                    show "⚡" as emoji1
+                show "Lightning Fast" as title1 styled as: font-bold text-xl mb-3
+                show "Compiled directly to React for maximum performance." as desc1 styled as: text-gray-500 leading-relaxed
+                
+            card:
+                container styled as: w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl:
+                    show "🎨" as emoji2
+                show "Beautiful UI" as title2 styled as: font-bold text-xl mb-3
+                show "Styled with Tailwind CSS for perfect modern aesthetics." as desc2 styled as: text-gray-500 leading-relaxed
+                
+            card:
+                container styled as: w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl:
+                    show "📱" as emoji3
+                show "Responsive" as title3 styled as: font-bold text-xl mb-3
+                show "Looks amazing on any device, anywhere." as desc3 styled as: text-gray-500 leading-relaxed
+                
+    show Footer

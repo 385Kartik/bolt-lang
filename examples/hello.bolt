@@ -1,0 +1,5 @@
+// ── Hello World in Bolt ─────────────────────────────────────
+// The simplest possible Bolt program.
+
+name = "World"
+print "Hello, {name}!"

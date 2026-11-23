@@ -1,0 +1,22 @@
+component Navbar:
+    row styled as: flex justify-between items-center py-4 px-8 bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50:
+        show "BoltStore" as title styled as: text-2xl font-black text-blue-600 tracking-tighter
+        
+        row styled as: flex gap-6 text-sm font-medium text-gray-600:
+            link "Home" to home styled as: hover:text-blue-600 transition-colors
+            link "Products" to products styled as: hover:text-blue-600 transition-colors
+            link "About" to about styled as: hover:text-blue-600 transition-colors
+            link "Contact" to contact styled as: hover:text-blue-600 transition-colors
+            link "Team" to team styled as: hover:text-blue-600 transition-colors
+            link "Admin" to admin styled as: hover:text-blue-600 transition-colors
+        
+        row styled as: flex gap-4 items-center:
+            if logged in:
+                button "Logout" styled as: text-sm font-medium text-gray-500 hover:text-gray-900:
+                    logout
+                    show toast "Logged out" as success
+            otherwise:
+                link "Login" to login styled as: text-sm font-medium text-gray-500 hover:text-gray-900
+                link "Sign Up" to signup styled as: bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-blue-700
+                
+            button "Cart (" + count of cart + ")" as secondary styled as: bg-gray-900 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-800 transition-all

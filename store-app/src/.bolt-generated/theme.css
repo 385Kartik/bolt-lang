@@ -1,0 +1,15 @@
+:root {
+  --color-background: #ffffff;
+  --color-text: #0f172a;
+  --color-cardBg: #f8fafc;
+  --color-border: #e2e8f0;
+  --color-primary: #2563eb;
+}
+
+.dark {
+  --color-background: #0f172a;
+  --color-text: #f8fafc;
+  --color-cardBg: #1e293b;
+  --color-border: #334155;
+  --color-primary: #3b82f6;
+}

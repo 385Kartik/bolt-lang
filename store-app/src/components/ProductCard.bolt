@@ -1,0 +1,35 @@
+component ProductCard for product:
+    card styled as: flex flex-col p-0 bg-white border border-gray-100 rounded-2xl hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group cursor-pointer overflow-hidden:
+        container styled as: aspect-[4/3] bg-gray-50 overflow-hidden flex items-center justify-center p-6:
+            image product.image styled as: h-full w-full object-contain group-hover:scale-110 transition-transform duration-500
+                
+        column styled as: gap-2 p-5:
+            row styled as: justify-between items-center:
+                show product.category as category styled as: text-[10px] text-blue-600 font-bold uppercase tracking-widest bg-blue-50 px-2 py-1 rounded-full
+                row styled as: gap-1 items-center:
+                    show "★" as star styled as: text-yellow-500 text-sm
+                    show product.rating.rate as rating styled as: text-gray-700 text-xs font-semibold
+                    show "·" as dot styled as: text-gray-300 text-xs
+                    show product.rating.count as count styled as: text-gray-400 text-xs
+                    show "reviews" as label styled as: text-gray-400 text-xs
+
+            show product.title as name styled as: font-semibold text-gray-900 text-sm line-clamp-2 leading-snug mt-1
+            show product.description as desc styled as: text-xs text-gray-400 line-clamp-2 leading-relaxed
+
+            row styled as: justify-between items-center mt-3 pt-3 border-t border-gray-100:
+                column:
+                    show "Price" as label styled as: text-[10px] text-gray-400 uppercase tracking-wider font-medium
+                    show product.price as price styled as: font-black text-gray-900 text-xl
+                column styled as: items-end:
+                    show "In Stock" as stock styled as: text-[10px] text-emerald-600 font-bold uppercase tracking-wider bg-emerald-50 px-2 py-0.5 rounded-full
+            
+            row styled as: gap-2 mt-3:
+                button "View Details" as secondary styled as: flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg font-medium text-sm transition-colors:
+                    go to product(product.id)
+                button "Add to Cart" as primary styled as: flex-1 py-2.5 bg-gray-900 hover:bg-black text-white rounded-lg font-medium text-sm transition-colors:
+                    if logged in:
+                        add product to cart
+                        show toast "Added to cart" as success
+                    otherwise:
+                        show toast "Please login first" as danger
+                        go to login

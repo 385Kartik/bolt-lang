@@ -1,0 +1,29 @@
+component ProductCard for product:
+    card:
+        show product.name as title styled as: text-xl font-bold text-gray-800 mb-2
+        row styled as: items-center justify-between mt-4:
+            show "$" + product.price styled as: text-2xl font-black text-green-600
+            button "Buy Now" as primary:
+                print "Buying " + product.name
+
+page home:
+    styled as: bg-gray-50 min-h-screen
+    
+    store products = [
+        { name: "Awesome Bolt Laptop", price: "999" },
+        { name: "Bolt Wireless Mouse", price: "49" },
+        { name: "Mechanical Keyboard", price: "129" },
+        { name: "4K Monitor", price: "399" },
+        { name: "Noise Cancelling Headphones", price: "199" },
+        { name: "Ergonomic Desk Chair", price: "249" }
+    ]
+    
+    hero:
+        show "Bolt Tech Store" as title styled as: text-xl font-extrabold tracking-tight mb-4
+        show "Build layouts fast and effortlessly with the new Design System." styled as: text-lg opacity-90 mb-6
+        button "Shop Now" as secondary:
+            print "Scrolling down..."
+    
+    section:
+        grid auto styled as: gap-2:
+            show all products

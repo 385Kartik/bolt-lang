@@ -1,0 +1,34 @@
+page signup:
+    store email = ""
+    store password = ""
+    
+    show Navbar
+    
+    section styled as: max-w-md mx-auto mt-20 p-8 bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100:
+        show "Create Account" as title styled as: text-3xl font-black text-gray-900 mb-2 text-center
+        show "Join the future of shopping today." as subtitle styled as: text-gray-500 mb-8 text-center
+        
+        form:
+            input "Email Address" into email:
+                required
+                email
+                
+            input "Password" into password:
+                required
+                min 8
+                
+            submit "Sign Up" as primary styled as: w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold mt-4 shadow-lg shadow-blue-200 transition-all:
+                submit "http://localhost:3001/api/signup" with { email: email, password: password }:
+                    success res:
+                        if res.error:
+                            show toast res.error as danger
+                        otherwise:
+                            run loginUser(res)
+                            show toast "Signed up successfully!" as success
+                            go to products
+                    error err:
+                        show toast "Network error" as danger
+                        
+        row styled as: justify-center mt-6 gap-2 text-sm:
+            show "Already have an account?" as prompt styled as: text-gray-500
+            link "Log in" to login styled as: font-bold text-blue-600 hover:text-blue-700

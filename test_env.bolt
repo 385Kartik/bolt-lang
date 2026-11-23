@@ -1,0 +1,1 @@
+show "{env.API_URL}/products"

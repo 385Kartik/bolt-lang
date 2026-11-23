@@ -1,0 +1,29 @@
+page products:
+    show Navbar
+    
+    hero styled as: bg-gray-900 text-white py-20 px-8 text-center:
+        show "Our Collection" as title styled as: text-4xl md:text-5xl font-black tracking-tight mb-4
+        // Phase 1: Native String interpolation!
+        show "Live products from FakeStore API — powered by Bolt's fetch keyword!" as subtitle styled as: text-gray-400 text-lg max-w-2xl mx-auto
+        
+    // Phase 2: Fetch natively handles HTTP fetching, JSON parsing, state management, and loading/error/success rendering states!
+    fetch "http://localhost:3001/api/products" into products:
+        loading:
+            show "Loading amazing products..." styled as: text-xl font-bold text-gray-500 animate-pulse text-center py-20
+        error err:
+            show "Failed to load products: " + err styled as: text-red-500 text-center py-20
+        empty:
+            show "No products found in this category." styled as: text-gray-500 text-center py-20
+        success:
+            section styled as: max-w-7xl mx-auto px-8 py-16:
+                row styled as: flex-wrap gap-4 mb-12 border-b border-gray-100 pb-8:
+                    button "All Items" styled as: px-6 py-2 bg-gray-900 text-white rounded-full text-sm font-medium
+                    button "Electronics" styled as: px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors
+                    button "Jewelry" styled as: px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors
+                    button "Clothing" styled as: px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors
+                
+                // Native loop rendering
+                grid 4 styled as: gap-6:
+                    show ProductCard for each product in products
+            
+    show Footer

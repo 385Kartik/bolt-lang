@@ -1,0 +1,256 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { boltFetch } from '../api.js';
+import * as actions from '../actions.js';
+import Footer from '../components/Footer.jsx';
+import Navbar from '../components/Navbar.jsx';
+export default function ContactPage() {
+   const [name, setName] = useState("");
+   const [email, setEmail] = useState("");
+   const [message, setMessage] = useState("");
+
+  return (
+    <main>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        {(() => {
+          try {
+            return <><Navbar /></>;
+          } catch (e) {
+            if (!e.__boltLine) { e.__boltLine = 6; }
+            throw e;
+          }
+        })()}
+        {(() => {
+          try {
+            return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12">
+          {(() => {
+            try {
+              return <><div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 px-6 md:px-12 text-center rounded-3xl shadow-xl my-8 bg-gray-900 text-white p-12 rounded-3xl text-center mb-12">
+            {(() => {
+              try {
+                return <><h1>Contact Us</h1></>;
+              } catch (e) {
+                if (!e.__boltLine) { e.__boltLine = 10; }
+                throw e;
+              }
+            })()}
+            {(() => {
+              try {
+                return <><h2>We'd love to hear from you.</h2></>;
+              } catch (e) {
+                if (!e.__boltLine) { e.__boltLine = 11; }
+                throw e;
+              }
+            })()}
+
+          </div></>;
+            } catch (e) {
+              if (!e.__boltLine) { e.__boltLine = 9; }
+              throw e;
+            }
+          })()}
+          {(() => {
+            try {
+              return <><div className="flex flex-row flex-wrap gap-12">
+            {(() => {
+              try {
+                return <><div className="flex flex-col w-full lg:w-1/2">
+              {(() => {
+                try {
+                  return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">
+                {(() => {
+                  try {
+                    return <><h1 className="text-2xl font-bold mb-6">Send a Message</h1></>;
+                  } catch (e) {
+                    if (!e.__boltLine) { e.__boltLine = 16; }
+                    throw e;
+                  }
+                })()}
+                {(() => {
+                  try {
+                    return <>{(() => {
+                  const validateForm = () => {
+                    let isValid = true;
+                    return isValid;
+                  };
+                  return <form className="flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); validateForm(); }}>
+                  <div className="flex flex-col gap-1">
+                    <input placeholder={"Your Name"} value={name} onChange={(e) => setName(e.target.value)} className="p-3 border rounded-lg w-full" />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <input placeholder={"Email Address"} value={email} onChange={(e) => setEmail(e.target.value)} className="p-3 border rounded-lg w-full" />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <input placeholder={"Your Message"} value={message} onChange={(e) => setMessage(e.target.value)} className="p-3 border rounded-lg w-full min-h-[120px]" />
+                  </div>
+                  <button className="bg-primary text-white rounded-xl px-4 py-2 w-full py-3 mt-4" onClick={async () => {
+                    return boltFetch("https://jsonplaceholder.typicode.com/posts", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name, email: email, message: message }) });
+                    setName("");
+                    setEmail("");
+                    setMessage("");
+                  }}>Submit</button>
+                  </form>;
+                })()}</>;
+                  } catch (e) {
+                    if (!e.__boltLine) { e.__boltLine = 17; }
+                    throw e;
+                  }
+                })()}
+
+              </div></>;
+                } catch (e) {
+                  if (!e.__boltLine) { e.__boltLine = 15; }
+                  throw e;
+                }
+              })()}
+
+            </div></>;
+              } catch (e) {
+                if (!e.__boltLine) { e.__boltLine = 14; }
+                throw e;
+              }
+            })()}
+            {(() => {
+              try {
+                return <><div className="flex flex-col w-full lg:w-1/2 flex flex-col gap-6">
+              {(() => {
+                try {
+                  return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">
+                {(() => {
+                  try {
+                    return <><h1 className="text-xl font-bold mb-4">Watch Our Story (Public Folder)</h1></>;
+                  } catch (e) {
+                    if (!e.__boltLine) { e.__boltLine = 29; }
+                    throw e;
+                  }
+                })()}
+                {(() => {
+                  try {
+                    return <><video src={"/demo.mp4"} controls playsInline className="w-full rounded-xl" /></>;
+                  } catch (e) {
+                    if (!e.__boltLine) { e.__boltLine = 30; }
+                    throw e;
+                  }
+                })()}
+
+              </div></>;
+                } catch (e) {
+                  if (!e.__boltLine) { e.__boltLine = 28; }
+                  throw e;
+                }
+              })()}
+              {(() => {
+                try {
+                  return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">
+                {(() => {
+                  try {
+                    return <><h1 className="text-xl font-bold mb-4">Our Headquarters (Public Folder)</h1></>;
+                  } catch (e) {
+                    if (!e.__boltLine) { e.__boltLine = 33; }
+                    throw e;
+                  }
+                })()}
+                {(() => {
+                  try {
+                    return <><img src={"/office.jpg"} alt="Image" className="w-full rounded-xl object-cover" /></>;
+                  } catch (e) {
+                    if (!e.__boltLine) { e.__boltLine = 34; }
+                    throw e;
+                  }
+                })()}
+
+              </div></>;
+                } catch (e) {
+                  if (!e.__boltLine) { e.__boltLine = 32; }
+                  throw e;
+                }
+              })()}
+              {(() => {
+                try {
+                  return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">
+                {(() => {
+                  try {
+                    return <><h1 className="text-xl font-bold mb-4">Product Demo (External URL)</h1></>;
+                  } catch (e) {
+                    if (!e.__boltLine) { e.__boltLine = 37; }
+                    throw e;
+                  }
+                })()}
+                {(() => {
+                  try {
+                    return <><video src={"https://www.w3schools.com/html/mov_bbb.mp4"} controls playsInline className="w-full rounded-xl" /></>;
+                  } catch (e) {
+                    if (!e.__boltLine) { e.__boltLine = 38; }
+                    throw e;
+                  }
+                })()}
+
+              </div></>;
+                } catch (e) {
+                  if (!e.__boltLine) { e.__boltLine = 36; }
+                  throw e;
+                }
+              })()}
+              {(() => {
+                try {
+                  return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">
+                {(() => {
+                  try {
+                    return <><h1 className="text-xl font-bold mb-4">Remote Office (External URL)</h1></>;
+                  } catch (e) {
+                    if (!e.__boltLine) { e.__boltLine = 41; }
+                    throw e;
+                  }
+                })()}
+                {(() => {
+                  try {
+                    return <><img src={"https://picsum.photos/600/300"} alt="Image" className="w-full rounded-xl object-cover" /></>;
+                  } catch (e) {
+                    if (!e.__boltLine) { e.__boltLine = 42; }
+                    throw e;
+                  }
+                })()}
+
+              </div></>;
+                } catch (e) {
+                  if (!e.__boltLine) { e.__boltLine = 40; }
+                  throw e;
+                }
+              })()}
+
+            </div></>;
+              } catch (e) {
+                if (!e.__boltLine) { e.__boltLine = 27; }
+                throw e;
+              }
+            })()}
+
+          </div></>;
+            } catch (e) {
+              if (!e.__boltLine) { e.__boltLine = 13; }
+              throw e;
+            }
+          })()}
+
+        </div></>;
+          } catch (e) {
+            if (!e.__boltLine) { e.__boltLine = 8; }
+            throw e;
+          }
+        })()}
+        {(() => {
+          try {
+            return <><Footer /></>;
+          } catch (e) {
+            if (!e.__boltLine) { e.__boltLine = 44; }
+            throw e;
+          }
+        })()}
+
+      </div>
+    </main>
+  );
+}
+window.__BOLT_MAPS = window.__BOLT_MAPS || {};
+window.__BOLT_MAPS['ContactPage.jsx'] = {"7":2,"8":3,"9":4,"14":6,"22":8,"25":9,"28":10,"36":11,"51":13,"54":14,"57":15,"60":16,"68":17,"112":27,"115":28,"118":29,"126":30,"141":32,"144":33,"152":34,"167":36,"170":37,"178":38,"193":40,"196":41,"204":42,"240":44};
+//# sourceMappingURL=ContactPage.jsx.map

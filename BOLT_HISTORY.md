@@ -1,0 +1,75 @@
+# Bolt Development History
+
+## Phase 1: Core Compiler Fundamentals
+- Custom Lexer and Tokenizer
+- Indentation-based Parser
+- Abstract Syntax Tree (AST) definition
+- Basic Code Generator mapping to Javascript
+
+## Phase 2: UI & Reactivity
+- **Phase 2a: Collections**
+  - Syntactic sugar for array operations (`add`, `remove`, `count of`, `filtered by`, `sorted by`)
+- **Phase 2b: UI Primitives**
+  - Pages (`page`) and Components (`component`)
+  - Rendering elements (`show`, `button`, `link`, `image`, `video`)
+  - Popups (`toast`, `modal`)
+  - Layout wrappers (`row`, `column`, `grid`, `hero`, `card`, `section`)
+- **Phase 2c: State Management**
+  - Local state (`store`)
+  - Persistent state (`remember`)
+  - Actions and logic (`action`, `run`)
+
+## Phase 3: Routing & Multi-File Architecture
+- Automatic routing generation mapping pages to React Router
+- Directory scanning (`bolt build app/`)
+- Module system (`use` keyword)
+- Global AST merging across multiple files
+- Navigation (`go to`)
+
+## Phase 4: Diagnostics & Source Maps
+- **Phase 4a: Source Maps**
+  - `.js.map` generation matching output to `.bolt` files
+- **Phase 4b: Error Mapping System**
+  - Custom React Error Boundary (`<BoltErrorBoundary>`)
+  - Line-marker injection (`__BOLT_MAPS`)
+  - Red overlay capturing original Bolt line numbers on runtime crashes
+
+## Phase 5: Styling Engine
+- Integrated Tailwind CSS
+- `styled as:` keyword for natural syntax styling application
+
+## Phase 6: Forms & Validation
+- Integrated Form Builder (`form:`)
+- Input generation and binding (`input`)
+- Declarative validation rules (`required`, `email`, `min`, `max`, `match`)
+- Form submission handlers
+
+## Phase 7: API & Backend Integration
+- Built-in Fetch engine (`fetch`, `loading:`, `error:`, `empty:`)
+- Data mutation commands (`submit`, `update`, `delete`)
+
+## Phase 8: Authentication
+- Context-based Auth Provider generator
+- Login and Logout handlers (`login`, `logout`)
+- Conditional rendering (`if logged in:`)
+
+## Phase 9: Global State Management
+- `global store` primitive mapping to a Zustand-style pub/sub architecture
+- State modifications without Redux boilerplate (`clear cart`, `persist`)
+
+## Phase 10: CLI & Build Tools
+- Complete Vite integration
+- `bolt init` scaffolding command
+- Hot Module Replacement (HMR) / Fast Refresh in `bolt dev`
+- Production bundling via `bolt build`
+
+## Phase 11: Dynamic Routing
+- URL parameters: `page product(id):` → `/product/:id`
+- Multiple params: `page store(storeId, productId):` → `/store/:storeId/:productId`
+- Dynamic linking: `link "View" to product(123)` → `<Link to={\`/product/${123}\`}>`
+- Dynamic navigation: `go to product(id)` → `navigate(\`/product/${id}\`)`
+- Compile-time parameter count validation for `go to` and `link`
+- Route collision detection for duplicate page names
+- Reserved parameter protection (prevents `store` from shadowing route params)
+- Fetch reactivity: `useEffect` dependency array auto-populated with referenced route params
+- Static-first route sorting for React Router priority

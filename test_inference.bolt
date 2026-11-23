@@ -1,0 +1,12 @@
+component ProductCard for product:
+    show product.name as title
+
+component UserRow for user:
+    show user.email as text
+
+page home:
+    store products = [{name: "Laptop"}, {name: "Phone"}]
+    store users = [{email: "alice@test.com"}, {email: "bob@test.com"}]
+
+    show all products
+    show all users

@@ -1,0 +1,44 @@
+page contact:
+    store name = ""
+    store email = ""
+    store message = ""
+    
+    show Navbar
+    
+    container styled as: py-12:
+        hero styled as: bg-gray-900 text-white p-12 rounded-3xl text-center mb-12:
+            show "Contact Us" as title
+            show "We'd love to hear from you." as subtitle
+            
+        row styled as: gap-12:
+            column styled as: w-full lg:w-1/2:
+                card:
+                    show "Send a Message" as title styled as: text-2xl font-bold mb-6
+                    form styled as: flex flex-col gap-4:
+                        input "Your Name" into name styled as: p-3 border rounded-lg w-full
+                        input "Email Address" into email styled as: p-3 border rounded-lg w-full
+                        input "Your Message" into message styled as: p-3 border rounded-lg w-full min-h-[120px]
+                        button "Submit" as primary styled as: w-full py-3 mt-4:
+                            submit "https://jsonplaceholder.typicode.com/posts" with { name: name, email: email, message: message }
+                            name = ""
+                            email = ""
+                            message = ""
+                        
+            column styled as: w-full lg:w-1/2 flex flex-col gap-6:
+                card:
+                    show "Watch Our Story (Public Folder)" as title styled as: text-xl font-bold mb-4
+                    video "/demo.mp4" styled as: w-full rounded-xl
+                    
+                card:
+                    show "Our Headquarters (Public Folder)" as title styled as: text-xl font-bold mb-4
+                    image "/office.jpg" styled as: w-full rounded-xl object-cover
+                    
+                card:
+                    show "Product Demo (External URL)" as title styled as: text-xl font-bold mb-4
+                    video "https://www.w3schools.com/html/mov_bbb.mp4" styled as: w-full rounded-xl
+                    
+                card:
+                    show "Remote Office (External URL)" as title styled as: text-xl font-bold mb-4
+                    image "https://picsum.photos/600/300" styled as: w-full rounded-xl object-cover
+                    
+    show Footer

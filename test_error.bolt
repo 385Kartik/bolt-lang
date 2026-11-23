@@ -1,0 +1,7 @@
+component ErrorCard for item:
+    // This will crash because item is null!
+    show item.name as title
+
+page home:
+    store items = [null]
+    show all items

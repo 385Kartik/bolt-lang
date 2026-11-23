@@ -1,0 +1,42 @@
+// Shared component
+component ProductCard for product:
+    card:
+        show product.name as title styled as: text-xl font-bold text-gray-800 mb-2
+        row styled as: items-center justify-between mt-4:
+            show "$" + product.price styled as: text-2xl font-black text-green-600
+            button "Buy Now" as primary:
+                print "Buying " + product.name
+                go to checkout
+
+// The main page (automatically maps to /)
+page home:
+    store products = [
+        {name: "Awesome Bolt Laptop", price: "999"},
+        {name: "Bolt Wireless Mouse", price: "49"},
+        {name: "Mechanical Keyboard", price: "129"},
+        {name: "4K Monitor", price: "399"}
+    ]
+    
+    hero:
+        show "Bolt Tech Store" as title styled as: text-5xl font-extrabold tracking-tight mb-4
+        show "Build layouts fast and effortlessly with the new Design System." styled as: text-lg opacity-90 mb-6
+        link "Contact Support" to contact styled as: px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-500
+    
+    section:
+        grid auto styled as: gap-8:
+            show all products
+
+// A secondary page (maps to /checkout)
+page checkout:
+    hero:
+        show "Checkout" as title styled as: text-5xl font-extrabold tracking-tight mb-4
+        show "Complete your purchase here." styled as: text-lg opacity-90 mb-6
+        link "Back to Store" to home styled as: px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-500
+
+// A third page
+page contact:
+    hero:
+        show "Contact Us" as title styled as: text-5xl font-extrabold tracking-tight mb-4
+        link "Go Home" to home styled as: px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-500
+        
+

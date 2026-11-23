@@ -1,0 +1,75 @@
+// ── Bolt Language Basics ────────────────────────────────────
+// Demonstrates variables, functions, conditionals, loops, 
+// and string interpolation.
+
+// ── Variables ──────────────────────────────────────────────
+name = "Kartik"
+age = 25
+active = true
+pi = 3.14
+
+print "Name: {name}"
+print "Age: {age}"
+print "Active: {active}"
+print "Pi: {pi}"
+
+// Update variables
+age = 26
+name = "K"
+print "Updated: {name}, age {age}"
+
+// ── Functions ──────────────────────────────────────────────
+function add a, b:
+    give a + b
+
+function greet person:
+    give "Hello, {person}!"
+
+function clamp val, min, max:
+    if val < min: give min
+    if val > max: give max
+    give val
+
+result = add 5 and 10
+print "5 + 10 = {result}"
+
+msg = greet "World"
+print msg
+
+safe = clamp 150, 0, 100
+print "Clamped 150 to: {safe}"
+
+// ── Conditionals ───────────────────────────────────────────
+if age >= 18:
+    print "Adult"
+otherwise if age >= 13:
+    print "Teen"
+otherwise:
+    print "Kid"
+
+// Inline conditional
+if active: print "Status: Online"
+
+// ── Loops ──────────────────────────────────────────────────
+
+// Fixed count
+print "Counting to 5:"
+repeat 5 times:
+    print current
+
+// Range
+print "Range 1 to 5:"
+repeat from 1 to 5:
+    print current
+
+// Collection loop
+names = ["Alice", "Bob", "Charlie"]
+print "Names:"
+for every n in names:
+    print "  - {n}"
+
+// ── String interpolation with expressions ──────────────────
+price = 100
+quantity = 3
+print "Total: {price * quantity}"
+print "Next year: {age + 1}"

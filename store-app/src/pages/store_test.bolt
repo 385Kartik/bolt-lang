@@ -1,0 +1,27 @@
+global store cart = []
+
+component Header:
+    row:
+        show "My Store" as title
+        if count of cart > 0:
+            show "Cart Items: "
+            show count of cart
+        otherwise:
+            show "Cart is empty!"
+
+page store_test:
+    column:
+        show Header
+        show "Products" as title
+        
+        button "Add Apple":
+            add "Apple" to cart
+            
+        button "Add Banana":
+            add "Banana" to cart
+            
+        button "Clear Cart":
+            clear cart
+            
+        show "Current Cart:"
+        show all cart
