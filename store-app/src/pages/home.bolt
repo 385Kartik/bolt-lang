@@ -2,7 +2,6 @@ page home:
     fetch "https://fakestoreapi.com/products?limit=4" into featured
     store showTestModal = false
 
-    show Navbar
     
     hero:
         container styled as: inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6:
@@ -69,4 +68,3 @@ page home:
                 show "Responsive" as title3 styled as: card-title
                 show "Looks amazing on any device, anywhere." as desc3 styled as: body-text
                 
-    show Footer

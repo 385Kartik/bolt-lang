@@ -10,6 +10,7 @@ component Header:
             show "Cart is empty!"
 
 page store_test:
+    layout none
     column:
         show Header
         show "Products" as title

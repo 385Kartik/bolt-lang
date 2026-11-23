@@ -346,3 +346,14 @@ export function DesignSystemDef(config, line) {
 export function StylesDef(styles, line) {
   return { type: 'StylesDef', styles, line };
 }
+
+// ── Layout (wraps every page) ───────────────────────────────────────────────
+
+export function LayoutDef(body, line) {
+  return { type: 'LayoutDef', body, line };
+}
+
+// `layout none` inside a page: opt this page out of the project layout
+export function NoLayout(line) {
+  return { type: 'NoLayout', line };
+}

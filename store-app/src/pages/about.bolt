@@ -1,5 +1,4 @@
 page about:
-    show Navbar
     
     section styled as: max-w-4xl mx-auto px-8 py-24:
         
@@ -39,4 +38,3 @@ page about:
             show "Ready to explore?" as ctaTitle styled as: text-3xl font-bold mb-6
             link "Start Shopping" to products styled as: inline-block px-8 py-4 bg-white text-gray-900 hover:bg-gray-100 rounded-xl font-bold transition-colors
             
-    show Footer

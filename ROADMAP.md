@@ -4,12 +4,12 @@ Based on the core necessity of building real-world applications (like e-commerce
 
 ## [x] Named Styles, Import-by-Name, Default Style Vocabulary & Implicit State ✅
 - `input ... into email` declares `email` automatically
+- `layout:` wraps every page with Navbar/Footer (`slot`, `layout none`)
 - `bolt init` ships a starter `styles.bolt` (card, heading, button-primary, ...)
 - `styles:` blocks for reusable Tailwind classes, usable by name in any file
 - `use <name>` imports files by name from anywhere in the project
 
 ## [ ] Next: Simpler, Smaller Bolt (fewer tokens for people and AI)
-- `layout.bolt`: wrap every page in Navbar/Footer without repeating them
 - Default loading/error/empty UI for `fetch` from the design system
 - `resource` block for one-line CRUD (`resource products at "/api/products"`)
 - `bolt stats`: compare Bolt vs generated React size and tokens

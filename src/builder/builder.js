@@ -60,6 +60,7 @@ export function buildProject(ast, outDir = 'dist', rawSource = '', options = {})
   const others = [];
   const designSystems = [];
   const stylesDefs = [];
+  const layoutDefs = [];
   const useNodes = [];
 
   for (const node of ast.body) {
@@ -77,6 +78,8 @@ export function buildProject(ast, outDir = 'dist', rawSource = '', options = {})
       designSystems.push(node);
     } else if (node.type === 'StylesDef') {
       stylesDefs.push(node);
+    } else if (node.type === 'LayoutDef') {
+      layoutDefs.push(node);
     } else if (node.type === 'UseStatement') {
       useNodes.push(node);
     } else {
@@ -113,6 +116,51 @@ export function buildProject(ast, outDir = 'dist', rawSource = '', options = {})
       styleMap[name] = classes;
       styleOrigin[name] = sd.fileName || 'unknown';
     }
+  }
+
+  // ── layout: wrap every page in the project layout ─────────────────
+  if (layoutDefs.length > 1) {
+    throw new Error(`
+  ⚡ Compiler Error:
+     Only one 'layout:' may exist per project. Found ${layoutDefs.length}.
+`);
+  }
+  if (layoutDefs.length === 1) {
+    const isSlot = n => n && n.type === 'ExpressionStatement' && n.expression &&
+      n.expression.type === 'Identifier' && n.expression.name === 'slot';
+    const countSlots = nodes => nodes.reduce((c, n) => {
+      if (isSlot(n)) return c + 1;
+      let inner = 0;
+      for (const v of Object.values(n)) if (Array.isArray(v)) inner += countSlots(v.filter(x => x && typeof x === 'object'));
+      return c + inner;
+    }, 0);
+    const slots = countSlots(layoutDefs[0].body);
+    if (slots !== 1) {
+      throw new Error(`
+  ⚡ Compiler Error (line ${layoutDefs[0].line}):
+     'layout:' must contain exactly one 'slot' line (where each page goes). Found ${slots}.
+`);
+    }
+    const inject = (nodes, pageBody) => {
+      const out = [];
+      for (const n of nodes) {
+        if (isSlot(n)) { out.push(...pageBody); continue; }
+        const copy = { ...n };
+        for (const [k, v] of Object.entries(copy)) {
+          if (Array.isArray(v) && v.every(x => x && typeof x === 'object')) copy[k] = inject(v, pageBody);
+        }
+        out.push(copy);
+      }
+      return out;
+    };
+    for (let i = 0; i < pages.length; i++) {
+      const page = pages[i];
+      if (page.body.some(n => n.type === 'NoLayout')) continue;
+      pages[i] = { ...page, body: inject(JSON.parse(JSON.stringify(layoutDefs[0].body)), page.body) };
+    }
+  }
+  for (let i = 0; i < pages.length; i++) {
+    pages[i] = { ...pages[i], body: pages[i].body.filter(n => n.type !== 'NoLayout') };
   }
 
   // ── `use <name>`: find files by name anywhere in the project ──────

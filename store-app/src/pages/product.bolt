@@ -1,5 +1,4 @@
 page product(id):
-    show Navbar
     
     // Fetch product details based on the dynamic ID
     fetch "https://fakestoreapi.com/products/" + id into product:
@@ -44,4 +43,3 @@ page product(id):
                             button "Back to Home" as secondary styled as: py-4 px-8 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl font-bold transition-colors:
                                 go to home
 
-    show Footer

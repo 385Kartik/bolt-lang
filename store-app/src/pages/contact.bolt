@@ -1,6 +1,5 @@
 page contact:
     
-    show Navbar
     
     container styled as: py-12:
         hero styled as: bg-gray-900 text-white p-12 rounded-3xl text-center mb-12:
@@ -38,4 +37,3 @@ page contact:
                     show "Remote Office (External URL)" as title styled as: section-title
                     image "https://picsum.photos/600/300" styled as: w-full rounded-xl object-cover
                     
-    show Footer

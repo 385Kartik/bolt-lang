@@ -144,3 +144,35 @@ test('implicit state: input fields declare their own state, explicit store wins'
   assert.equal((page.match(/const \[email, setEmail\]/g) || []).length, 1);   // not declared twice
   assert.match(page, /useState\("a@b\.com"\)/);
 });
+
+test('layout: wraps every page, supports nested slot and `layout none`', () => {
+  const root = makeProject({
+    'src/components/Navbar.bolt': ['component Navbar:', '    show "NAV"', ''].join('\n'),
+    'src/layout.bolt': ['layout:', '    show Navbar', '    column styled as: p-4:', '        slot', ''].join('\n'),
+    'src/pages/home.bolt': ['page home:', '    show "HOME"', ''].join('\n'),
+    'src/pages/login.bolt': ['page login:', '    layout none', '    show "LOGIN"', ''].join('\n')
+  });
+  const out = build(root);
+  const home = read(out, 'pages/HomePage.jsx');
+  assert.match(home, /<Navbar \/>/);
+  assert.match(home, /className="flex flex-col p-4"/);
+  assert.ok(home.indexOf('<Navbar') < home.indexOf('HOME'));
+  const login = read(out, 'pages/LoginPage.jsx');
+  assert.doesNotMatch(login, /Navbar/);
+  assert.match(login, /LOGIN/);
+});
+
+test('layout: must contain exactly one slot, only one layout allowed', () => {
+  const noSlot = makeProject({
+    'src/layout.bolt': ['layout:', '    show "x"', ''].join('\n'),
+    'src/pages/home.bolt': ['page home:', '    show "HOME"', ''].join('\n')
+  });
+  assert.throws(() => build(noSlot), /exactly one 'slot'/);
+
+  const two = makeProject({
+    'src/a.bolt': ['layout:', '    slot', ''].join('\n'),
+    'src/b.bolt': ['layout:', '    slot', ''].join('\n'),
+    'src/pages/home.bolt': ['page home:', '    show "HOME"', ''].join('\n')
+  });
+  assert.throws(() => build(two), /Only one 'layout:'/);
+});

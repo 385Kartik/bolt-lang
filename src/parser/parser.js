@@ -158,6 +158,21 @@ export function parse(tokens) {
   function parseStatement() {
     const token = peek();
 
+    // Layout block:  layout:   /   page opt-out:  layout none
+    if (token.type === TokenType.IDENTIFIER && token.value === 'layout' && tokens[pos + 1]) {
+      const nxt = tokens[pos + 1];
+      if (nxt.type === TokenType.COLON && tokens[pos + 2] && tokens[pos + 2].type === TokenType.NEWLINE) {
+        advance(); // 'layout'
+        advance(); // ':'
+        return AST.LayoutDef(parseBlock(), token.line);
+      }
+      if (nxt.type === TokenType.IDENTIFIER && nxt.value === 'none' && nxt.line === token.line) {
+        advance(); advance();
+        match(TokenType.NEWLINE);
+        return AST.NoLayout(token.line);
+      }
+    }
+
     // Named styles block:  styles:  (contextual keyword, 'styles' stays a valid variable name elsewhere)
     if (token.type === TokenType.IDENTIFIER && token.value === 'styles' &&
         tokens[pos + 1] && tokens[pos + 1].type === TokenType.COLON &&

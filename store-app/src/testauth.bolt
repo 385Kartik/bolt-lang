@@ -1,4 +1,5 @@
 page testauth:
+    layout none
     if not logged in:
         show "You are not logged in!"
         button "Login":

@@ -104,3 +104,9 @@
 - `input "Email" into email` now declares `email` automatically (empty text state); no `store email = ""` line needed
 - Existing `store`/`remember`, route params, component props and global stores are never redeclared
 - store-app login, signup and contact pages dropped their boilerplate `store` lines; generated React is identical
+
+## Phase 17: Layout
+- `layout:` block with `slot` wraps every page (navbar, footer, width) so pages stop repeating `show Navbar` / `show Footer`
+- `layout none` inside a page opts that page out
+- Compile errors for a layout without exactly one `slot`, or more than one layout
+- store-app moved to `layout.bolt` (login, signup and test pages keep their own structure with `layout none`); Navbar/Footer output per page is unchanged

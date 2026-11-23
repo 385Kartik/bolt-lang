@@ -1,5 +1,4 @@
 page products:
-    show Navbar
     
     hero styled as: bg-gray-900 text-white py-20 px-8 text-center:
         show "Our Collection" as title styled as: text-4xl md:text-5xl font-black tracking-tight mb-4
@@ -26,4 +25,3 @@ page products:
                 grid 4 styled as: gap-6:
                     show ProductCard for each product in products
             
-    show Footer

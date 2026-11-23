@@ -91,6 +91,7 @@ show helpers.money(product.price)
 - **Zero boilerplate:** no hooks, no imports, no router config
 - **Automatic routing:** pages map to URLs, with dynamic params `page store(storeId, productId):`
 - **Compile-time route validation:** `go to product(1, 2)` is a compiler error, not a 404
+- **Layout:** one `layout:` block wraps every page (navbar, footer) with a `slot`
 - **Implicit form state:** `input "Email" into email` declares `email` for you
 - **State primitives:** `store` (local), `remember` (persisted to localStorage), `global store` (shared)
 - **Smart forms:** built-in validation pipeline

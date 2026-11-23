@@ -33,6 +33,32 @@ export default function HomePage() {
 }
 ```
 
+### 1.1.1 Layout (shared wrapper for every page)
+
+Write the parts every page shares (navbar, footer, page width) **once** in a `layout:` block,
+in any file (usually `layout.bolt`). `slot` marks where each page's content goes.
+
+```bolt
+// layout.bolt
+layout:
+    show Navbar
+    column styled as: page-wrap:
+        slot
+    show Footer
+```
+
+Every page is wrapped automatically, so pages no longer start with `show Navbar` and end with
+`show Footer`. A page that should not use the layout (login, landing page) says so:
+
+```bolt
+page login:
+    layout none
+    show "Welcome back"
+```
+
+Rules: a project has at most one `layout:`, and it must contain exactly one `slot`. `slot` can be
+nested inside other elements.
+
 ### 1.2 Components
 Components are reusable pieces of UI. The compiler automatically identifies properties via the `for` keyword and turns them into React props.
 

@@ -1,0 +1,4 @@
+layout:
+    show Navbar
+    slot
+    show Footer
