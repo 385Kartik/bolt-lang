@@ -389,25 +389,27 @@ export function generate(ast, existingRegistry = null, globalStoresList = [], de
       currentExpr = `${emptyCond} ? (${emptyJsx}) : (${currentExpr})`;
     }
     
+    // Default UI: a fetch always handles loading and error, even when the
+    // page does not write `loading:` / `error:` blocks (so the data is never
+    // used while it is still null).
+    const errorVar = `${node.variable}Error`;
+    let errorJsx;
     if (node.errorBody && node.errorBody.length > 0) {
-      const errorVar = `${node.variable}Error`;
-      let errorJsx = `<>${node.errorBody.map(s => genUIStatement(s)).join('\n')}</>`;
+      errorJsx = `<>${node.errorBody.map(s => genUIStatement(s)).join('\n')}</>`;
       if (node.errorVar) {
         errorJsx = `(() => { const ${node.errorVar} = ${errorVar}; return ${errorJsx}; })()`;
       }
-      currentExpr = `${errorVar} ? (${errorJsx}) : (${currentExpr})`;
+    } else {
+      errorJsx = `<p className="text-red-500">Something went wrong: {${errorVar}}</p>`;
     }
-    
-    if (node.loadingBody && node.loadingBody.length > 0) {
-      const loadingVar = `${node.variable}Loading`;
-      const loadingJsx = `<>${node.loadingBody.map(s => genUIStatement(s)).join('\n')}</>`;
-      currentExpr = `${loadingVar} ? (${loadingJsx}) : (${currentExpr})`;
-    }
-    
-    if (!node.loadingBody && !node.errorBody && !node.emptyBody && !node.successBody) {
-       return 'null';
-    }
-    
+    currentExpr = `${errorVar} ? (${errorJsx}) : (${currentExpr})`;
+
+    const loadingVar = `${node.variable}Loading`;
+    const loadingJsx = (node.loadingBody && node.loadingBody.length > 0)
+      ? `<>${node.loadingBody.map(s => genUIStatement(s)).join('\n')}</>`
+      : `<p className="text-gray-400 animate-pulse">Loading...</p>`;
+    currentExpr = `${loadingVar} ? (${loadingJsx}) : (${currentExpr})`;
+
     return currentExpr;
   }
 

@@ -553,6 +553,18 @@ if (!products || products.length === 0) return <p>No products</p>;
 // (Continues to render products)
 ```
 
+**Default loading and error UI:** the shortest form needs no blocks at all.
+
+```bolt
+fetch "/api/products" into products
+show all products
+```
+
+Bolt shows `Loading...` while the request runs and `Something went wrong: <message>`
+if it fails, and only then renders the rest of the page with your data. Write your own
+`loading:`, `error:` or `empty:` block whenever you want a different look. Your block
+replaces only that default.
+
 ### 9.2 Mutating Data (POST, PUT, DELETE)
 **Bolt Code:**
 ```bolt

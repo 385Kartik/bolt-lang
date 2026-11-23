@@ -176,3 +176,35 @@ test('layout: must contain exactly one slot, only one layout allowed', () => {
   });
   assert.throws(() => build(two), /Only one 'layout:'/);
 });
+
+test('fetch: default loading and error UI when no handlers are written', () => {
+  const root = makeProject({
+    'src/components/ProductCard.bolt': ['component ProductCard for product:', '    show product.title', ''].join('\n'),
+    'src/pages/home.bolt': ['page home:', '    fetch "/api/products" into products', '    show all products', ''].join('\n')
+  });
+  const page = read(build(root), 'pages/HomePage.jsx');
+  assert.match(page, /productsLoading \? \(<p className="text-gray-400 animate-pulse">Loading\.\.\.<\/p>\)/);
+  assert.match(page, /productsError \? \(<p className="text-red-500">Something went wrong: \{productsError\}<\/p>\)/);
+  // data is only used after the loading/error checks
+  assert.ok(page.indexOf('productsLoading ?') < page.indexOf('products.map'));
+});
+
+test('fetch: your own loading/error blocks replace the defaults', () => {
+  const source = [
+    'page home:',
+    '    fetch "/api/p" into items:',
+    '        loading:',
+    '            show "WAIT"',
+    '        error err:',
+    '            show "BROKEN"',
+    '        success:',
+    '            show "DONE"',
+    ''
+  ].join('\n');
+  const root = makeProject({ 'src/pages/home.bolt': source });
+  const page = read(build(root), 'pages/HomePage.jsx');
+  assert.match(page, /WAIT/);
+  assert.match(page, /BROKEN/);
+  assert.doesNotMatch(page, /Loading\.\.\./);
+  assert.doesNotMatch(page, /Something went wrong/);
+});

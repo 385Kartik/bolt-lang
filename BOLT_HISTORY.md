@@ -110,3 +110,8 @@
 - `layout none` inside a page opts that page out
 - Compile errors for a layout without exactly one `slot`, or more than one layout
 - store-app moved to `layout.bolt` (login, signup and test pages keep their own structure with `layout none`); Navbar/Footer output per page is unchanged
+
+## Phase 18: Default Fetch UI
+- `fetch "/url" into data` now shows a default loading message and a default error message with no extra blocks
+- Fixed: a fetch without `loading:` / `error:` blocks rendered the page while the data was still `null`, which crashed on `products.map`
+- Your own `loading:` / `error:` blocks replace only their own default
