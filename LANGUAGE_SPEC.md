@@ -724,6 +724,17 @@ ButtonStatement
 FetchStatement
     := fetch StringLiteral into IDENTIFIER Block
 
+StylesDef
+    := styles : INDENT (StyleName : ClassList NEWLINE)+ DEDENT
+    StyleName := [A-Za-z_][A-Za-z0-9_-]*
+
+UseStatement
+    := use FileName                      // find the file by name anywhere in the project
+    | use Path/Glob                      // legacy form, accepted and ignored
+
+CallExpression
+    := Identifier ('.' IDENTIFIER)+ '(' (Expression (',' Expression)*)? ')'   // no space before '('
+
 Block
     := INDENT Statement* DEDENT
 ```

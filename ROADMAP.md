@@ -2,6 +2,19 @@
 
 Based on the core necessity of building real-world applications (like e-commerce, SaaS, and CRM platforms), the roadmap for Bolt's development is prioritized as follows:
 
+## [x] Named Styles & Import-by-Name ✅
+- `styles:` blocks for reusable Tailwind classes, usable by name in any file
+- `use <name>` imports files by name from anywhere in the project
+
+## [ ] Next: Simpler, Smaller Bolt (fewer tokens for people and AI)
+- Implicit state: `input "Email" into email` declares `email` automatically
+- `layout.bolt`: wrap every page in Navbar/Footer without repeating them
+- Default loading/error/empty UI for `fetch` from the design system
+- `resource` block for one-line CRUD (`resource products at "/api/products"`)
+- `bolt stats`: compare Bolt vs generated React size and tokens
+- AI tooling: compact cheat-sheet (`llms.txt`) and `bolt check --json` with fix suggestions
+- Backend: `model` / `api` blocks that generate an Express + SQLite server
+
 ## [x] Phase 9: Dynamic Routing ✅
 - URL parameters in page definitions: `page product(id):`
 - Multiple params: `page store(storeId, productId):`

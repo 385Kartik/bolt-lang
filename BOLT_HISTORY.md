@@ -73,3 +73,18 @@
 - Reserved parameter protection (prevents `store` from shadowing route params)
 - Fetch reactivity: `useEffect` dependency array auto-populated with referenced route params
 - Static-first route sorting for React Router priority
+
+## Phase 12: Named Styles & Import-by-Name
+- `styles:` blocks: define Tailwind class sets once and use them by name in any file
+- Style composition (styles using styles), variant prefixes (`md:card`), duplicate and circular-reference errors
+- `use <name>`: import `.js`, `.ts`, `.json`, `.css` files by file name from anywhere in the project (no paths)
+- Missing-name "Did you mean" hints and ambiguous-name errors listing every matching file
+- Member calls with parentheses: `helpers.money(5)`
+
+## Phase 13: Stabilization
+- Fixed builder writing theme files into a nested `src/.bolt-generated/src` folder
+- Fixed `useAuth()` redeclaring a component prop named `user`
+- Fixed `link ... to "/home"` generating `//home`
+- Fixed build crash for projects without a `design system`
+- Removed leftover debug output from builds
+- Updated the e2e suite and added `tests/features.test.js`

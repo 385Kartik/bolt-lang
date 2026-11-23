@@ -72,6 +72,20 @@ What the compiler generates for you:
 - Auth check, toast system, global cart store
 - Tailwind classes from `styled as:`
 
+## Write less: named styles and import-by-name
+
+```bolt
+// styles.bolt: write Tailwind once, use the name anywhere
+styles:
+    card: flex flex-col rounded-2xl border bg-white
+    product-card: card hover:shadow-xl p-4
+
+// any page or component
+use helpers                      // finds helpers.js anywhere, no paths
+show product.title styled as: product-card mt-2
+show helpers.money(product.price)
+```
+
 ## Features
 
 - **Zero boilerplate:** no hooks, no imports, no router config
@@ -114,6 +128,12 @@ bolt run <file.bolt>               Compile and execute
 bolt compile <file.bolt> [-o out]  Compile to JS
 bolt tokens <file.bolt>            Show token stream (debug)
 bolt ast <file.bolt | dir>         Show AST (debug)
+```
+
+### Tests
+
+```bash
+npm test
 ```
 
 ## How it works

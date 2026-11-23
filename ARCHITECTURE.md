@@ -76,7 +76,11 @@ Example AST Nodes: `PageDef`, `ComponentDef`, `ShowStatement`, `StoreDeclaration
 
 ### 3. Global AST & Builder
 Single file or Multi-file parsing are merged into a Global AST.
-The `UseStatement` (`use components/*`) merges files into one Global AST where all pages, components, and actions are accessible across the project.
+Every `.bolt` file in the project is merged automatically, so all pages, components, actions and styles are accessible everywhere without imports.
+
+**Import by name (`src/builder/resolve.js`):** `use helpers` resolves `helpers.js` (or `.ts`, `.json`, `.css`, `.bolt`) anywhere in the project by file name. The resolver walks the project root (skipping `node_modules`, `dist`, `.bolt-generated`), reports missing names with "Did you mean" hints, reports ambiguous names with every matching path, and computes the relative import path for each generated page, component and `actions.js`.
+
+**Named styles:** `styles:` blocks (parsed as `StylesDef`) from every file are merged into one style map by the builder (duplicates are errors) and passed to the generator, which expands style names into Tailwind classes in `styled as:` (supports composition, `md:`/`hover:` prefixes and circular-reference detection).
 
 ## Generator Architecture
 
@@ -110,6 +114,7 @@ Bolt: `go to checkout` → React: `navigate("/checkout")`
 ### Styling & Layout Engine
 Bolt styling is Tailwind-based.
 Bolt: `show "Hello" styled as: text-xl` → React: `className="text-xl"`
+Bolt: `show "Hello" styled as: product-card mt-2` → React: `className="<expanded classes of product-card> mt-2"` (see `styles:` in the Language Specification)
 Layout primitives:
 - `row:` → `<div className="flex flex-row flex-wrap">`
 - `column:` → `<div className="flex flex-col">`

@@ -8,14 +8,20 @@ Before diving into the code, please read the [Architecture Guide](ARCHITECTURE.m
 ## How to Contribute
 1. **Parser & Lexer Improvements:** Check `src/lexer/tokens.js` and `src/parser/parser.js`. If adding new syntax, make sure to update the [Language Specification](LANGUAGE_SPEC.md) grammar section.
 2. **Generator Improvements:** Check `src/generator/generator.js` to tweak the React/Tailwind output.
-3. **Bug Fixes:** Check the issues tab and submit pull requests targeting the `main` branch.
+3. **Resolver & Builder:** Check `src/builder/builder.js` and `src/builder/resolve.js` (`use <name>` file lookup, named styles merging).
+4. **Bug Fixes:** Check the issues tab and submit pull requests targeting the `main` branch.
 
 ## Setting up locally
 ```bash
 git clone https://github.com/yourusername/bolt.git
 cd bolt
 npm install
-node cli/bolt.js build examples/test_app
+node cli/bolt.js build store-app
+npm test
 ```
 
 We welcome discussions and PRs for adding new language primitives or improving the AST optimizations!
+
+## Tests
+- `npm test` runs everything (`tests/e2e.test.js` and `tests/features.test.js`)
+- Add a test for every new syntax or compiler behavior, and update the docs (README, LANGUAGE_SPEC, ARCHITECTURE, BOLT_HISTORY, ROADMAP) in the same change
