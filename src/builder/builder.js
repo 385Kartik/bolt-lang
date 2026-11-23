@@ -29,7 +29,7 @@ function processMarkersAndSourceMaps(fileName, rawCode, prefixCode, rawSource = 
       });
       
       lineMap[generatedLine] = origLine;
-      line = line.replace(match[0], '');
+      line = line.replace(/\/\*__L:\d+\*\//g, ''); // remove every marker on the line (nested ones would show up as page text)
     }
     cleanedLines.push(line);
   }
@@ -207,7 +207,7 @@ export function buildProject(ast, outDir = 'dist', rawSource = '', options = {})
   const themePath = outDir;
   if (!fs.existsSync(themePath)) fs.mkdirSync(themePath, { recursive: true });
   fs.writeFileSync(path.join(themePath, 'tailwind.theme.js'), themeExport);
-  fs.writeFileSync(path.join(themePath, 'theme.css'), cssVariables);
+  fs.writeFileSync(path.join(themePath, 'theme.css'), cssVariables.trim() ? cssVariables : '/* Theme variables appear here when you add a `design system:` with themes. */\n');
 
   // ── Phase 15: Missing Token Validation ──────────
   const validColors = [...Object.keys(designSystemConfig.colors)];
@@ -967,9 +967,12 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  // \`resource\` blocks talk to the built-in Bolt API (started by \`bolt dev\`)
+  server: { proxy: { '/api': 'http://localhost:3001' } },
 })
 `.trim();
   fs.writeFileSync(path.join(outDir, 'vite.config.js'), viteConfig);
+  fs.writeFileSync(path.join(outDir, '.gitignore'), 'node_modules\ndist\n.bolt-data\n');
 
   // 4. Generate index.html
   const indexHtml = `

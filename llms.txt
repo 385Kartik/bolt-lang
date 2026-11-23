@@ -46,7 +46,8 @@ resource products at "/api/products":
     title text required
     price number
 (page with list + add form + delete. API: GET list, POST returns record, DELETE /api/products/<id>.
- field types: text number email. reserved field names: items item created)
+ field types: text number email. reserved field names: items item created.
+ `bolt dev` / `bolt serve` run a ready API for every resource: no backend code needed.)
 
 ## Auth
 if logged in: ... otherwise: ...

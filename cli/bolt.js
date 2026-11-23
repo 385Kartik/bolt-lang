@@ -29,6 +29,7 @@ function showHelp() {
     bolt ast <file.bolt | dir>         Show AST (debug)
     bolt check [dir] [--json]          Check the whole project, list every problem
     bolt stats [dir] [--json]          Compare Bolt size with the React it generates
+    bolt serve [dir]                   Run the built-in API for your 'resource' blocks
     bolt spec                          Print the short language cheat-sheet (for AI)
     bolt help                          Show this message
 `);
@@ -65,7 +66,7 @@ if (!command || command === 'help' || command === '--help') {
 }
 
 // ── check / stats / spec: work on a whole project (default: current folder) ──
-if (command === 'check' || command === 'stats' || command === 'spec') {
+if (command === 'check' || command === 'stats' || command === 'spec' || command === 'serve') {
   const wantJson = args.includes('--json');
   const target = args.slice(1).find(a => !a.startsWith('--')) || '.';
 
@@ -74,6 +75,43 @@ if (command === 'check' || command === 'stats' || command === 'spec') {
     const specPath = join(fileURLToPath(new URL('..', import.meta.url)), 'llms.txt');
     process.stdout.write(readFileSync(specPath, 'utf-8'));
     process.exit(0);
+  }
+
+  if (command === 'serve') {
+    const { findResources } = await import('../src/check.js');
+    const { createApiServer } = await import('../src/server/api.js');
+    const root = resolve(target);
+    const resources = findResources(root);
+    if (resources.length === 0) {
+      console.log(`
+  ⚡ No 'resource' blocks found in ${root}.
+     Add one, for example:
+
+     resource products at "/api/products":
+         title text required
+         price number
+`);
+      process.exit(1);
+    }
+    const api = createApiServer({ resources, dataDir: join(root, '.bolt-data') });
+    const port = Number(process.env.BOLT_API_PORT) || 3001;
+    try {
+      await api.listen(port);
+    } catch (e) {
+      console.error(`
+  ⚡ Could not start the API on port ${port}: ${e.message}
+     Use another port with:  BOLT_API_PORT=3002 bolt serve
+`);
+      process.exit(1);
+    }
+    console.log(`
+  ⚡ Bolt API running on http://localhost:${port}
+`);
+    for (const r of resources) console.log(`     ${r.url}   (${r.fields.map(f => f.name).join(', ')})`);
+    console.log(`
+     Data is saved in ${join(root, '.bolt-data')}
+`);
+    await new Promise(() => {}); // keep running
   }
 
   const { checkProject, projectStats } = await import('../src/check.js');
@@ -210,6 +248,26 @@ switch (command) {
         await new Promise(resolveP => installProcess.on('close', resolveP));
       }
 
+      // 2.5 Built-in API for `resource` blocks (same process, port 3001)
+      let devApi = null;
+      const startApi = async () => {
+        const { findResources } = await import('../src/check.js');
+        const resources = findResources(resolvedFile);
+        if (resources.length === 0) return;
+        if (devApi) { devApi.setResources(resources); return; }
+        const { createApiServer } = await import('../src/server/api.js');
+        devApi = createApiServer({ resources, dataDir: join(resolvedFile, '.bolt-data') });
+        const apiPort = Number(process.env.BOLT_API_PORT) || 3001;
+        try {
+          await devApi.listen(apiPort);
+          console.log(`  🗄️  Bolt API on http://localhost:${apiPort} (${resources.map(r => r.url).join(', ')})`);
+        } catch (e) {
+          console.log(`  ⚠️  Could not start the Bolt API on port ${apiPort}: ${e.message}`);
+          devApi = null;
+        }
+      };
+      await startApi();
+
       // 3. Start Vite
       console.log(`  🚀 Starting Dev Server...`);
       const viteProcess = spawn('npm', ['run', 'dev:vite'], { cwd: resolvedFile, stdio: 'inherit', shell: true });
@@ -241,6 +299,7 @@ switch (command) {
               }
               const newAst = { type: 'Program', body: globalBody, line: 1 };
               buildProject(newAst, join(resolvedFile, 'src', '.bolt-generated'), watcherRawSource, { projectRoot: resolvedFile });
+              startApi();
             } catch (err) {
               console.error(`  ❌ Rebuild failed:`, err.message);
             }

@@ -27,5 +27,5 @@ We welcome discussions and PRs for adding new language primitives or improving t
 - If you change syntax, update `llms.txt` (the AI cheat-sheet) too
 
 ## Tests
-- `npm test` runs everything (`tests/e2e.test.js` and `tests/features.test.js`)
+- `npm test` runs everything (`tests/e2e.test.js`, `tests/features.test.js`, `tests/api.test.js`)
 - Add a test for every new syntax or compiler behavior, and update the docs (README, LANGUAGE_SPEC, ARCHITECTURE, BOLT_HISTORY, ROADMAP) in the same change

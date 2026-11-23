@@ -637,6 +637,19 @@ styles work with it, and the page name (`products`) cannot clash with another pa
 
 Field names `items`, `item` and `created` are reserved. `number` fields are sent as numbers.
 
+**You do not have to write that API.** Bolt ships one. `bolt dev` starts it for you on port 3001
+(set `BOLT_API_PORT` to change it) and the dev server forwards `/api/...` to it. Or run it alone:
+
+```bash
+bolt serve
+```
+
+For every `resource` it provides `GET`, `POST`, `PUT`, `PATCH` and `DELETE`, checks the fields
+(required, number, email) and answers `400` with the problems when something is wrong. Data is
+saved as plain JSON in `.bolt-data/<name>.json` (already in the `.gitignore` made by `bolt init`),
+so you can read or edit it by hand. It is meant for development and prototypes; point the
+`resource` at your own server when you go to production.
+
 ---
 
 ## 10. Authentication

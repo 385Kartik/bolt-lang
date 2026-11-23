@@ -84,6 +84,8 @@ Every `.bolt` file in the project is merged automatically, so all pages, compone
 
 **Resource (`src/builder/resource.js`):** a `ResourceDef` is turned into Bolt source for a page (fetch list, form, `for every` rows, delete buttons) and parsed with the normal parser, so it flows through the same layout, styles and validation as any page.
 
+**API server (`src/server/api.js`):** `bolt serve` and `bolt dev` read every `ResourceDef` (`findResources` in `src/check.js`) and start a small `node:http` server that implements the REST shape each resource expects, saving records as JSON files. `bolt dev` keeps it in sync when `.bolt` files change.
+
 **Layout:** the builder finds the single `LayoutDef`, validates it has exactly one `slot`, and injects each page's body into a copy of the layout body before code generation (pages with `layout none` are skipped).
 
 **Scaffold:** `bolt init` (`scaffoldProject` in `builder.js`) writes `src/styles.bolt` (the `DEFAULT_STYLES_BOLT` vocabulary) and `src/pages/home.bolt`.

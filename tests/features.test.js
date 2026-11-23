@@ -333,3 +333,10 @@ test('remove: loop variable named item does not break removal', () => {
   const root = makeProject({ 'src/pages/home.bolt': source });
   assert.match(read(build(root), 'pages/HomePage.jsx'), /prev\.filter\(_item => _item !== item\)/);
 });
+
+test('markers: a fetch with a success body leaves no stray line markers in the page', () => {
+  const root = makeProject({
+    'src/pages/home.bolt': ['page home:', '    fetch "/api/p" into items', '    show "after"', ''].join('\n')
+  });
+  assert.doesNotMatch(read(build(root), 'pages/HomePage.jsx'), /__L:/);
+});

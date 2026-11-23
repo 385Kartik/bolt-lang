@@ -139,3 +139,11 @@
 - `for every item in items:` now works inside pages and components (draws the body once per item)
 - Fixed: `remove item from items` inside a loop that names its variable `item` removed nothing
 - Fixed: `submit`/`update`/`delete` handlers crashed when the server answered with an empty body
+
+## Phase 23: Built-in API Server
+- `bolt serve` and `bolt dev` run a ready REST API for every `resource` block (`src/server/api.js`): list, get, create, replace, patch, delete, with field validation and `400` errors
+- Data is saved as plain JSON (`.bolt-data/<name>.json`); no database to install; `bolt init` adds a Vite proxy for `/api` and a `.gitignore`
+- Verified end to end in a real browser: add a record, see the toast and the row, reload (it persists), delete it
+- Fixed: line markers could be left in the page as visible text (for example `/*__L:1*/`) when a fetch wrapped the page
+- Fixed: an empty `theme.css` made Vite print a warning
+- New tests: `tests/api.test.js` (server) and a marker test; the suite now has 27 tests

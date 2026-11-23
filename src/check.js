@@ -100,6 +100,14 @@ function loadProject(root) {
   return { body, errors, files };
 }
 
+// Every `resource` block in the project, ready for the API server.
+export function findResources(root) {
+  const { body } = loadProject(path.resolve(root));
+  return body
+    .filter(n => n.type === 'ResourceDef')
+    .map(n => ({ name: n.name, url: n.url, fields: n.fields }));
+}
+
 export function checkProject(root) {
   const resolved = path.resolve(root);
   const { body, errors, files } = loadProject(resolved);

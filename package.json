@@ -8,9 +8,10 @@
     "bolt": "./cli/bolt.js"
   },
   "scripts": {
-    "test": "node --test tests/e2e.test.js tests/features.test.js",
+    "test": "node --test tests/e2e.test.js tests/features.test.js tests/api.test.js",
     "test:e2e": "node --test tests/e2e.test.js",
     "test:features": "node --test tests/features.test.js",
+    "test:api": "node --test tests/api.test.js",
     "compile": "node cli/bolt.js compile",
     "run": "node cli/bolt.js run"
   },

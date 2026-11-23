@@ -107,6 +107,7 @@ bolt stats store-app
 - **Automatic routing:** pages map to URLs, with dynamic params `page store(storeId, productId):`
 - **Compile-time route validation:** `go to product(1, 2)` is a compiler error, not a 404
 - **One-line CRUD:** `resource products at "/api/products":` builds a list, add form and delete buttons
+- **Built-in API:** `bolt dev` / `bolt serve` run a ready REST API for every `resource` (data in plain JSON files)
 - **Fetch with defaults:** `fetch "/api/x" into x` handles loading and errors for you
 - **Windows friendly:** CRLF and LF files both work
 - **Layout:** one `layout:` block wraps every page (navbar, footer) with a `slot`
@@ -150,6 +151,7 @@ bolt tokens <file.bolt>            Show token stream (debug)
 bolt ast <file.bolt | dir>         Show AST (debug)
 bolt check [dir] [--json]          Check the whole project and list every problem
 bolt stats [dir] [--json]          Compare Bolt size with the React it generates
+bolt serve [dir]                   Run the built-in API for your resource blocks
 bolt spec                          Print the short cheat-sheet (for AI)
 ```
 
