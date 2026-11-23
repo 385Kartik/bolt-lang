@@ -122,3 +122,8 @@
 - `bolt spec` and `llms.txt`: a one-page cheat-sheet to paste into an AI prompt
 - Fixed: `.bolt` files with Windows line endings (CRLF) failed with "Unexpected character"; the lexer now accepts both
 - New module `src/check.js`
+
+## Phase 20: Theme CSS Actually Applies
+- Verified the full flow end to end: `bolt init`, `npm install`, `bolt build`, `vite build` all succeed
+- Fixed: `global.css` imported `theme.css` after the `@tailwind` rules, so browsers ignored it and design-system colors and dark/light themes never loaded. The import now comes first
+- store-app now loads its theme (`global.css` import, `tailwind.config.js` extends the generated theme)

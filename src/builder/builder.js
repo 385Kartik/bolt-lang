@@ -1005,10 +1005,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   // 6. Generate src/styles/global.css
   fs.mkdirSync(path.join(outDir, 'src', 'styles'), { recursive: true });
   const globalCss = `
+@import '../.bolt-generated/theme.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import '../.bolt-generated/theme.css';
 `.trim();
   fs.writeFileSync(path.join(outDir, 'src', 'styles', 'global.css'), globalCss);
 

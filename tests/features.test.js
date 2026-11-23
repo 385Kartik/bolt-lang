@@ -121,6 +121,10 @@ test('bolt init: scaffolded project builds and uses the default style vocabulary
   assert.ok(fs.existsSync(path.join(root, 'src', 'styles.bolt')));
   assert.ok(fs.existsSync(path.join(root, 'src', 'pages', 'home.bolt')));
 
+  // theme.css must be imported FIRST, or browsers ignore it (CSS @import rule)
+  const css = fs.readFileSync(path.join(root, 'src', 'styles', 'global.css'), 'utf-8');
+  assert.ok(css.trimStart().startsWith("@import '../.bolt-generated/theme.css';"));
+
   const page = read(build(root), 'pages/HomePage.jsx');
   assert.match(page, /text-4xl font-extrabold tracking-tight text-gray-900/);   // heading
   assert.match(page, /max-w-5xl mx-auto px-6 py-12/);                           // page-wrap

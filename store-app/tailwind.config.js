@@ -1,3 +1,5 @@
+import { theme } from './src/.bolt-generated/tailwind.theme.js';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -6,7 +8,7 @@ export default {
     "./src/.bolt-generated/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: theme,
   },
   plugins: [],
 }
