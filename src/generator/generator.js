@@ -1293,7 +1293,8 @@ ${indent()}})()}`;
                      strBody.match(/"name":"user"/);
 
     if (usesAuth) {
-      output += `${indent()}const { user, isLoggedIn, loginUser, logoutUser } = useAuth();\n`;
+      output += `${indent()}const { ${['user', 'isLoggedIn', 'loginUser', 'logoutUser'].filter(n => !propsList.includes(n)).join(', ')} } = useAuth();
+`;
     }
 
     if (strBody.includes('"ShowToastStatement"')) {
@@ -1333,7 +1334,8 @@ ${indent()}})()}`;
   function genLinkStatement(node) {
     const label = genJSXContent(node.label);
     const cls = mergeClass('', node.style);
-    const basePath = node.target.toLowerCase() === 'home' ? '/' : `/${node.target.toLowerCase()}`;
+    const routeName = node.target.toLowerCase().replace(/^\/+/, '');
+    const basePath = routeName === 'home' ? '/' : `/${routeName}`;
     
     if (node.args && node.args.length > 0) {
       const argParts = node.args.map(a => '${' + gen(a) + '}').join('/');
@@ -1504,7 +1506,8 @@ ${indent()}})()}`;
   }
 
   function genGoTo(node) {
-    const basePath = node.target.toLowerCase() === 'home' ? '/' : `/${node.target.toLowerCase()}`;
+    const routeName = node.target.toLowerCase().replace(/^\/+/, '');
+    const basePath = routeName === 'home' ? '/' : `/${routeName}`;
     
     if (node.args && node.args.length > 0) {
       const argParts = node.args.map(a => '${' + gen(a) + '}').join('/');

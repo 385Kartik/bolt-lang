@@ -274,9 +274,9 @@ testOutput('UI — components and button',
     button "Click Me":
         print "Clicked"`,
   [
-    'function Card({ user }) {',
+    'function Card({ user, children }) {',
     '<h1>{user.name}</h1>',
-    '<button onClick={() => { console.log("Clicked"); }}>Click Me</button>'
+    'onClick={async () => { console.log("Clicked"); }}>Click Me</button>'
   ]
 );
 
@@ -299,7 +299,7 @@ testOutput('UI — inputs and links',
   [
     'export default function LoginPage() {',
     '<input placeholder={"Enter name"} value={name} onChange={(e) => setName(e.target.value)} />',
-    '<a href={"/home"}>Go back</a>'
+    '<Link to="/">Go back</Link>'
   ]
 );
 
