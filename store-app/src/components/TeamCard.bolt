@@ -5,7 +5,7 @@ component TeamCard for member:
 
         column styled as: p-6 gap-3:
             row styled as: gap-4 items-center:
-                container styled as: w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg:
+                container styled as: w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full center-flex text-white font-bold text-xl shadow-lg:
                     show member.name as avatar
                 column:
                     show member.name as name styled as: font-bold text-gray-900 text-lg

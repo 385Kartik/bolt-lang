@@ -5,7 +5,7 @@ page signup:
     show Navbar
     
     section styled as: max-w-md mx-auto mt-20 p-8 bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100:
-        show "Create Account" as title styled as: text-3xl font-black text-gray-900 mb-2 text-center
+        show "Create Account" as title styled as: text-3xl heading-black mb-2 text-center
         show "Join the future of shopping today." as subtitle styled as: text-gray-500 mb-8 text-center
         
         form:

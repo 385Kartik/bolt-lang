@@ -7,6 +7,7 @@ Based on the core necessity of building real-world applications (like e-commerce
 - `use <name>` imports files by name from anywhere in the project
 
 ## [ ] Next: Simpler, Smaller Bolt (fewer tokens for people and AI)
+- Bundled default style vocabulary shipped with `bolt init` (so new pages and AI use names from the first line instead of raw Tailwind)
 - Implicit state: `input "Email" into email` declares `email` automatically
 - `layout.bolt`: wrap every page in Navbar/Footer without repeating them
 - Default loading/error/empty UI for `fetch` from the design system

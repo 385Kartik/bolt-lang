@@ -16,7 +16,7 @@ page admin:
     container styled as: max-w-4xl mx-auto px-8 py-16:
         // Phase 4: Authentication natively built in
         if not logged in:
-            card styled as: p-8 bg-gray-50 rounded-2xl mb-8:
+            card styled as: soft-panel:
                 show "Admin Login" as title styled as: text-3xl font-black mb-4
                 show "Please log in to access the dashboard." as desc styled as: text-gray-600 mb-6
                 
@@ -32,8 +32,8 @@ page admin:
             button "Logout" as secondary styled as: mb-8:
                 logout
                 
-            card styled as: p-8 bg-gray-50 rounded-2xl mb-8:
-                show "Add New Product" as stitle styled as: text-xl font-bold mb-4
+            card styled as: soft-panel:
+                show "Add New Product" as stitle styled as: section-title
                 
                 row styled as: gap-4 mb-4:
                     column:
@@ -49,8 +49,8 @@ page admin:
                     newName = ""
                     newPrice = "0"
 
-            card styled as: p-8 bg-gray-50 rounded-2xl mb-8:
-                show "Update/Delete Actions" as atitle styled as: text-xl font-bold mb-4
+            card styled as: soft-panel:
+                show "Update/Delete Actions" as atitle styled as: section-title
                 show "FakeStore API allows mocking these actions. Check network tab." as desc styled as: text-sm text-gray-500 mb-4
                 
                 row styled as: gap-4:

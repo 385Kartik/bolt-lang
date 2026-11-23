@@ -1,6 +1,6 @@
 component ProductCard for product:
     card styled as: flex flex-col p-0 bg-white border border-gray-100 rounded-2xl hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group cursor-pointer overflow-hidden:
-        container styled as: aspect-[4/3] bg-gray-50 overflow-hidden flex items-center justify-center p-6:
+        container styled as: aspect-[4/3] bg-gray-50 overflow-hidden center-flex p-6:
             image product.image styled as: h-full w-full object-contain group-hover:scale-110 transition-transform duration-500
                 
         column styled as: gap-2 p-5:
@@ -19,7 +19,7 @@ component ProductCard for product:
             row styled as: justify-between items-center mt-3 pt-3 border-t border-gray-100:
                 column:
                     show "Price" as label styled as: text-[10px] text-gray-400 uppercase tracking-wider font-medium
-                    show product.price as price styled as: font-black text-gray-900 text-xl
+                    show product.price as price styled as: heading-black text-xl
                 column styled as: items-end:
                     show "In Stock" as stock styled as: text-[10px] text-emerald-600 font-bold uppercase tracking-wider bg-emerald-50 px-2 py-0.5 rounded-full
             

@@ -88,3 +88,8 @@
 - Fixed build crash for projects without a `design system`
 - Removed leftover debug output from builds
 - Updated the e2e suite and added `tests/features.test.js`
+
+## Phase 14: store-app on Named Styles
+- Converted the demo store to `styles:` (`store-app/src/styles.bolt`, 10 shared styles such as `avatar-badge`, `pill-button`, `heading-black`)
+- Generated React is byte-identical before and after, so the conversion is behavior-neutral
+- Measured: Bolt source went from 31,158 to 30,417 characters (about 4% fewer approximate tokens, including the styles file itself). Most Tailwind strings in the app are unique, so extracting repeats saves little; the bigger savings come from a shared vocabulary that new pages reuse

@@ -17,7 +17,7 @@ page home:
             link "Learn More" to about styled as: px-8 py-4 bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-800 rounded-xl font-bold transition-all
 
     section styled as: max-w-7xl mx-auto px-8 py-20:
-        show "Theme Preferences" as title styled as: text-3xl font-black text-gray-900 mb-2
+        show "Theme Preferences" as title styled as: text-3xl heading-black mb-2
         row styled as: gap-4 mb-10:
             button "Light Theme":
                 theme = "light"
@@ -26,7 +26,7 @@ page home:
             button "System Theme":
                 theme = "system"
 
-        show "Featured Products" as title styled as: text-3xl font-black text-gray-900 mb-2
+        show "Featured Products" as title styled as: text-3xl heading-black mb-2
         show "Handpicked items fetched live from FakeStore API" as subtitle styled as: text-gray-400 mb-10
 
         if featured == null:
@@ -52,21 +52,21 @@ page home:
         grid 3 styled as: gap-8:
             
             card:
-                container styled as: w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl:
+                container styled as: icon-box:
                     show "⚡" as emoji1
-                show "Lightning Fast" as title1 styled as: font-bold text-xl mb-3
-                show "Compiled directly to React for maximum performance." as desc1 styled as: text-gray-500 leading-relaxed
+                show "Lightning Fast" as title1 styled as: card-title
+                show "Compiled directly to React for maximum performance." as desc1 styled as: body-text
                 
             card:
-                container styled as: w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl:
+                container styled as: icon-box:
                     show "🎨" as emoji2
-                show "Beautiful UI" as title2 styled as: font-bold text-xl mb-3
-                show "Styled with Tailwind CSS for perfect modern aesthetics." as desc2 styled as: text-gray-500 leading-relaxed
+                show "Beautiful UI" as title2 styled as: card-title
+                show "Styled with Tailwind CSS for perfect modern aesthetics." as desc2 styled as: body-text
                 
             card:
-                container styled as: w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl:
+                container styled as: icon-box:
                     show "📱" as emoji3
-                show "Responsive" as title3 styled as: font-bold text-xl mb-3
-                show "Looks amazing on any device, anywhere." as desc3 styled as: text-gray-500 leading-relaxed
+                show "Responsive" as title3 styled as: card-title
+                show "Looks amazing on any device, anywhere." as desc3 styled as: body-text
                 
     show Footer

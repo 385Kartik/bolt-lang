@@ -26,19 +26,19 @@ page contact:
                         
             column styled as: w-full lg:w-1/2 flex flex-col gap-6:
                 card:
-                    show "Watch Our Story (Public Folder)" as title styled as: text-xl font-bold mb-4
+                    show "Watch Our Story (Public Folder)" as title styled as: section-title
                     video "/demo.mp4" styled as: w-full rounded-xl
                     
                 card:
-                    show "Our Headquarters (Public Folder)" as title styled as: text-xl font-bold mb-4
+                    show "Our Headquarters (Public Folder)" as title styled as: section-title
                     image "/office.jpg" styled as: w-full rounded-xl object-cover
                     
                 card:
-                    show "Product Demo (External URL)" as title styled as: text-xl font-bold mb-4
+                    show "Product Demo (External URL)" as title styled as: section-title
                     video "https://www.w3schools.com/html/mov_bbb.mp4" styled as: w-full rounded-xl
                     
                 card:
-                    show "Remote Office (External URL)" as title styled as: text-xl font-bold mb-4
+                    show "Remote Office (External URL)" as title styled as: section-title
                     image "https://picsum.photos/600/300" styled as: w-full rounded-xl object-cover
                     
     show Footer

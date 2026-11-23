@@ -21,16 +21,16 @@ page product(id):
                     column styled as: flex-1:
                         show product.category styled as: text-sm font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-3 py-1.5 rounded-full inline-block w-max mb-6
                         
-                        show product.title as title styled as: text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-6
+                        show product.title as title styled as: text-4xl md:text-5xl heading-black leading-tight mb-6
                         
                         row styled as: items-center gap-4 mb-8:
                             show "★ " + product.rating.rate styled as: text-lg font-bold text-yellow-500
                             show "(" + product.rating.count + " reviews)" styled as: text-gray-500
                         
-                        show "$" + product.price as price styled as: text-5xl font-black text-gray-900 mb-8
+                        show "$" + product.price as price styled as: text-5xl heading-black mb-8
                         
                         show "Description" as label styled as: text-lg font-bold text-gray-900 mb-3
-                        show product.description as text styled as: text-gray-500 leading-relaxed text-lg mb-10
+                        show product.description as text styled as: body-text text-lg mb-10
                         
                         row styled as: gap-4:
                             button "Add to Cart" as primary styled as: flex-1 py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-lg transition-colors:

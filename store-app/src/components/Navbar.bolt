@@ -3,12 +3,12 @@ component Navbar:
         show "BoltStore" as title styled as: text-2xl font-black text-blue-600 tracking-tighter
         
         row styled as: flex gap-6 text-sm font-medium text-gray-600:
-            link "Home" to home styled as: hover:text-blue-600 transition-colors
-            link "Products" to products styled as: hover:text-blue-600 transition-colors
-            link "About" to about styled as: hover:text-blue-600 transition-colors
-            link "Contact" to contact styled as: hover:text-blue-600 transition-colors
-            link "Team" to team styled as: hover:text-blue-600 transition-colors
-            link "Admin" to admin styled as: hover:text-blue-600 transition-colors
+            link "Home" to home styled as: link-hover
+            link "Products" to products styled as: link-hover
+            link "About" to about styled as: link-hover
+            link "Contact" to contact styled as: link-hover
+            link "Team" to team styled as: link-hover
+            link "Admin" to admin styled as: link-hover
         
         row styled as: flex gap-4 items-center:
             if logged in:
