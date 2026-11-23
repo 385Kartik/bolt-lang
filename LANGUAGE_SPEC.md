@@ -84,6 +84,21 @@ export default function ProductCard({ product }) {
 
 ---
 
+### 1.2.1 Actions that return values
+
+An `action` can `give` a value back. Use it in a `store` with `run`:
+
+```bolt
+action calculateTotal:
+    give 5
+
+page cart:
+    store total = run calculateTotal()
+    show total
+```
+
+Actions are async, so `total` is `null` for a moment and then fills in with the result.
+
 ### 1.3 Dynamic Pages (URL Parameters)
 Pages can accept URL parameters for dynamic routing. The compiler generates React Router's `useParams()` automatically.
 

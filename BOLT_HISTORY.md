@@ -127,3 +127,8 @@
 - Verified the full flow end to end: `bolt init`, `npm install`, `bolt build`, `vite build` all succeed
 - Fixed: `global.css` imported `theme.css` after the `@tailwind` rules, so browsers ignored it and design-system colors and dark/light themes never loaded. The import now comes first
 - store-app now loads its theme (`global.css` import, `tailwind.config.js` extends the generated theme)
+
+## Phase 21: Action Return Values
+- `store total = run calculateTotal(cart)` now works: the value loads after the first render (starts as `null`, then fills in)
+- Fixed: this used to generate `useState(await ...)`, which is invalid inside a React component
+- Multi-prop components (`component Card takes a, b:`) and `when x changes:` effects were verified working and ticked off the roadmap

@@ -1592,6 +1592,19 @@ ${indent()}})()}`;
     const setterName = 'set' + capitalize(node.name);
     scopes.declare(node.name);
     scopes.declare(setterName);
+    // `store total = run calculateTotal(cart)`: actions are async, so the value
+    // arrives after the first render (starts as null, then fills in).
+    if (node.value && node.value.type === 'RunExpression') {
+      const args = node.value.args.map(a => gen(a)).join(', ');
+      let out = `${indent()}const [${node.name}, ${setterName}] = useState(null);
+`;
+      out += `${indent()}useEffect(() => {
+`;
+      out += `${indent()}  actions.${node.value.actionName}(${args}).then(${setterName});
+`;
+      out += `${indent()}}, []);`;
+      return out;
+    }
     return `${indent()}const [${node.name}, ${setterName}] = useState(${gen(node.value)});`;
   }
 

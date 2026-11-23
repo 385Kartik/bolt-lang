@@ -261,3 +261,21 @@ test('CRLF (Windows) files compile the same as LF files', () => {
   const crlf = makeProject({ 'src/pages/home.bolt': ['page home:', '    show "ok"', ''].join('\r\n') });
   assert.equal(read(build(lf), 'pages/HomePage.jsx'), read(build(crlf), 'pages/HomePage.jsx'));
 });
+
+test('actions: `store x = run action()` loads asynchronously instead of using await in render', () => {
+  const root = makeProject({
+    'src/pages/home.bolt': [
+      'action total:',
+      '    give 5',
+      '',
+      'page home:',
+      '    store t = run total()',
+      '    show t',
+      ''
+    ].join('\n')
+  });
+  const page = read(build(root), 'pages/HomePage.jsx');
+  assert.match(page, /const \[t, setT\] = useState\(null\);/);
+  assert.match(page, /actions\.total\(\)\.then\(setT\)/);
+  assert.doesNotMatch(page, /useState\(await/);
+});

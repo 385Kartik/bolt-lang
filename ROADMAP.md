@@ -26,7 +26,7 @@ Based on the core necessity of building real-world applications (like e-commerce
 - Fetch reactivity: `useEffect` dependency array auto-populated with route params
 - Static routes sorted before dynamic routes for React Router priority
 
-## [ ] Phase 10: Action Return Values
+## [x] Phase 10: Action Return Values ✅
 - Allow `action` blocks to explicitly return complex data types.
 - Example: `store total = run calculateTotal(cart)`.
 - Support async actions and await inference natively (e.g. `store user = run getUser(id)`).
@@ -42,12 +42,12 @@ Based on the core necessity of building real-world applications (like e-commerce
   ```
 - **Why #3?** This is React's superpower. It unlocks reusable structural components like Modals, Drawers, Layouts, and Accordions.
 
-## [ ] Phase 12: Multi-prop Components
+## [x] Phase 12: Multi-prop Components ✅
 - Allow passing multiple properties explicitly to a component.
 - Example: `component ProductCard takes product, index, onDelete:`
 - **Why #4?** Better than forcing everything into a single object wrapper. Improves readability and flexibility.
 
-## [ ] Phase 13: Reactive Effects (Better `useEffect`)
+## [x] Phase 13: Reactive Effects (Better `useEffect`) ✅
 - Seamless real-time reactivity without manual dependency arrays.
 - Example:
   ```bolt
