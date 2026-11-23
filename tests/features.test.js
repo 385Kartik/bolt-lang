@@ -126,3 +126,20 @@ test('bolt init: scaffolded project builds and uses the default style vocabulary
   assert.match(page, /max-w-5xl mx-auto px-6 py-12/);                           // page-wrap
   assert.match(page, /rounded-xl font-semibold/);                               // button-primary
 });
+
+test('implicit state: input fields declare their own state, explicit store wins', () => {
+  const root = makeProject({
+    'src/pages/login.bolt': 'page login:
+    store email = "a@b.com"
+    form:
+        input "Email" into email
+        input "Pass" into password
+        submit "Go":
+            show toast "ok" as success
+'
+  });
+  const page = read(build(root), 'pages/LoginPage.jsx');
+  assert.match(page, /const \[password, setPassword\] = useState\(""\);/);
+  assert.equal((page.match(/const \[email, setEmail\]/g) || []).length, 1);   // not declared twice
+  assert.match(page, /useState\("a@b\.com"\)/);
+});

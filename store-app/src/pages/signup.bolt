@@ -1,6 +1,4 @@
 page signup:
-    store email = ""
-    store password = ""
     
     show Navbar
     

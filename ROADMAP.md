@@ -2,13 +2,13 @@
 
 Based on the core necessity of building real-world applications (like e-commerce, SaaS, and CRM platforms), the roadmap for Bolt's development is prioritized as follows:
 
-## [x] Named Styles, Import-by-Name & Default Style Vocabulary ✅
+## [x] Named Styles, Import-by-Name, Default Style Vocabulary & Implicit State ✅
+- `input ... into email` declares `email` automatically
 - `bolt init` ships a starter `styles.bolt` (card, heading, button-primary, ...)
 - `styles:` blocks for reusable Tailwind classes, usable by name in any file
 - `use <name>` imports files by name from anywhere in the project
 
 ## [ ] Next: Simpler, Smaller Bolt (fewer tokens for people and AI)
-- Implicit state: `input "Email" into email` declares `email` automatically
 - `layout.bolt`: wrap every page in Navbar/Footer without repeating them
 - Default loading/error/empty UI for `fetch` from the design system
 - `resource` block for one-line CRUD (`resource products at "/api/products"`)

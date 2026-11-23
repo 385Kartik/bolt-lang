@@ -430,6 +430,11 @@ form:
         print "Submitting " + email
 ```
 
+> **No `store` needed:** `input ... into email` declares `email` for you (as an empty text
+> state). Write `store email = "something"` yourself only when you want a different
+> starting value. Names already used as a store, remember, route parameter, component
+> prop or global store are never redeclared.
+
 **Generated React Code:**
 ```jsx
 const [email, setEmail] = useState("");

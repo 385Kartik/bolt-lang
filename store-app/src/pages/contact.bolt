@@ -1,7 +1,4 @@
 page contact:
-    store name = ""
-    store email = ""
-    store message = ""
     
     show Navbar
     

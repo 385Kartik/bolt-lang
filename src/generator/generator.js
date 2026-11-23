@@ -990,7 +990,29 @@ ${indent()}})()}`;
     return Array.from(results);
   }
 
+  // Implicit state: `input "Email" into email` declares `email` automatically
+  // (as `store email = ""`) unless it is already declared as a store, remember,
+  // route param, component prop or global store.
+  function withImplicitState(node, takenNames) {
+    const declared = new Set(takenNames);
+    collectNodes(node.body, 'StoreDeclaration').forEach(s => declared.add(s.name));
+    collectNodes(node.body, 'RememberDeclaration').forEach(s => declared.add(s.name));
+    const implicit = [];
+    for (const inp of collectNodes(node.body, 'InputStatement')) {
+      if (declared.has(inp.variable) || globalStoreNames.includes(inp.variable)) continue;
+      declared.add(inp.variable);
+      implicit.push({
+        type: 'StoreDeclaration',
+        name: inp.variable,
+        value: { type: 'StringLiteral', value: '', line: inp.line },
+        line: inp.line
+      });
+    }
+    return implicit.length ? { ...node, body: [...implicit, ...node.body] } : node;
+  }
+
   function genPageDef(node) {
+    node = withImplicitState(node, (node.params || []).map(p => p.name));
     const pascalName = node.name.charAt(0).toUpperCase() + node.name.slice(1) + 'Page';
     let output = `${indent()}export default function ${pascalName}() {\n`;
     indentLevel++;
@@ -1268,6 +1290,7 @@ ${indent()}})()}`;
   }
 
   function genComponentDef(node) {
+    node = withImplicitState(node, [...(node.forVars || []), ...(node.takes || []), 'children']);
     const propsList = node.forVars ? [...node.forVars] : [];
     if (node.takes) {
       node.takes.forEach(t => {

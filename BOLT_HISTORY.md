@@ -99,3 +99,8 @@
 - `bolt init` now creates `src/pages/home.bolt` that uses those names
 - Fixed: a freshly scaffolded project failed to build (`app.bolt` held `page home`, but a page must match its file name)
 - Added a test that scaffolds a project, builds it and checks the vocabulary expands
+
+## Phase 16: Implicit State
+- `input "Email" into email` now declares `email` automatically (empty text state); no `store email = ""` line needed
+- Existing `store`/`remember`, route params, component props and global stores are never redeclared
+- store-app login, signup and contact pages dropped their boilerplate `store` lines; generated React is identical

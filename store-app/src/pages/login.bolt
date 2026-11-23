@@ -1,6 +1,4 @@
 page login:
-    store email = ""
-    store password = ""
     
     show Navbar
     
