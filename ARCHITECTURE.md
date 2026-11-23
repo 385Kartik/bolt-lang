@@ -90,6 +90,8 @@ Every `.bolt` file in the project is merged automatically, so all pages, compone
 
 **Class merging (`src/generator/tailwind.js`):** `mergeClasses(defaults, yours)` classifies every Tailwind class by what it sets (background, text size, padding side, flex direction ...) plus its variant (`md:`, `hover:`), and drops a default when you set the same thing. Your recolor also removes the default hover and focus color of that kind. Used by `styled as:` on elements, layout blocks and buttons.
 
+**VS Code extension (`extensions/bolt-language-support`):** a TextMate grammar for colors, a snippets file, and `extension.js` for suggestions and problems. Problems are not computed in the editor: `lib/cli.js` runs `bolt check <folder> --json` and `lib/scan.js` reads names (components, pages, styles) from the text for suggestions. Both libs avoid importing `vscode`, so `tests/extension.test.js` covers them.
+
 **Layout:** the builder finds the single `LayoutDef`, validates it has exactly one `slot`, and injects each page's body into a copy of the layout body before code generation (pages with `layout none` are skipped).
 
 **Scaffold:** `bolt init` (`scaffoldProject` in `builder.js`) writes `src/styles.bolt` (the `DEFAULT_STYLES_BOLT` vocabulary) and `src/pages/home.bolt`.

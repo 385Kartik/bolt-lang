@@ -11,12 +11,25 @@
     {"open": "{", "close": "}"},
     {"open": "[", "close": "]"},
     {"open": "(", "close": ")"},
-    {"open": "\"", "close": "\""}
+    {"open": "\"", "close": "\"", "notIn": ["string"]}
   ],
   "surroundingPairs": [
     {"open": "{", "close": "}"},
     {"open": "[", "close": "]"},
     {"open": "(", "close": ")"},
     {"open": "\"", "close": "\""}
-  ]
+  ],
+  "onEnterRules": [
+    {
+      "beforeText": "^\\s*[^/\\s].*:\\s*$",
+      "action": { "indent": "indent" }
+    }
+  ],
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*[^/\\s].*:\\s*$",
+    "decreaseIndentPattern": "^\\s*(otherwise|otherwise if|error|success|empty|loading)\\b.*:\\s*$"
+  },
+  "folding": {
+    "offSide": true
+  }
 }

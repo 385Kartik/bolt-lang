@@ -22,10 +22,14 @@ npm test
 
 We welcome discussions and PRs for adding new language primitives or improving the AST optimizations!
 
+## VS Code extension
+- Add new keywords to `extensions/bolt-language-support/syntaxes/bolt.tmLanguage.json` and a snippet to `snippets/bolt.json` when you add syntax (a test checks every snippet compiles)
+- Try it with `npm run install:vscode`, then reload VS Code
+
 ## Before you open a PR
 - Run `node cli/bolt.js check store-app` (must report no problems)
 - If you change syntax, update `llms.txt` (the AI cheat-sheet) too
 
 ## Tests
-- `npm test` runs everything (`tests/e2e.test.js`, `tests/features.test.js`, `tests/api.test.js`, `tests/tailwind.test.js`)
+- `npm test` runs everything (`tests/e2e.test.js`, `tests/features.test.js`, `tests/api.test.js`, `tests/tailwind.test.js`, `tests/extension.test.js`)
 - Add a test for every new syntax or compiler behavior, and update the docs (README, LANGUAGE_SPEC, ARCHITECTURE, BOLT_HISTORY, ROADMAP) in the same change

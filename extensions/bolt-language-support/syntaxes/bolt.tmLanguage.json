@@ -1,12 +1,28 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "Bolt",
+  "scopeName": "source.bolt",
   "patterns": [
     {
       "include": "#comments"
     },
     {
+      "include": "#styles-block"
+    },
+    {
+      "include": "#design-block"
+    },
+    {
+      "include": "#definitions"
+    },
+    {
+      "include": "#styled-as"
+    },
+    {
       "include": "#strings"
+    },
+    {
+      "include": "#component-use"
     },
     {
       "include": "#keywords"
@@ -33,16 +49,209 @@
         }
       ]
     },
+    "definitions": {
+      "patterns": [
+        {
+          "comment": "page home:   page product(id):",
+          "match": "^\\s*(page)\\s+([A-Za-z_][\\w]*)",
+          "captures": {
+            "1": {
+              "name": "storage.type.page.bolt"
+            },
+            "2": {
+              "name": "entity.name.function.page.bolt"
+            }
+          }
+        },
+        {
+          "comment": "component Card takes title:   component Row for item:",
+          "match": "^\\s*(component)\\s+([A-Za-z_][\\w]*)",
+          "captures": {
+            "1": {
+              "name": "storage.type.component.bolt"
+            },
+            "2": {
+              "name": "entity.name.type.component.bolt"
+            }
+          }
+        },
+        {
+          "match": "^\\s*(action)\\s+([A-Za-z_][\\w]*)",
+          "captures": {
+            "1": {
+              "name": "storage.type.action.bolt"
+            },
+            "2": {
+              "name": "entity.name.function.action.bolt"
+            }
+          }
+        },
+        {
+          "comment": "resource products at \"/api/products\":",
+          "match": "^\\s*(resource)\\s+([A-Za-z_][\\w]*)\\s+(at)\\b",
+          "captures": {
+            "1": {
+              "name": "storage.type.resource.bolt"
+            },
+            "2": {
+              "name": "entity.name.type.resource.bolt"
+            },
+            "3": {
+              "name": "keyword.operator.bolt"
+            }
+          }
+        },
+        {
+          "comment": "layout:   (and `layout none` inside a page)",
+          "match": "^\\s*(layout)(?=\\s*:|\\s+none\\b)",
+          "captures": {
+            "1": {
+              "name": "storage.type.layout.bolt"
+            }
+          }
+        },
+        {
+          "match": "\\b(slot)\\b",
+          "name": "variable.language.slot.bolt"
+        },
+        {
+          "comment": "use helpers   (import by file name)",
+          "match": "^\\s*(use)\\s+([\\w./*-]+)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.import.bolt"
+            },
+            "2": {
+              "name": "entity.name.namespace.bolt"
+            }
+          }
+        }
+      ]
+    },
+    "styles-block": {
+      "comment": "styles:  followed by indented  name: tailwind classes",
+      "begin": "^(styles)(:)\\s*$",
+      "beginCaptures": {
+        "1": {
+          "name": "storage.type.styles.bolt"
+        },
+        "2": {
+          "name": "punctuation.separator.colon.bolt"
+        }
+      },
+      "end": "^(?=\\S)",
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "match": "^\\s+([A-Za-z_][\\w-]*)(:)\\s*(.*?)\\s*$",
+          "captures": {
+            "1": {
+              "name": "entity.name.tag.style-name.bolt"
+            },
+            "2": {
+              "name": "punctuation.separator.colon.bolt"
+            },
+            "3": {
+              "name": "string.other.tailwind.bolt"
+            }
+          }
+        }
+      ]
+    },
+    "design-block": {
+      "comment": "design system:  with themes / colors / components",
+      "begin": "^(design system)(:)\\s*$",
+      "beginCaptures": {
+        "1": {
+          "name": "storage.type.design-system.bolt"
+        },
+        "2": {
+          "name": "punctuation.separator.colon.bolt"
+        }
+      },
+      "end": "^(?=\\S)",
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "match": "^\\s*([A-Za-z_][\\w -]*)(:)\\s*$",
+          "captures": {
+            "1": {
+              "name": "support.type.property-name.bolt"
+            },
+            "2": {
+              "name": "punctuation.separator.colon.bolt"
+            }
+          }
+        },
+        {
+          "match": "^\\s*([A-Za-z_][\\w -]*)(:)\\s*(\"#[0-9a-fA-F]{3,8}\")",
+          "captures": {
+            "1": {
+              "name": "variable.other.color-name.bolt"
+            },
+            "2": {
+              "name": "punctuation.separator.colon.bolt"
+            },
+            "3": {
+              "name": "constant.other.color.bolt"
+            }
+          }
+        },
+        {
+          "match": "^\\s*([A-Za-z_][\\w -]*)(:)\\s*(\"[^\"]*\")",
+          "captures": {
+            "1": {
+              "name": "variable.other.component-token.bolt"
+            },
+            "2": {
+              "name": "punctuation.separator.colon.bolt"
+            },
+            "3": {
+              "name": "string.other.tailwind.bolt"
+            }
+          }
+        }
+      ]
+    },
+    "styled-as": {
+      "comment": "styled as: flex gap-4 hover:bg-blue-600   (names from styles: work too)",
+      "match": "\\b(styled)\\s+(as)(:)\\s*([^\\n]*?)(:)?\\s*$",
+      "captures": {
+        "1": {
+          "name": "keyword.control.style.bolt"
+        },
+        "2": {
+          "name": "keyword.control.style.bolt"
+        },
+        "3": {
+          "name": "punctuation.separator.colon.bolt"
+        },
+        "4": {
+          "name": "string.other.tailwind.bolt"
+        },
+        "5": {
+          "name": "punctuation.separator.colon.bolt"
+        }
+      }
+    },
     "strings": {
       "patterns": [
         {
           "begin": "\"",
           "beginCaptures": {
-            "0": { "name": "punctuation.definition.string.begin.bolt" }
+            "0": {
+              "name": "punctuation.definition.string.begin.bolt"
+            }
           },
           "end": "\"",
           "endCaptures": {
-            "0": { "name": "punctuation.definition.string.end.bolt" }
+            "0": {
+              "name": "punctuation.definition.string.end.bolt"
+            }
           },
           "name": "string.quoted.double.bolt",
           "patterns": [
@@ -58,28 +267,74 @@
         {
           "begin": "\\{",
           "beginCaptures": {
-            "0": { "name": "punctuation.definition.template-expression.begin.bolt" }
+            "0": {
+              "name": "punctuation.definition.template-expression.begin.bolt"
+            }
           },
           "end": "\\}",
           "endCaptures": {
-            "0": { "name": "punctuation.definition.template-expression.end.bolt" }
+            "0": {
+              "name": "punctuation.definition.template-expression.end.bolt"
+            }
           },
           "name": "meta.template.expression.bolt",
           "patterns": [
-            { "include": "$self" }
+            {
+              "include": "$self"
+            }
           ]
         }
       ]
     },
+    "component-use": {
+      "comment": "Card:   Card with title=\"x\":   (capitalized name = a component)",
+      "match": "^\\s*([A-Z][A-Za-z0-9_]*)(?=\\s*:\\s*$|\\s+with\\b)",
+      "captures": {
+        "1": {
+          "name": "entity.name.type.component.bolt"
+        }
+      }
+    },
     "keywords": {
       "patterns": [
         {
-          "match": "\\b(page|component|for|store|remember|when|changes|show|all|each|in|button|link|input|if|otherwise|repeat|times|from|to|until|every|give|print|and|or|not|styled|as|row|column|grid|auto|card|hero|section|container|primary|secondary)\\b",
+          "comment": "control flow",
+          "match": "\\b(if|otherwise|repeat|times|until|every|when|changes|give|run|go|function)\\b",
           "name": "keyword.control.bolt"
         },
         {
-          "match": "\\b(as|to)\\b",
-          "name": "keyword.operator.bolt"
+          "comment": "state",
+          "match": "\\b(store|remember|forget|global|persist|clear)\\b",
+          "name": "storage.type.state.bolt"
+        },
+        {
+          "comment": "UI building blocks",
+          "match": "\\b(show|button|link|image|video|input|form|submit|toast|modal|row|column|grid|card|hero|section|container|primary|secondary)\\b",
+          "name": "support.function.ui.bolt"
+        },
+        {
+          "comment": "data",
+          "match": "\\b(fetch|update|delete|into|with|loading|error|success|empty)\\b",
+          "name": "support.function.data.bolt"
+        },
+        {
+          "comment": "form rules",
+          "match": "\\b(required|email|min|max|match)\\b",
+          "name": "support.constant.validation.bolt"
+        },
+        {
+          "comment": "collections",
+          "match": "\\b(add|remove|check|count|first|last|filtered|sorted|by|of|all|each)\\b",
+          "name": "keyword.other.collection.bolt"
+        },
+        {
+          "comment": "auth",
+          "match": "\\b(login|logout|logged)\\b",
+          "name": "support.function.auth.bolt"
+        },
+        {
+          "match": "\\b(for|in|from|to|as|takes|and|or|not|print|auto)\\b",
+          "name": "keyword.operator.word.bolt"
         }
       ]
     },
@@ -119,6 +374,5 @@
         }
       ]
     }
-  },
-  "scopeName": "source.bolt"
+  }
 }

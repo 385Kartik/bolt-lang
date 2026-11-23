@@ -62,5 +62,6 @@ Based on the core necessity of building real-world applications (like e-commerce
 - Native Dark Mode support and semantic color mapping.
 
 ## [ ] Phase 15: Tooling Ecosystem
-- **VS Code Extension:** Syntax highlighting, autocomplete, and inline diagnostics.
-- **Bolt Formatter:** Auto-formatting of `.bolt` files.
+- [x] **VS Code Extension:** syntax colors, snippets, name suggestions and inline problems (from `bolt check`)
+- [ ] **Bolt Formatter:** auto-formatting of `.bolt` files
+- [ ] Publish the extension to the VS Code Marketplace

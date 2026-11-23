@@ -1,9 +1,11 @@
 {
   "name": "bolt-language-support",
   "displayName": "Bolt Language Support",
-  "description": "Language support for the Bolt programming language",
-  "version": "1.0.0",
+  "description": "Syntax colors, snippets, suggestions and live problem checking for the Bolt language",
+  "version": "1.1.0",
   "publisher": "bolt-framework",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/385Kartik/bolt-lang" },
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -12,7 +14,8 @@
     "onLanguage:bolt"
   ],
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Snippets"
   ],
   "contributes": {
     "languages": [
@@ -33,6 +36,31 @@
         "scopeName": "source.bolt",
         "path": "./syntaxes/bolt.tmLanguage.json"
       }
-    ]
+    ],
+    "snippets": [
+      {
+        "language": "bolt",
+        "path": "./snippets/bolt.json"
+      }
+    ],
+    "commands": [
+      { "command": "bolt.check", "title": "Bolt: Check Project" },
+      { "command": "bolt.stats", "title": "Bolt: Show Size Report (Bolt vs React)" }
+    ],
+    "configuration": {
+      "title": "Bolt",
+      "properties": {
+        "bolt.checkOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Check the whole project for problems every time you save a .bolt file."
+        },
+        "bolt.cliPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the bolt command (for example C:/projects/bolt-lang/cli/bolt.js). Leave empty to find it automatically."
+        }
+      }
+    }
   }
 }
