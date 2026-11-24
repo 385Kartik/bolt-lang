@@ -71,12 +71,12 @@ function silently(fn) {
 }
 
 // Parses every file. Returns { body, errors, files }.
-function loadProject(root) {
+function loadProject(root, onlyFile = null) {
   const errors = [];
   const body = [];
-  const files = findBoltFiles(root);
+  const files = onlyFile ? [onlyFile] : findBoltFiles(root);
   for (const file of files) {
-    const rel = path.relative(root, file).split(path.sep).join('/');
+    const rel = onlyFile ? path.basename(file) : path.relative(root, file).split(path.sep).join('/');
     const fileName = path.basename(file, '.bolt');
     try {
       const ast = compileToAST(fs.readFileSync(file, 'utf-8'));
@@ -110,6 +110,13 @@ export function findResources(root) {
 
 export function checkProject(root) {
   const resolved = path.resolve(root);
+
+  // A single file: check its syntax (the rest of the project is not needed for that).
+  if (fs.existsSync(resolved) && fs.statSync(resolved).isFile()) {
+    const { errors } = loadProject(path.dirname(resolved), resolved);
+    return { ok: errors.length === 0, files: 1, errors };
+  }
+
   const { body, errors, files } = loadProject(resolved);
 
   if (errors.length === 0) {

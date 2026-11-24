@@ -1510,7 +1510,8 @@ ${indent()}})()}`;
   }
 
   function genInputStatement(node) {
-    const cls = mergeClass('', node.style);
+    // A visible field by default; your `styled as:` classes win over these.
+    const cls = mergeClass(' className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"', node.style);
     let output = `${indent()}<div className="flex flex-col gap-1">\n`;
     output += `${indent()}  <input placeholder={${gen(node.placeholder)}} value={${node.variable}} onChange={(e) => set${capitalize(node.variable)}(e.target.value)}${cls} />\n`;
     if (node.validations && node.validations.length > 0) {

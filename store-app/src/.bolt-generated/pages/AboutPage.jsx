@@ -23,7 +23,7 @@ export default function AboutPage() {
               return <><div className="flex flex-col text-center mb-16">
             {(() => {
               try {
-                return <><h1 className="text-5xl font-black text-gray-900 tracking-tight mb-6">About BoltStore</h1></>;
+                return <><h1 className="text-5xl font-black text-text tracking-tight mb-6">About BoltStore</h1></>;
               } catch (e) {
                 if (!e.__boltLine) { e.__boltLine = 6; }
                 throw e;
@@ -49,7 +49,7 @@ export default function AboutPage() {
               return <><div className="flex flex-col prose prose-lg prose-blue mx-auto text-gray-600 leading-relaxed">
             {(() => {
               try {
-                return <><p className="text-3xl font-bold text-gray-900 mb-6 mt-12">Our Mission</p></>;
+                return <><p className="text-3xl font-bold text-text mb-6 mt-12">Our Mission</p></>;
               } catch (e) {
                 if (!e.__boltLine) { e.__boltLine = 10; }
                 throw e;
@@ -65,7 +65,7 @@ export default function AboutPage() {
             })()}
             {(() => {
               try {
-                return <><p className="text-3xl font-bold text-gray-900 mb-6 mt-12">The Technology</p></>;
+                return <><p className="text-3xl font-bold text-text mb-6 mt-12">The Technology</p></>;
               } catch (e) {
                 if (!e.__boltLine) { e.__boltLine = 14; }
                 throw e;
@@ -245,7 +245,7 @@ export default function AboutPage() {
             })()}
             {(() => {
               try {
-                return <><Link to="/products" className="inline-block px-8 py-4 bg-white text-gray-900 hover:bg-gray-100 rounded-xl font-bold transition-colors">Start Shopping</Link></>;
+                return <><Link to="/products" className="inline-block px-8 py-4 bg-background text-gray-800 hover:bg-gray-100 rounded-xl font-bold transition-colors">Start Shopping</Link></>;
               } catch (e) {
                 if (!e.__boltLine) { e.__boltLine = 39; }
                 throw e;

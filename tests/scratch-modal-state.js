@@ -1,6 +1,6 @@
-import { tokenize } from './src/lexer/lexer.js';
-import { parse } from './src/parser/parser.js';
-import { generateNode } from './src/generator/generator.js';
+import { tokenize } from '../src/lexer/lexer.js';
+import { parse } from '../src/parser/parser.js';
+import { generateNode } from '../src/generator/generator.js';
 
 const code = `page home:
     store showTestModal = false

@@ -75,13 +75,13 @@ export default function ContactPage() {
                   };
                   return <form className="flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); validateForm(); }}>
                   <div className="flex flex-col gap-1">
-                    <input placeholder={"Your Name"} value={name} onChange={(e) => setName(e.target.value)} className="p-3 border rounded-lg w-full" />
+                    <input placeholder={"Your Name"} value={name} onChange={(e) => setName(e.target.value)} className="border-gray-300 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 p-3 border rounded-lg w-full" />
                   </div>
                   <div className="flex flex-col gap-1">
-                    <input placeholder={"Email Address"} value={email} onChange={(e) => setEmail(e.target.value)} className="p-3 border rounded-lg w-full" />
+                    <input placeholder={"Email Address"} value={email} onChange={(e) => setEmail(e.target.value)} className="border-gray-300 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 p-3 border rounded-lg w-full" />
                   </div>
                   <div className="flex flex-col gap-1">
-                    <input placeholder={"Your Message"} value={message} onChange={(e) => setMessage(e.target.value)} className="p-3 border rounded-lg w-full min-h-[120px]" />
+                    <input placeholder={"Your Message"} value={message} onChange={(e) => setMessage(e.target.value)} className="border-gray-300 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 p-3 border rounded-lg w-full min-h-[120px]" />
                   </div>
                   <button className="bg-primary text-white rounded-xl px-4 w-full py-3 mt-4" onClick={async () => {
                     return boltFetch("https://jsonplaceholder.typicode.com/posts", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name, email: email, message: message }) });

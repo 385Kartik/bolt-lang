@@ -404,6 +404,9 @@ The default blue background (and the default blue hover color) are removed. Defa
 touch (padding, rounded corners ...) stay. `p-8` replaces default `px-4 py-2`, `flex-col` replaces
 `flex-row`, and so on. Breakpoints are kept apart (`md:p-8` only replaces a default `md:p-*`).
 
+Inputs follow the same rule: every `input` gets a visible default look (border, padding, rounded corners),
+and your `styled as:` classes replace the parts you set.
+
 ### 5.3 Colors and dark mode (design system)
 
 `bolt init` creates `src/design.bolt` with a light and a dark theme using named colors:

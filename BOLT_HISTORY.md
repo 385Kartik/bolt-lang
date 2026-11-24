@@ -171,3 +171,11 @@
 - Status bar item, commands `Bolt: Check Project` and `Bolt: Show Size Report`, settings `bolt.checkOnSave` and `bolt.cliPath`
 - Indent rules (a line ending with `:` indents the next line)
 - `npm run install:vscode` installs it; extension logic lives in `lib/` and is covered by `tests/extension.test.js`
+
+## Phase 27: Recheck and Demo Polish
+- Rechecked everything: 50 tests pass, `store-app` builds and checks clean, repo and GitHub in sync
+- `bolt check` now accepts a single `.bolt` file (it used to crash on anything but a folder)
+- `input` fields now have a visible default style (border, padding, rounded); your `styled as:` classes win over it
+- store-app: the page background and text follow the theme, hard-coded light colors moved to theme colors, so dark mode now looks right across pages (verified in a real browser in dark and light)
+- Housekeeping: root scratch files moved to `examples/experiments/` and `tests/scratch-modal-state.js`
+- README size numbers refreshed (store-app: 6,542 tokens of Bolt, about 33,100 of React, 5.06x)

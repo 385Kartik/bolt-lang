@@ -93,8 +93,8 @@ AI tools spend tokens on every line they write. Bolt is short, so there is less 
 ```bash
 bolt stats store-app
 #   Bolt source        6542 tokens
-#   Generated React   33440 tokens
-#   React is           5.11x bigger than the Bolt you write
+#   Generated React   33098 tokens
+#   React is           5.06x bigger than the Bolt you write
 ```
 
 - **`bolt spec`** prints a one-page cheat-sheet ([`llms.txt`](llms.txt)) you can paste into any AI prompt

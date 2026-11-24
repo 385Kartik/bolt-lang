@@ -53,7 +53,7 @@ export default function HomePage() {
           })()}
           {(() => {
             try {
-              return <><h1 className="text-5xl md:text-7xl font-black tracking-tight text-gray-900 mb-6 leading-tight">The Future of Shopping</h1></>;
+              return <><h1 className="text-5xl md:text-7xl font-black tracking-tight text-text mb-6 leading-tight">The Future of Shopping</h1></>;
             } catch (e) {
               if (!e.__boltLine) { e.__boltLine = 10; }
               throw e;
@@ -61,7 +61,7 @@ export default function HomePage() {
           })()}
           {(() => {
             try {
-              return <><h2 className="text-xl text-gray-500 max-w-2xl mb-10 leading-relaxed">Experience blazing fast performance with our new generated e-commerce platform. No more bloated JavaScript.</h2></>;
+              return <><h2 className="text-xl text-blue-100 max-w-2xl mb-10 leading-relaxed">Experience blazing fast performance with our new generated e-commerce platform. No more bloated JavaScript.</h2></>;
             } catch (e) {
               if (!e.__boltLine) { e.__boltLine = 12; }
               throw e;
@@ -80,7 +80,7 @@ export default function HomePage() {
             })()}
             {(() => {
               try {
-                return <><Link to="/about" className="px-8 py-4 bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-800 rounded-xl font-bold transition-all">Learn More</Link></>;
+                return <><Link to="/about" className="px-8 py-4 bg-background border-2 border-border hover:border-gray-300 text-text rounded-xl font-bold transition-all">Learn More</Link></>;
               } catch (e) {
                 if (!e.__boltLine) { e.__boltLine = 16; }
                 throw e;
@@ -105,7 +105,7 @@ export default function HomePage() {
             return <><div className="md:py-16 w-full max-w-7xl mx-auto px-8 py-20">
           {(() => {
             try {
-              return <><h1 className="text-3xl font-black text-gray-900 mb-2">Theme Preferences</h1></>;
+              return <><h1 className="text-3xl font-black text-text mb-2">Theme Preferences</h1></>;
             } catch (e) {
               if (!e.__boltLine) { e.__boltLine = 19; }
               throw e;
@@ -147,7 +147,7 @@ export default function HomePage() {
           })()}
           {(() => {
             try {
-              return <><h1 className="text-3xl font-black text-gray-900 mb-2">Featured Products</h1></>;
+              return <><h1 className="text-3xl font-black text-text mb-2">Featured Products</h1></>;
             } catch (e) {
               if (!e.__boltLine) { e.__boltLine = 28; }
               throw e;
@@ -272,7 +272,7 @@ export default function HomePage() {
                 return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">
               {(() => {
                 try {
-                  return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl">
+                  return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-12 h-12 bg-background rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl">
                 {(() => {
                   try {
                     return <><p>⚡</p></>;
@@ -316,7 +316,7 @@ export default function HomePage() {
                 return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">
               {(() => {
                 try {
-                  return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl">
+                  return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-12 h-12 bg-background rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl">
                 {(() => {
                   try {
                     return <><p>🎨</p></>;
@@ -360,7 +360,7 @@ export default function HomePage() {
                 return <><div className="bg-cardBg text-text border border-border rounded-xl shadow-sm p-6">
               {(() => {
                 try {
-                  return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl">
+                  return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-12 h-12 bg-background rounded-xl shadow-sm flex items-center justify-center mb-6 text-xl">
                 {(() => {
                   try {
                     return <><p>📱</p></>;

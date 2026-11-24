@@ -7,13 +7,13 @@ page home:
         container styled as: inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6:
             show "🚀 Built with Bolt Language" as text
             
-        show "The Future of Shopping" as title styled as: text-5xl md:text-7xl font-black tracking-tight text-gray-900 mb-6 leading-tight
+        show "The Future of Shopping" as title styled as: text-5xl md:text-7xl font-black tracking-tight text-text mb-6 leading-tight
         
-        show "Experience blazing fast performance with our new generated e-commerce platform. No more bloated JavaScript." as subtitle styled as: text-xl text-gray-500 max-w-2xl mb-10 leading-relaxed
+        show "Experience blazing fast performance with our new generated e-commerce platform. No more bloated JavaScript." as subtitle styled as: text-xl text-blue-100 max-w-2xl mb-10 leading-relaxed
         
         row styled as: gap-4:
             link "Shop Collection" to products styled as: px-8 py-4 bg-primary hover:bg-blue-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-200
-            link "Learn More" to about styled as: px-8 py-4 bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-800 rounded-xl font-bold transition-all
+            link "Learn More" to about styled as: px-8 py-4 bg-background border-2 border-border hover:border-gray-300 text-text rounded-xl font-bold transition-all
 
     section styled as: max-w-7xl mx-auto px-8 py-20:
         show "Theme Preferences" as title styled as: text-3xl heading-black mb-2

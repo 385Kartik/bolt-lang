@@ -48,7 +48,7 @@ export default function AdminPage() {
             <>
           {(() => {
             try {
-              return <><div className="text-text border border-border shadow-sm p-8 bg-gray-50 rounded-2xl mb-8">
+              return <><div className="text-text border border-border shadow-sm p-8 bg-cardBg rounded-2xl mb-8">
             {(() => {
               try {
                 return <><h1 className="text-3xl font-black mb-4">Admin Login</h1></>;
@@ -115,7 +115,7 @@ export default function AdminPage() {
           })()}
           {(() => {
             try {
-              return <><div className="text-text border border-border shadow-sm p-8 bg-gray-50 rounded-2xl mb-8">
+              return <><div className="text-text border border-border shadow-sm p-8 bg-cardBg rounded-2xl mb-8">
             {(() => {
               try {
                 return <><p className="text-xl font-bold mb-4">Add New Product</p></>;
@@ -141,7 +141,7 @@ export default function AdminPage() {
                 {(() => {
                   try {
                     return <><div className="flex flex-col gap-1">
-                  <input placeholder={"Enter name"} value={newName} onChange={(e) => setNewName(e.target.value)} className="px-4 py-2 border rounded-lg w-full" />
+                  <input placeholder={"Enter name"} value={newName} onChange={(e) => setNewName(e.target.value)} className="border-gray-300 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 px-4 py-2 border rounded-lg w-full" />
                 </div></>;
                   } catch (e) {
                     if (!e.__boltLine) { e.__boltLine = 40; }
@@ -169,7 +169,7 @@ export default function AdminPage() {
                 {(() => {
                   try {
                     return <><div className="flex flex-col gap-1">
-                  <input placeholder={"Enter price"} value={newPrice} onChange={(e) => setNewPrice(e.target.value)} className="px-4 py-2 border rounded-lg w-full" />
+                  <input placeholder={"Enter price"} value={newPrice} onChange={(e) => setNewPrice(e.target.value)} className="border-gray-300 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 px-4 py-2 border rounded-lg w-full" />
                 </div></>;
                   } catch (e) {
                     if (!e.__boltLine) { e.__boltLine = 43; }
@@ -212,7 +212,7 @@ export default function AdminPage() {
           })()}
           {(() => {
             try {
-              return <><div className="text-text border border-border shadow-sm p-8 bg-gray-50 rounded-2xl mb-8">
+              return <><div className="text-text border border-border shadow-sm p-8 bg-cardBg rounded-2xl mb-8">
             {(() => {
               try {
                 return <><p className="text-xl font-bold mb-4">Update/Delete Actions</p></>;

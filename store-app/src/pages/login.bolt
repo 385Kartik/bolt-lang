@@ -3,7 +3,7 @@ page login:
     
     show Navbar
     
-    section styled as: max-w-md mx-auto mt-20 p-8 bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100:
+    section styled as: max-w-md mx-auto mt-20 p-8 bg-background rounded-3xl shadow-xl shadow-gray-200/50 border border-border:
         show "Welcome Back" as title styled as: text-3xl heading-black mb-2 text-center
         show "Enter your details to access your account." as subtitle styled as: text-gray-500 mb-8 text-center
         

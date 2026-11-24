@@ -79,7 +79,7 @@ export default function ProductsPage() {
             return <><div className="md:py-16 w-full max-w-7xl mx-auto px-8 py-16">
           {(() => {
             try {
-              return <><div className="flex flex-row flex-wrap gap-4 mb-12 border-b border-gray-100 pb-8">
+              return <><div className="flex flex-row flex-wrap gap-4 mb-12 border-b border-border pb-8">
             {(() => {
               try {
                 return <><button className="px-6 py-2 bg-gray-900 text-white rounded-full text-sm font-medium" onClick={async () => {

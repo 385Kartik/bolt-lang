@@ -1,24 +1,24 @@
 component Footer:
-    container styled as: bg-gray-50 pt-16 pb-8 px-8 border-t border-gray-200 mt-20:
+    container styled as: bg-cardBg pt-16 pb-8 px-8 border-t border-border mt-20:
         grid 3 styled as: max-w-7xl mx-auto gap-12:
             column:
-                show "BoltStore" as title styled as: text-xl font-bold text-gray-900 mb-4
+                show "BoltStore" as title styled as: text-xl font-bold text-text mb-4
                 show "The next generation of e-commerce built with the Bolt language." as desc styled as: text-gray-500 text-sm leading-relaxed
                 
             column:
-                show "Quick Links" as title styled as: font-semibold text-gray-900 mb-4
+                show "Quick Links" as title styled as: font-semibold text-text mb-4
                 column styled as: gap-2 text-sm text-gray-500:
                     link "Home" to home
                     link "Products" to products
                     link "About" to about
                     
             column:
-                show "Subscribe" as title styled as: font-semibold text-gray-900 mb-4
+                show "Subscribe" as title styled as: font-semibold text-text mb-4
                 show "Get the latest updates and offers." as desc styled as: text-sm text-gray-500 mb-4
                 row styled as: gap-2:
                     container styled as: flex-1 bg-gray-100 rounded-lg px-4 py-2 text-sm text-gray-400:
                         show "Email address..."
                     button "Join" as primary styled as: bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700
 
-        container styled as: border-t border-gray-200 mt-12 pt-8 text-center text-sm text-gray-500:
+        container styled as: border-t border-border mt-12 pt-8 text-center text-sm text-gray-500:
             show "© 2026 BoltStore. All rights reserved."

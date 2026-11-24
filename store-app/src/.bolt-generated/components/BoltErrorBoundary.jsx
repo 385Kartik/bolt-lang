@@ -3,41 +3,41 @@ import React from 'react';
 const BOLT_SOURCE = `
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\components\Footer.bolt ─── */
 component Footer:
-    container styled as: bg-gray-50 pt-16 pb-8 px-8 border-t border-gray-200 mt-20:
+    container styled as: bg-cardBg pt-16 pb-8 px-8 border-t border-border mt-20:
         grid 3 styled as: max-w-7xl mx-auto gap-12:
             column:
-                show "BoltStore" as title styled as: text-xl font-bold text-gray-900 mb-4
+                show "BoltStore" as title styled as: text-xl font-bold text-text mb-4
                 show "The next generation of e-commerce built with the Bolt language." as desc styled as: text-gray-500 text-sm leading-relaxed
                 
             column:
-                show "Quick Links" as title styled as: font-semibold text-gray-900 mb-4
+                show "Quick Links" as title styled as: font-semibold text-text mb-4
                 column styled as: gap-2 text-sm text-gray-500:
                     link "Home" to home
                     link "Products" to products
                     link "About" to about
                     
             column:
-                show "Subscribe" as title styled as: font-semibold text-gray-900 mb-4
+                show "Subscribe" as title styled as: font-semibold text-text mb-4
                 show "Get the latest updates and offers." as desc styled as: text-sm text-gray-500 mb-4
                 row styled as: gap-2:
                     container styled as: flex-1 bg-gray-100 rounded-lg px-4 py-2 text-sm text-gray-400:
                         show "Email address..."
                     button "Join" as primary styled as: bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700
 
-        container styled as: border-t border-gray-200 mt-12 pt-8 text-center text-sm text-gray-500:
+        container styled as: border-t border-border mt-12 pt-8 text-center text-sm text-gray-500:
             show "© 2026 BoltStore. All rights reserved."
 
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\components\Modal.bolt ─── */
 component Modal takes title:
-    column styled as: bg-white rounded-lg shadow-xl p-6 border border-gray-200:
-        show title as title styled as: text-xl font-bold text-gray-800 mb-4
+    column styled as: bg-background rounded-lg shadow-xl p-6 border border-border:
+        show title as title styled as: text-xl font-bold text-text mb-4
         show children
 
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\components\Navbar.bolt ─── */
 component Navbar:
-    row styled as: flex justify-between items-center py-4 px-8 bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50:
+    row styled as: flex justify-between items-center py-4 px-8 bg-background border-b border-border sticky top-0 z-50:
         show "BoltStore" as title styled as: text-2xl font-black text-blue-600 tracking-tighter
         
         row styled as: flex gap-6 text-sm font-medium text-gray-600:
@@ -50,11 +50,11 @@ component Navbar:
         
         row styled as: flex gap-4 items-center:
             if logged in:
-                button "Logout" styled as: text-sm font-medium text-gray-500 hover:text-gray-900:
+                button "Logout" styled as: text-sm font-medium text-gray-500 hover:text-text:
                     logout
                     show toast "Logged out" as success
             otherwise:
-                link "Login" to login styled as: text-sm font-medium text-gray-500 hover:text-gray-900
+                link "Login" to login styled as: text-sm font-medium text-gray-500 hover:text-text
                 link "Sign Up" to signup styled as: bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-blue-700
                 
             button "Cart (" + count of cart + ")" as secondary styled as: bg-gray-900 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-800 transition-all
@@ -62,8 +62,8 @@ component Navbar:
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\components\ProductCard.bolt ─── */
 component ProductCard for product:
-    card styled as: flex flex-col p-0 bg-white border border-gray-100 rounded-2xl hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group cursor-pointer overflow-hidden:
-        container styled as: aspect-[4/3] bg-gray-50 overflow-hidden center-flex p-6:
+    card styled as: flex flex-col p-0 bg-background border border-border rounded-2xl hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group cursor-pointer overflow-hidden:
+        container styled as: aspect-[4/3] bg-cardBg overflow-hidden center-flex p-6:
             image product.image styled as: h-full w-full object-contain group-hover:scale-110 transition-transform duration-500
                 
         column styled as: gap-2 p-5:
@@ -76,10 +76,10 @@ component ProductCard for product:
                     show product.rating.count as count styled as: text-gray-400 text-xs
                     show "reviews" as label styled as: text-gray-400 text-xs
 
-            show product.title as name styled as: font-semibold text-gray-900 text-sm line-clamp-2 leading-snug mt-1
+            show product.title as name styled as: font-semibold text-text text-sm line-clamp-2 leading-snug mt-1
             show product.description as desc styled as: text-xs text-gray-400 line-clamp-2 leading-relaxed
 
-            row styled as: justify-between items-center mt-3 pt-3 border-t border-gray-100:
+            row styled as: justify-between items-center mt-3 pt-3 border-t border-border:
                 column:
                     show "Price" as label styled as: text-[10px] text-gray-400 uppercase tracking-wider font-medium
                     show product.price as price styled as: heading-black text-xl
@@ -100,7 +100,7 @@ component ProductCard for product:
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\components\TeamCard.bolt ─── */
 component TeamCard for member:
-    card styled as: p-0 bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group:
+    card styled as: p-0 bg-background border border-border rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group:
         container styled as: h-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500:
             show "" as spacer
 
@@ -109,7 +109,7 @@ component TeamCard for member:
                 container styled as: w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full center-flex text-white font-bold text-xl shadow-lg:
                     show member.name as avatar
                 column:
-                    show member.name as name styled as: font-bold text-gray-900 text-lg
+                    show member.name as name styled as: font-bold text-text text-lg
                     show member.email as email styled as: text-sm text-blue-500
 
             container styled as: h-px bg-gray-100 w-full my-1:
@@ -136,10 +136,10 @@ component TeamCard for member:
                 show member.phone as phone styled as: text-sm text-gray-500
 
             row styled as: gap-4 mt-2:
-                container styled as: flex-1 bg-gray-50 rounded-lg p-3 text-center:
+                container styled as: flex-1 bg-cardBg rounded-lg p-3 text-center:
                     show "LAT" as latlabel styled as: text-[10px] text-gray-400 uppercase tracking-wider font-bold
                     show member.address.geo.lat as lat styled as: text-sm font-mono text-gray-700
-                container styled as: flex-1 bg-gray-50 rounded-lg p-3 text-center:
+                container styled as: flex-1 bg-cardBg rounded-lg p-3 text-center:
                     show "LNG" as lnglabel styled as: text-[10px] text-gray-400 uppercase tracking-wider font-bold
                     show member.address.geo.lng as lng styled as: text-sm font-mono text-gray-700
 
@@ -186,11 +186,11 @@ page about:
             show "We're pushing the boundaries of what's possible with modern web technologies." as subtitle styled as: text-xl text-gray-500
             
         column styled as: prose prose-lg prose-blue mx-auto text-gray-600 leading-relaxed:
-            show "Our Mission" as h2 styled as: text-3xl font-bold text-gray-900 mb-6 mt-12
+            show "Our Mission" as h2 styled as: text-3xl font-bold text-text mb-6 mt-12
             
             show "This e-commerce store is entirely built using the new Bolt programming language. Bolt allows developers to write less code while generating highly optimized React applications." as p1 styled as: mb-6
             
-            show "The Technology" as h2_2 styled as: text-3xl font-bold text-gray-900 mb-6 mt-12
+            show "The Technology" as h2_2 styled as: text-3xl font-bold text-text mb-6 mt-12
             
             column styled as: gap-4 mb-12:
                 row styled as: gap-4 items-start:
@@ -215,7 +215,7 @@ page about:
                     
         hero styled as: mt-20 p-12 bg-gray-900 rounded-3xl text-center text-white:
             show "Ready to explore?" as ctaTitle styled as: text-3xl font-bold mb-6
-            link "Start Shopping" to products styled as: inline-block px-8 py-4 bg-white text-gray-900 hover:bg-gray-100 rounded-xl font-bold transition-colors
+            link "Start Shopping" to products styled as: inline-block px-8 py-4 bg-background text-gray-800 hover:bg-gray-100 rounded-xl font-bold transition-colors
             
 
 
@@ -340,13 +340,13 @@ page home:
         container styled as: inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6:
             show "🚀 Built with Bolt Language" as text
             
-        show "The Future of Shopping" as title styled as: text-5xl md:text-7xl font-black tracking-tight text-gray-900 mb-6 leading-tight
+        show "The Future of Shopping" as title styled as: text-5xl md:text-7xl font-black tracking-tight text-text mb-6 leading-tight
         
-        show "Experience blazing fast performance with our new generated e-commerce platform. No more bloated JavaScript." as subtitle styled as: text-xl text-gray-500 max-w-2xl mb-10 leading-relaxed
+        show "Experience blazing fast performance with our new generated e-commerce platform. No more bloated JavaScript." as subtitle styled as: text-xl text-blue-100 max-w-2xl mb-10 leading-relaxed
         
         row styled as: gap-4:
             link "Shop Collection" to products styled as: px-8 py-4 bg-primary hover:bg-blue-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-200
-            link "Learn More" to about styled as: px-8 py-4 bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-800 rounded-xl font-bold transition-all
+            link "Learn More" to about styled as: px-8 py-4 bg-background border-2 border-border hover:border-gray-300 text-text rounded-xl font-bold transition-all
 
     section styled as: max-w-7xl mx-auto px-8 py-20:
         show "Theme Preferences" as title styled as: text-3xl heading-black mb-2
@@ -409,7 +409,7 @@ page login:
     
     show Navbar
     
-    section styled as: max-w-md mx-auto mt-20 p-8 bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100:
+    section styled as: max-w-md mx-auto mt-20 p-8 bg-background rounded-3xl shadow-xl shadow-gray-200/50 border border-border:
         show "Welcome Back" as title styled as: text-3xl heading-black mb-2 text-center
         show "Enter your details to access your account." as subtitle styled as: text-gray-500 mb-8 text-center
         
@@ -455,7 +455,7 @@ page product(id):
             section styled as: max-w-7xl mx-auto px-8 py-24:
                 row styled as: items-start gap-12 flex-col md:flex-row:
                     // Product Image
-                    container styled as: flex-1 bg-white p-12 rounded-3xl border border-gray-100 shadow-sm:
+                    container styled as: flex-1 bg-background p-12 rounded-3xl border border-border shadow-sm:
                         image product.image styled as: w-full h-auto max-h-[500px] object-contain
                     
                     // Product Details
@@ -470,7 +470,7 @@ page product(id):
                         
                         show "\$" + product.price as price styled as: text-5xl heading-black mb-8
                         
-                        show "Description" as label styled as: text-lg font-bold text-gray-900 mb-3
+                        show "Description" as label styled as: text-lg font-bold text-text mb-3
                         show product.description as text styled as: body-text text-lg mb-10
                         
                         row styled as: gap-4:
@@ -505,7 +505,7 @@ page products:
             show "No products found in this category." styled as: text-gray-500 text-center py-20
         success:
             section styled as: max-w-7xl mx-auto px-8 py-16:
-                row styled as: flex-wrap gap-4 mb-12 border-b border-gray-100 pb-8:
+                row styled as: flex-wrap gap-4 mb-12 border-b border-border pb-8:
                     button "All Items" styled as: px-6 py-2 bg-gray-900 text-white rounded-full text-sm font-medium
                     button "Electronics" styled as: pill-button
                     button "Jewelry" styled as: pill-button
@@ -523,7 +523,7 @@ page signup:
     
     show Navbar
     
-    section styled as: max-w-md mx-auto mt-20 p-8 bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100:
+    section styled as: max-w-md mx-auto mt-20 p-8 bg-background rounded-3xl shadow-xl shadow-gray-200/50 border border-border:
         show "Create Account" as title styled as: text-3xl heading-black mb-2 text-center
         show "Join the future of shopping today." as subtitle styled as: text-gray-500 mb-8 text-center
         
@@ -609,11 +609,11 @@ page team:
 styles:
     center-flex: flex items-center justify-center
     avatar-badge: w-8 h-8 rounded-full bg-blue-100 text-blue-600 center-flex font-bold shrink-0
-    icon-box: w-12 h-12 bg-white rounded-xl shadow-sm center-flex mb-6 text-xl
+    icon-box: w-12 h-12 bg-background rounded-xl shadow-sm center-flex mb-6 text-xl
     pill-button: px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors
-    soft-panel: p-8 bg-gray-50 rounded-2xl mb-8
+    soft-panel: p-8 bg-cardBg rounded-2xl mb-8
     link-hover: hover:text-blue-600 transition-colors
-    heading-black: font-black text-gray-900
+    heading-black: font-black text-text
     section-title: text-xl font-bold mb-4
     card-title: font-bold text-xl mb-3
     body-text: text-gray-500 leading-relaxed

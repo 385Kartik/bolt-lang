@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 const storeState = {
   cart: [],
-  theme: (typeof window !== 'undefined' && localStorage.getItem('bolt_theme')) || 'system',
+  theme: (typeof window !== 'undefined' && (localStorage.getItem('bolt_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))) || 'light',
 };
 const listeners = new Set();
 

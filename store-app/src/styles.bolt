@@ -1,11 +1,11 @@
 styles:
     center-flex: flex items-center justify-center
     avatar-badge: w-8 h-8 rounded-full bg-blue-100 text-blue-600 center-flex font-bold shrink-0
-    icon-box: w-12 h-12 bg-white rounded-xl shadow-sm center-flex mb-6 text-xl
+    icon-box: w-12 h-12 bg-background rounded-xl shadow-sm center-flex mb-6 text-xl
     pill-button: px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors
-    soft-panel: p-8 bg-gray-50 rounded-2xl mb-8
+    soft-panel: p-8 bg-cardBg rounded-2xl mb-8
     link-hover: hover:text-blue-600 transition-colors
-    heading-black: font-black text-gray-900
+    heading-black: font-black text-text
     section-title: text-xl font-bold mb-4
     card-title: font-bold text-xl mb-3
     body-text: text-gray-500 leading-relaxed

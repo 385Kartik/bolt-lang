@@ -1,4 +1,4 @@
 component Modal takes title:
-    column styled as: bg-white rounded-lg shadow-xl p-6 border border-gray-200:
-        show title as title styled as: text-xl font-bold text-gray-800 mb-4
+    column styled as: bg-background rounded-lg shadow-xl p-6 border border-border:
+        show title as title styled as: text-xl font-bold text-text mb-4
         show children

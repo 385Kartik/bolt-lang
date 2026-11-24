@@ -7,11 +7,11 @@ page about:
             show "We're pushing the boundaries of what's possible with modern web technologies." as subtitle styled as: text-xl text-gray-500
             
         column styled as: prose prose-lg prose-blue mx-auto text-gray-600 leading-relaxed:
-            show "Our Mission" as h2 styled as: text-3xl font-bold text-gray-900 mb-6 mt-12
+            show "Our Mission" as h2 styled as: text-3xl font-bold text-text mb-6 mt-12
             
             show "This e-commerce store is entirely built using the new Bolt programming language. Bolt allows developers to write less code while generating highly optimized React applications." as p1 styled as: mb-6
             
-            show "The Technology" as h2_2 styled as: text-3xl font-bold text-gray-900 mb-6 mt-12
+            show "The Technology" as h2_2 styled as: text-3xl font-bold text-text mb-6 mt-12
             
             column styled as: gap-4 mb-12:
                 row styled as: gap-4 items-start:
@@ -36,5 +36,5 @@ page about:
                     
         hero styled as: mt-20 p-12 bg-gray-900 rounded-3xl text-center text-white:
             show "Ready to explore?" as ctaTitle styled as: text-3xl font-bold mb-6
-            link "Start Shopping" to products styled as: inline-block px-8 py-4 bg-white text-gray-900 hover:bg-gray-100 rounded-xl font-bold transition-colors
+            link "Start Shopping" to products styled as: inline-block px-8 py-4 bg-background text-gray-800 hover:bg-gray-100 rounded-xl font-bold transition-colors
             

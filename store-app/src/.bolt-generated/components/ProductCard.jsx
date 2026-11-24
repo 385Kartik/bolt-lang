@@ -14,10 +14,10 @@ export default function ProductCard({ product, children }) {
     <div>
       {(() => {
         try {
-          return <><div className="text-text shadow-sm flex flex-col p-0 bg-white border border-gray-100 rounded-2xl hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group cursor-pointer overflow-hidden">
+          return <><div className="text-text shadow-sm flex flex-col p-0 bg-background border border-border rounded-2xl hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group cursor-pointer overflow-hidden">
         {(() => {
           try {
-            return <><div className="max-w-7xl mx-auto sm:px-6 lg:px-8 w-full aspect-[4/3] bg-gray-50 overflow-hidden flex items-center justify-center p-6">
+            return <><div className="max-w-7xl mx-auto sm:px-6 lg:px-8 w-full aspect-[4/3] bg-cardBg overflow-hidden flex items-center justify-center p-6">
           {(() => {
             try {
               return <><img src={product.image} alt="Image" className="h-full w-full object-contain group-hover:scale-110 transition-transform duration-500" /></>;
@@ -106,7 +106,7 @@ export default function ProductCard({ product, children }) {
           })()}
           {(() => {
             try {
-              return <><p className="font-semibold text-gray-900 text-sm line-clamp-2 leading-snug mt-1">{product.title}</p></>;
+              return <><p className="font-semibold text-text text-sm line-clamp-2 leading-snug mt-1">{product.title}</p></>;
             } catch (e) {
               if (!e.__boltLine) { e.__boltLine = 16; }
               throw e;
@@ -122,7 +122,7 @@ export default function ProductCard({ product, children }) {
           })()}
           {(() => {
             try {
-              return <><div className="flex flex-row flex-wrap justify-between items-center mt-3 pt-3 border-t border-gray-100">
+              return <><div className="flex flex-row flex-wrap justify-between items-center mt-3 pt-3 border-t border-border">
             {(() => {
               try {
                 return <><div className="flex flex-col">
@@ -136,7 +136,7 @@ export default function ProductCard({ product, children }) {
               })()}
               {(() => {
                 try {
-                  return <><p className="font-black text-gray-900 text-xl">{product.price}</p></>;
+                  return <><p className="font-black text-text text-xl">{product.price}</p></>;
                 } catch (e) {
                   if (!e.__boltLine) { e.__boltLine = 22; }
                   throw e;

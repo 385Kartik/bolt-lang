@@ -13,7 +13,7 @@ export default function Navbar({ children }) {
     <div>
       {(() => {
         try {
-          return <><div className="flex-row flex-wrap flex justify-between items-center py-4 px-8 bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+          return <><div className="flex-row flex-wrap flex justify-between items-center py-4 px-8 bg-background border-b border-border sticky top-0 z-50">
         {(() => {
           try {
             return <><h1 className="text-2xl font-black text-blue-600 tracking-tighter">BoltStore</h1></>;
@@ -87,7 +87,7 @@ export default function Navbar({ children }) {
             <>
           {(() => {
             try {
-              return <><button className="bg-primary rounded-xl px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-900" onClick={async () => {
+              return <><button className="bg-primary rounded-xl px-4 py-2 text-sm font-medium text-gray-500 hover:text-text" onClick={async () => {
             logoutUser();
             addToast("Logged out", "success");
           }}>Logout</button></>;
@@ -102,7 +102,7 @@ export default function Navbar({ children }) {
             <>
           {(() => {
             try {
-              return <><Link to="/login" className="text-sm font-medium text-gray-500 hover:text-gray-900">Login</Link></>;
+              return <><Link to="/login" className="text-sm font-medium text-gray-500 hover:text-text">Login</Link></>;
             } catch (e) {
               if (!e.__boltLine) { e.__boltLine = 19; }
               throw e;

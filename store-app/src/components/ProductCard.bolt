@@ -1,6 +1,6 @@
 component ProductCard for product:
-    card styled as: flex flex-col p-0 bg-white border border-gray-100 rounded-2xl hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group cursor-pointer overflow-hidden:
-        container styled as: aspect-[4/3] bg-gray-50 overflow-hidden center-flex p-6:
+    card styled as: flex flex-col p-0 bg-background border border-border rounded-2xl hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group cursor-pointer overflow-hidden:
+        container styled as: aspect-[4/3] bg-cardBg overflow-hidden center-flex p-6:
             image product.image styled as: h-full w-full object-contain group-hover:scale-110 transition-transform duration-500
                 
         column styled as: gap-2 p-5:
@@ -13,10 +13,10 @@ component ProductCard for product:
                     show product.rating.count as count styled as: text-gray-400 text-xs
                     show "reviews" as label styled as: text-gray-400 text-xs
 
-            show product.title as name styled as: font-semibold text-gray-900 text-sm line-clamp-2 leading-snug mt-1
+            show product.title as name styled as: font-semibold text-text text-sm line-clamp-2 leading-snug mt-1
             show product.description as desc styled as: text-xs text-gray-400 line-clamp-2 leading-relaxed
 
-            row styled as: justify-between items-center mt-3 pt-3 border-t border-gray-100:
+            row styled as: justify-between items-center mt-3 pt-3 border-t border-border:
                 column:
                     show "Price" as label styled as: text-[10px] text-gray-400 uppercase tracking-wider font-medium
                     show product.price as price styled as: heading-black text-xl

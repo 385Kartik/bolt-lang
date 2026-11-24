@@ -1,5 +1,5 @@
 component TeamCard for member:
-    card styled as: p-0 bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group:
+    card styled as: p-0 bg-background border border-border rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group:
         container styled as: h-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500:
             show "" as spacer
 
@@ -8,7 +8,7 @@ component TeamCard for member:
                 container styled as: w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full center-flex text-white font-bold text-xl shadow-lg:
                     show member.name as avatar
                 column:
-                    show member.name as name styled as: font-bold text-gray-900 text-lg
+                    show member.name as name styled as: font-bold text-text text-lg
                     show member.email as email styled as: text-sm text-blue-500
 
             container styled as: h-px bg-gray-100 w-full my-1:
@@ -35,9 +35,9 @@ component TeamCard for member:
                 show member.phone as phone styled as: text-sm text-gray-500
 
             row styled as: gap-4 mt-2:
-                container styled as: flex-1 bg-gray-50 rounded-lg p-3 text-center:
+                container styled as: flex-1 bg-cardBg rounded-lg p-3 text-center:
                     show "LAT" as latlabel styled as: text-[10px] text-gray-400 uppercase tracking-wider font-bold
                     show member.address.geo.lat as lat styled as: text-sm font-mono text-gray-700
-                container styled as: flex-1 bg-gray-50 rounded-lg p-3 text-center:
+                container styled as: flex-1 bg-cardBg rounded-lg p-3 text-center:
                     show "LNG" as lnglabel styled as: text-[10px] text-gray-400 uppercase tracking-wider font-bold
                     show member.address.geo.lng as lng styled as: text-sm font-mono text-gray-700

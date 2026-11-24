@@ -7,7 +7,7 @@ export default function Footer({ children }) {
     <div>
       {(() => {
         try {
-          return <><div className="max-w-7xl mx-auto sm:px-6 lg:px-8 w-full bg-gray-50 pt-16 pb-8 px-8 border-t border-gray-200 mt-20">
+          return <><div className="max-w-7xl mx-auto sm:px-6 lg:px-8 w-full bg-cardBg pt-16 pb-8 px-8 border-t border-border mt-20">
         {(() => {
           try {
             return <><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto gap-12">
@@ -16,7 +16,7 @@ export default function Footer({ children }) {
               return <><div className="flex flex-col">
             {(() => {
               try {
-                return <><h1 className="text-xl font-bold text-gray-900 mb-4">BoltStore</h1></>;
+                return <><h1 className="text-xl font-bold text-text mb-4">BoltStore</h1></>;
               } catch (e) {
                 if (!e.__boltLine) { e.__boltLine = 5; }
                 throw e;
@@ -42,7 +42,7 @@ export default function Footer({ children }) {
               return <><div className="flex flex-col">
             {(() => {
               try {
-                return <><h1 className="font-semibold text-gray-900 mb-4">Quick Links</h1></>;
+                return <><h1 className="font-semibold text-text mb-4">Quick Links</h1></>;
               } catch (e) {
                 if (!e.__boltLine) { e.__boltLine = 9; }
                 throw e;
@@ -94,7 +94,7 @@ export default function Footer({ children }) {
               return <><div className="flex flex-col">
             {(() => {
               try {
-                return <><h1 className="font-semibold text-gray-900 mb-4">Subscribe</h1></>;
+                return <><h1 className="font-semibold text-text mb-4">Subscribe</h1></>;
               } catch (e) {
                 if (!e.__boltLine) { e.__boltLine = 16; }
                 throw e;
@@ -162,7 +162,7 @@ export default function Footer({ children }) {
         })()}
         {(() => {
           try {
-            return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full border-t border-gray-200 mt-12 pt-8 text-center text-sm text-gray-500">
+            return <><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full border-t border-border mt-12 pt-8 text-center text-sm text-gray-500">
           {(() => {
             try {
               return <><p>© 2026 BoltStore. All rights reserved.</p></>;

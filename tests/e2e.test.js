@@ -298,7 +298,7 @@ testOutput('UI — inputs and links',
     link "Go back" to "/home"`,
   [
     'export default function LoginPage() {',
-    '<input placeholder={"Enter name"} value={name} onChange={(e) => setName(e.target.value)} />',
+    '<input placeholder={"Enter name"} value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500" />',
     '<Link to="/">Go back</Link>'
   ]
 );

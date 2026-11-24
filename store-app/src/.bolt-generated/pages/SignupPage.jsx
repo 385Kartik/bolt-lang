@@ -25,10 +25,10 @@ export default function SignupPage() {
         })()}
         {(() => {
           try {
-            return <><div className="md:py-16 w-full max-w-md mx-auto mt-20 p-8 bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100">
+            return <><div className="md:py-16 w-full max-w-md mx-auto mt-20 p-8 bg-background rounded-3xl shadow-xl shadow-gray-200/50 border border-border">
           {(() => {
             try {
-              return <><h1 className="text-3xl font-black text-gray-900 mb-2 text-center">Create Account</h1></>;
+              return <><h1 className="text-3xl font-black text-text mb-2 text-center">Create Account</h1></>;
             } catch (e) {
               if (!e.__boltLine) { e.__boltLine = 7; }
               throw e;
@@ -73,11 +73,11 @@ export default function SignupPage() {
           addToast("Network error", "danger");
             }); } }}>
             <div className="flex flex-col gap-1">
-              <input placeholder={"Email Address"} value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input placeholder={"Email Address"} value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500" />
               {emailError && <span className="text-red-500 text-sm">{emailError}</span>}
             </div>
             <div className="flex flex-col gap-1">
-              <input placeholder={"Password"} value={password} onChange={(e) => setPassword(e.target.value)} />
+              <input placeholder={"Password"} value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500" />
               {passwordError && <span className="text-red-500 text-sm">{passwordError}</span>}
             </div>
             <button type="submit" className="primary styled as: w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold mt-4 shadow-lg shadow-blue-200 transition-all">Sign Up</button>

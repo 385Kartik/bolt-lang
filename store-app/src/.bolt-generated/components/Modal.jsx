@@ -7,10 +7,10 @@ export default function Modal({ title, children }) {
     <div>
       {(() => {
         try {
-          return <><div className="flex flex-col bg-white rounded-lg shadow-xl p-6 border border-gray-200">
+          return <><div className="flex flex-col bg-background rounded-lg shadow-xl p-6 border border-border">
         {(() => {
           try {
-            return <><h1 className="text-xl font-bold text-gray-800 mb-4">{title}</h1></>;
+            return <><h1 className="text-xl font-bold text-text mb-4">{title}</h1></>;
           } catch (e) {
             if (!e.__boltLine) { e.__boltLine = 3; }
             throw e;

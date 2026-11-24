@@ -403,3 +403,27 @@ test('bolt init: includes a light and dark design system and a theme toggle', ()
   assert.match(read(out, 'pages/HomePage.jsx'), /s\.theme = "dark"/);
   assert.match(read(out, 'store.js'), /prefers-color-scheme: dark/);
 });
+
+test('input: fields are visible by default and your classes win', () => {
+  const source = ['page home:', '    input "A" into a', '    input "B" into b styled as: border-red-500 rounded-full', ''].join('\n');
+  const page = read(build(makeProject({ 'src/pages/home.bolt': source })), 'pages/HomePage.jsx');
+  assert.match(page, /placeholder=\{"A"\}[^>]*className="w-full px-4 py-2 border border-gray-300 rounded-lg/);
+  const b = page.match(/placeholder=\{"B"\}[^>]*className="([^"]*)"/)[1];
+  assert.match(b, /border-red-500/);
+  assert.match(b, /rounded-full/);
+  assert.doesNotMatch(b, /border-gray-300/);
+  assert.doesNotMatch(b, /rounded-lg/);
+});
+
+test('check: a single .bolt file can be checked on its own', async () => {
+  const { checkProject } = await import('../src/check.js');
+  const root = makeProject({
+    'good.bolt': 'name = "World"\nprint "Hello, {name}!"\n',
+    'bad.bolt': 'page bad:\n    show @@\n'
+  });
+  assert.equal(checkProject(path.join(root, 'good.bolt')).ok, true);
+  const bad = checkProject(path.join(root, 'bad.bolt'));
+  assert.equal(bad.ok, false);
+  assert.equal(bad.errors[0].file, 'bad.bolt');
+  assert.equal(bad.errors[0].line, 2);
+});
