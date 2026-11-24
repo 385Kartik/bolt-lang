@@ -111,6 +111,7 @@ bolt stats store-app
 - **Fetch with defaults:** `fetch "/api/x" into x` handles loading and errors for you
 - **Dark mode out of the box:** `bolt init` ships a light/dark design system and a theme toggle
 - **Your classes win:** `styled as:` overrides Bolt's default classes (a red button is red)
+- **Formatter:** `bolt fmt` tidies indentation and spacing (never changes what the code means); also available as Format Document in VS Code
 - **Windows friendly:** CRLF and LF files both work
 - **Layout:** one `layout:` block wraps every page (navbar, footer) with a `slot`
 - **Wrapper components:** `Card:` with indented content, `slot` inside the component (modals, panels, layouts)
@@ -154,6 +155,7 @@ bolt tokens <file.bolt>            Show token stream (debug)
 bolt ast <file.bolt | dir>         Show AST (debug)
 bolt check [dir] [--json]          Check the whole project and list every problem
 bolt stats [dir] [--json]          Compare Bolt size with the React it generates
+bolt fmt [dir|file] [--check]      Tidy .bolt files (indentation, spacing)
 bolt serve [dir]                   Run the built-in API for your resource blocks
 bolt spec                          Print the short cheat-sheet (for AI)
 ```

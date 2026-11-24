@@ -92,6 +92,8 @@ Every `.bolt` file in the project is merged automatically, so all pages, compone
 
 **VS Code extension (`extensions/bolt-language-support`):** a TextMate grammar for colors, a snippets file, and `extension.js` for suggestions and problems. Problems are not computed in the editor: `lib/cli.js` runs `bolt check <folder> --json` and `lib/scan.js` reads names (components, pages, styles) from the text for suggestions. Both libs avoid importing `vscode`, so `tests/extension.test.js` covers them.
 
+**Formatter (`src/format.js`):** re-indents by mapping each indent width to a level (like Python), tidies blank lines, then checks that the formatted text parses to the same syntax tree (line numbers ignored) before accepting it. `bolt fmt --stdin` is what the VS Code formatter calls.
+
 **Layout:** the builder finds the single `LayoutDef`, validates it has exactly one `slot`, and injects each page's body into a copy of the layout body before code generation (pages with `layout none` are skipped).
 
 **Scaffold:** `bolt init` (`scaffoldProject` in `builder.js`) writes `src/styles.bolt` (the `DEFAULT_STYLES_BOLT` vocabulary) and `src/pages/home.bolt`.

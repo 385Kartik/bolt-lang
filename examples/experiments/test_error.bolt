@@ -1,5 +1,5 @@
 component ErrorCard for item:
-    // This will crash because item is null!
+// This will crash because item is null!
     show item.name as title
 
 page home:

@@ -1,40 +1,39 @@
 page about:
-    
+
     section styled as: max-w-4xl mx-auto px-8 py-24:
-        
+
         column styled as: text-center mb-16:
             show "About BoltStore" as title styled as: text-5xl heading-black tracking-tight mb-6
             show "We're pushing the boundaries of what's possible with modern web technologies." as subtitle styled as: text-xl text-gray-500
-            
+
         column styled as: prose prose-lg prose-blue mx-auto text-gray-600 leading-relaxed:
             show "Our Mission" as h2 styled as: text-3xl font-bold text-text mb-6 mt-12
-            
+
             show "This e-commerce store is entirely built using the new Bolt programming language. Bolt allows developers to write less code while generating highly optimized React applications." as p1 styled as: mb-6
-            
+
             show "The Technology" as h2_2 styled as: text-3xl font-bold text-text mb-6 mt-12
-            
+
             column styled as: gap-4 mb-12:
                 row styled as: gap-4 items-start:
                     container styled as: avatar-badge:
                         show "1" as idx1
                     show "Custom Lexer and Parser written from scratch." as desc1
-                    
+
                 row styled as: gap-4 items-start:
                     container styled as: avatar-badge:
                         show "2" as idx2
                     show "Generates standard AST nodes." as desc2
-                    
+
                 row styled as: gap-4 items-start:
                     container styled as: avatar-badge:
                         show "3" as idx3
                     show "Compiles directly to React and Tailwind CSS." as desc3
-                    
+
                 row styled as: gap-4 items-start:
                     container styled as: avatar-badge:
                         show "4" as idx4
                     show "Supports multi-file architecture and automatic routing." as desc4
-                    
+
         hero styled as: mt-20 p-12 bg-gray-900 rounded-3xl text-center text-white:
             show "Ready to explore?" as ctaTitle styled as: text-3xl font-bold mb-6
             link "Start Shopping" to products styled as: inline-block px-8 py-4 bg-background text-gray-800 hover:bg-gray-100 rounded-xl font-bold transition-colors
-            

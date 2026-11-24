@@ -4,14 +4,14 @@ component Footer:
             column:
                 show "BoltStore" as title styled as: text-xl font-bold text-text mb-4
                 show "The next generation of e-commerce built with the Bolt language." as desc styled as: text-gray-500 text-sm leading-relaxed
-                
+
             column:
                 show "Quick Links" as title styled as: font-semibold text-text mb-4
                 column styled as: gap-2 text-sm text-gray-500:
                     link "Home" to home
                     link "Products" to products
                     link "About" to about
-                    
+
             column:
                 show "Subscribe" as title styled as: font-semibold text-text mb-4
                 show "Get the latest updates and offers." as desc styled as: text-sm text-gray-500 mb-4

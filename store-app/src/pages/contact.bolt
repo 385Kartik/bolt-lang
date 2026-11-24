@@ -1,11 +1,10 @@
 page contact:
-    
-    
+
     container styled as: py-12:
         hero styled as: bg-gray-900 text-white p-12 rounded-3xl text-center mb-12:
             show "Contact Us" as title
             show "We'd love to hear from you." as subtitle
-            
+
         row styled as: gap-12:
             column styled as: w-full lg:w-1/2:
                 card:
@@ -19,21 +18,20 @@ page contact:
                             name = ""
                             email = ""
                             message = ""
-                        
+
             column styled as: w-full lg:w-1/2 flex flex-col gap-6:
                 card:
                     show "Watch Our Story (Public Folder)" as title styled as: section-title
                     video "/demo.mp4" styled as: w-full rounded-xl
-                    
+
                 card:
                     show "Our Headquarters (Public Folder)" as title styled as: section-title
                     image "/office.jpg" styled as: w-full rounded-xl object-cover
-                    
+
                 card:
                     show "Product Demo (External URL)" as title styled as: section-title
                     video "https://www.w3schools.com/html/mov_bbb.mp4" styled as: w-full rounded-xl
-                    
+
                 card:
                     show "Remote Office (External URL)" as title styled as: section-title
                     image "https://picsum.photos/600/300" styled as: w-full rounded-xl object-cover
-                    

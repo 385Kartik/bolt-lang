@@ -1,6 +1,6 @@
 page product(id):
-    
-    // Fetch product details based on the dynamic ID
+
+// Fetch product details based on the dynamic ID
     fetch "https://fakestoreapi.com/products/" + id into product:
         loading:
             section styled as: max-w-7xl mx-auto px-8 py-32 text-center:
@@ -12,25 +12,25 @@ page product(id):
         success:
             section styled as: max-w-7xl mx-auto px-8 py-24:
                 row styled as: items-start gap-12 flex-col md:flex-row:
-                    // Product Image
+                // Product Image
                     container styled as: flex-1 bg-background p-12 rounded-3xl border border-border shadow-sm:
                         image product.image styled as: w-full h-auto max-h-[500px] object-contain
-                    
+
                     // Product Details
                     column styled as: flex-1:
                         show product.category styled as: text-sm font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-3 py-1.5 rounded-full inline-block w-max mb-6
-                        
+
                         show product.title as title styled as: text-4xl md:text-5xl heading-black leading-tight mb-6
-                        
+
                         row styled as: items-center gap-4 mb-8:
                             show "★ " + product.rating.rate styled as: text-lg font-bold text-yellow-500
                             show "(" + product.rating.count + " reviews)" styled as: text-gray-500
-                        
+
                         show "$" + product.price as price styled as: text-5xl heading-black mb-8
-                        
+
                         show "Description" as label styled as: text-lg font-bold text-text mb-3
                         show product.description as text styled as: body-text text-lg mb-10
-                        
+
                         row styled as: gap-4:
                             button "Add to Cart" as primary styled as: flex-1 py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-lg transition-colors:
                                 if logged in:
@@ -39,7 +39,6 @@ page product(id):
                                 otherwise:
                                     show toast "Please login first" as danger
                                     go to login
-                                    
+
                             button "Back to Home" as secondary styled as: py-4 px-8 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl font-bold transition-colors:
                                 go to home
-

@@ -40,14 +40,14 @@ export default function HomePage() {
               try {
                 return <><p>🚀 Built with Bolt Language</p></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 8; }
+                if (!e.__boltLine) { e.__boltLine = 7; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 7; }
+              if (!e.__boltLine) { e.__boltLine = 6; }
               throw e;
             }
           })()}
@@ -55,7 +55,7 @@ export default function HomePage() {
             try {
               return <><h1 className="text-5xl md:text-7xl font-black tracking-tight text-text mb-6 leading-tight">The Future of Shopping</h1></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 10; }
+              if (!e.__boltLine) { e.__boltLine = 9; }
               throw e;
             }
           })()}
@@ -63,7 +63,7 @@ export default function HomePage() {
             try {
               return <><h2 className="text-xl text-blue-100 max-w-2xl mb-10 leading-relaxed">Experience blazing fast performance with our new generated e-commerce platform. No more bloated JavaScript.</h2></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 12; }
+              if (!e.__boltLine) { e.__boltLine = 11; }
               throw e;
             }
           })()}
@@ -74,7 +74,7 @@ export default function HomePage() {
               try {
                 return <><Link to="/products" className="px-8 py-4 bg-primary hover:bg-blue-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-200">Shop Collection</Link></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 15; }
+                if (!e.__boltLine) { e.__boltLine = 14; }
                 throw e;
               }
             })()}
@@ -82,21 +82,21 @@ export default function HomePage() {
               try {
                 return <><Link to="/about" className="px-8 py-4 bg-background border-2 border-border hover:border-gray-300 text-text rounded-xl font-bold transition-all">Learn More</Link></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 16; }
+                if (!e.__boltLine) { e.__boltLine = 15; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 14; }
+              if (!e.__boltLine) { e.__boltLine = 13; }
               throw e;
             }
           })()}
 
         </div></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 6; }
+            if (!e.__boltLine) { e.__boltLine = 5; }
             throw e;
           }
         })()}
@@ -107,7 +107,7 @@ export default function HomePage() {
             try {
               return <><h1 className="text-3xl font-black text-text mb-2">Theme Preferences</h1></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 19; }
+              if (!e.__boltLine) { e.__boltLine = 18; }
               throw e;
             }
           })()}
@@ -118,7 +118,7 @@ export default function HomePage() {
               try {
                 return <><button className="bg-primary text-white rounded-xl px-4 py-2" onClick={async () => { updateStore(s => { s.theme = "light"; }); }}>Light Theme</button></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 21; }
+                if (!e.__boltLine) { e.__boltLine = 20; }
                 throw e;
               }
             })()}
@@ -126,7 +126,7 @@ export default function HomePage() {
               try {
                 return <><button className="bg-primary text-white rounded-xl px-4 py-2" onClick={async () => { updateStore(s => { s.theme = "dark"; }); }}>Dark Theme</button></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 23; }
+                if (!e.__boltLine) { e.__boltLine = 22; }
                 throw e;
               }
             })()}
@@ -134,14 +134,14 @@ export default function HomePage() {
               try {
                 return <><button className="bg-primary text-white rounded-xl px-4 py-2" onClick={async () => { updateStore(s => { s.theme = "system"; }); }}>System Theme</button></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 25; }
+                if (!e.__boltLine) { e.__boltLine = 24; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 20; }
+              if (!e.__boltLine) { e.__boltLine = 19; }
               throw e;
             }
           })()}
@@ -149,7 +149,7 @@ export default function HomePage() {
             try {
               return <><h1 className="text-3xl font-black text-text mb-2">Featured Products</h1></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 28; }
+              if (!e.__boltLine) { e.__boltLine = 27; }
               throw e;
             }
           })()}
@@ -157,7 +157,7 @@ export default function HomePage() {
             try {
               return <><h2 className="text-gray-400 mb-10">Handpicked items fetched live from FakeStore API</h2></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 29; }
+              if (!e.__boltLine) { e.__boltLine = 28; }
               throw e;
             }
           })()}
@@ -167,7 +167,7 @@ export default function HomePage() {
             try {
               return <><p className="text-center text-gray-400 py-12 animate-pulse">Loading featured products...</p></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 32; }
+              if (!e.__boltLine) { e.__boltLine = 31; }
               throw e;
             }
           })()}
@@ -178,7 +178,7 @@ export default function HomePage() {
             try {
               return <><button className="bg-primary text-white rounded-xl px-4 py-2" onClick={async () => { setShowTestModal(true); }}>Test Modal Component</button></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 35; }
+              if (!e.__boltLine) { e.__boltLine = 34; }
               throw e;
             }
           })()}
@@ -191,7 +191,7 @@ export default function HomePage() {
               try {
                 return <><p className="text-gray-600 mb-6">Are you sure you want to delete this item? This action cannot be undone.</p></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 40; }
+                if (!e.__boltLine) { e.__boltLine = 39; }
                 throw e;
               }
             })()}
@@ -202,7 +202,7 @@ export default function HomePage() {
                 try {
                   return <><button className="bg-primary text-white rounded-xl px-4 py-2" onClick={async () => { setShowTestModal(false); }}>Cancel</button></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 42; }
+                  if (!e.__boltLine) { e.__boltLine = 41; }
                   throw e;
                 }
               })()}
@@ -210,21 +210,21 @@ export default function HomePage() {
                 try {
                   return <><button className="bg-primary text-white rounded-xl px-4 py-2" onClick={async () => { setShowTestModal(false); }}>Delete</button></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 44; }
+                  if (!e.__boltLine) { e.__boltLine = 43; }
                   throw e;
                 }
               })()}
 
             </div></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 41; }
+                if (!e.__boltLine) { e.__boltLine = 40; }
                 throw e;
               }
             })()}
 
           </Modal></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 39; }
+              if (!e.__boltLine) { e.__boltLine = 38; }
               throw e;
             }
           })()}
@@ -240,14 +240,14 @@ export default function HomePage() {
               try {
                 return <>{featured.map((product, i) => <ProductCard key={i} product={product} />)}</>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 48; }
+                if (!e.__boltLine) { e.__boltLine = 47; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 47; }
+              if (!e.__boltLine) { e.__boltLine = 46; }
               throw e;
             }
           })()}
@@ -257,7 +257,7 @@ export default function HomePage() {
 
         </div></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 18; }
+            if (!e.__boltLine) { e.__boltLine = 17; }
             throw e;
           }
         })()}
@@ -277,14 +277,14 @@ export default function HomePage() {
                   try {
                     return <><p>⚡</p></>;
                   } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 55; }
+                    if (!e.__boltLine) { e.__boltLine = 54; }
                     throw e;
                   }
                 })()}
 
               </div></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 54; }
+                  if (!e.__boltLine) { e.__boltLine = 53; }
                   throw e;
                 }
               })()}
@@ -292,7 +292,7 @@ export default function HomePage() {
                 try {
                   return <><p className="font-bold text-xl mb-3">Lightning Fast</p></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 56; }
+                  if (!e.__boltLine) { e.__boltLine = 55; }
                   throw e;
                 }
               })()}
@@ -300,14 +300,14 @@ export default function HomePage() {
                 try {
                   return <><p className="text-gray-500 leading-relaxed">Compiled directly to React for maximum performance.</p></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 57; }
+                  if (!e.__boltLine) { e.__boltLine = 56; }
                   throw e;
                 }
               })()}
 
             </div></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 53; }
+                if (!e.__boltLine) { e.__boltLine = 52; }
                 throw e;
               }
             })()}
@@ -321,14 +321,14 @@ export default function HomePage() {
                   try {
                     return <><p>🎨</p></>;
                   } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 61; }
+                    if (!e.__boltLine) { e.__boltLine = 60; }
                     throw e;
                   }
                 })()}
 
               </div></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 60; }
+                  if (!e.__boltLine) { e.__boltLine = 59; }
                   throw e;
                 }
               })()}
@@ -336,7 +336,7 @@ export default function HomePage() {
                 try {
                   return <><p className="font-bold text-xl mb-3">Beautiful UI</p></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 62; }
+                  if (!e.__boltLine) { e.__boltLine = 61; }
                   throw e;
                 }
               })()}
@@ -344,14 +344,14 @@ export default function HomePage() {
                 try {
                   return <><p className="text-gray-500 leading-relaxed">Styled with Tailwind CSS for perfect modern aesthetics.</p></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 63; }
+                  if (!e.__boltLine) { e.__boltLine = 62; }
                   throw e;
                 }
               })()}
 
             </div></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 59; }
+                if (!e.__boltLine) { e.__boltLine = 58; }
                 throw e;
               }
             })()}
@@ -365,14 +365,14 @@ export default function HomePage() {
                   try {
                     return <><p>📱</p></>;
                   } catch (e) {
-                    if (!e.__boltLine) { e.__boltLine = 67; }
+                    if (!e.__boltLine) { e.__boltLine = 66; }
                     throw e;
                   }
                 })()}
 
               </div></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 66; }
+                  if (!e.__boltLine) { e.__boltLine = 65; }
                   throw e;
                 }
               })()}
@@ -380,7 +380,7 @@ export default function HomePage() {
                 try {
                   return <><p className="font-bold text-xl mb-3">Responsive</p></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 68; }
+                  if (!e.__boltLine) { e.__boltLine = 67; }
                   throw e;
                 }
               })()}
@@ -388,28 +388,28 @@ export default function HomePage() {
                 try {
                   return <><p className="text-gray-500 leading-relaxed">Looks amazing on any device, anywhere.</p></>;
                 } catch (e) {
-                  if (!e.__boltLine) { e.__boltLine = 69; }
+                  if (!e.__boltLine) { e.__boltLine = 68; }
                   throw e;
                 }
               })()}
 
             </div></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 65; }
+                if (!e.__boltLine) { e.__boltLine = 64; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 51; }
+              if (!e.__boltLine) { e.__boltLine = 50; }
               throw e;
             }
           })()}
 
         </div></>;
           } catch (e) {
-            if (!e.__boltLine) { e.__boltLine = 50; }
+            if (!e.__boltLine) { e.__boltLine = 49; }
             throw e;
           }
         })()}
@@ -427,5 +427,5 @@ export default function HomePage() {
   );
 }
 window.__BOLT_MAPS = window.__BOLT_MAPS || {};
-window.__BOLT_MAPS['HomePage.jsx'] = {"10":2,"19":3,"24":2,"32":2,"35":7,"38":8,"53":10,"61":12,"69":14,"72":15,"80":16,"102":18,"105":19,"113":20,"116":21,"124":23,"132":25,"147":28,"155":29,"163":31,"165":32,"176":35,"184":38,"186":39,"189":40,"197":41,"200":42,"208":44,"233":46,"235":47,"238":48,"263":50,"266":51,"269":53,"272":54,"275":55,"290":56,"298":57,"313":59,"316":60,"319":61,"334":62,"342":63,"357":65,"360":66,"363":67,"378":68,"386":69,"415":4};
+window.__BOLT_MAPS['HomePage.jsx'] = {"10":2,"19":3,"24":2,"32":2,"35":6,"38":7,"53":9,"61":11,"69":13,"72":14,"80":15,"102":17,"105":18,"113":19,"116":20,"124":22,"132":24,"147":27,"155":28,"163":30,"165":31,"176":34,"184":37,"186":38,"189":39,"197":40,"200":41,"208":43,"233":45,"235":46,"238":47,"263":49,"266":50,"269":52,"272":53,"275":54,"290":55,"298":56,"313":58,"316":59,"319":60,"334":61,"342":62,"357":64,"360":65,"363":66,"378":67,"386":68,"415":4};
 //# sourceMappingURL=HomePage.jsx.map

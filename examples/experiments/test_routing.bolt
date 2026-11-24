@@ -16,12 +16,12 @@ page home:
         {name: "Mechanical Keyboard", price: "129"},
         {name: "4K Monitor", price: "399"}
     ]
-    
+
     hero:
         show "Bolt Tech Store" as title styled as: text-5xl font-extrabold tracking-tight mb-4
         show "Build layouts fast and effortlessly with the new Design System." styled as: text-lg opacity-90 mb-6
         link "Contact Support" to contact styled as: px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-500
-    
+
     section:
         grid auto styled as: gap-8:
             show all products
@@ -38,5 +38,3 @@ page contact:
     hero:
         show "Contact Us" as title styled as: text-5xl font-extrabold tracking-tight mb-4
         link "Go Home" to home styled as: px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-500
-        
-

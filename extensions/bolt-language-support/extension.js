@@ -9,7 +9,7 @@
 const vscode = require('vscode');
 const path = require('path');
 const { scanSource, mergeScans, contextAt } = require('./lib/scan.js');
-const { runBolt, groupErrors } = require('./lib/cli.js');
+const { runBolt, formatText, groupErrors } = require('./lib/cli.js');
 
 let diagnostics;
 let statusItem;
@@ -157,6 +157,20 @@ function scheduleCheck(document) {
   checkTimer = setTimeout(() => checkProject(folder, document), 300);
 }
 
+// ── Formatting (Format Document / Shift+Alt+F), done by `bolt fmt` ─────
+
+const formattingProvider = {
+  async provideDocumentFormattingEdits(document) {
+    const folder = vscode.workspace.getWorkspaceFolder(document.uri) ||
+      (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]);
+    const cwd = folder ? folder.uri.fsPath : path.dirname(document.uri.fsPath);
+    const formatted = await formatText(cwd, document.getText(), config().get('cliPath'));
+    if (formatted == null || formatted === document.getText()) return [];
+    const whole = new vscode.Range(document.positionAt(0), document.positionAt(document.getText().length));
+    return [vscode.TextEdit.replace(whole, formatted)];
+  }
+};
+
 // ── Commands ──────────────────────────────────────────────────────────
 
 async function showStats() {
@@ -188,6 +202,7 @@ function activate(context) {
 
   context.subscriptions.push(
     vscode.languages.registerCompletionItemProvider({ language: 'bolt' }, completionProvider, ' ', ':', '/'),
+    vscode.languages.registerDocumentFormattingEditProvider({ language: 'bolt' }, formattingProvider),
     vscode.commands.registerCommand('bolt.check', checkNow),
     vscode.commands.registerCommand('bolt.stats', showStats),
     vscode.workspace.onDidSaveTextDocument(doc => { if (doc.languageId === 'bolt') scheduleCheck(doc); }),

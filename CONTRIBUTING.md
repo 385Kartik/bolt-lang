@@ -27,9 +27,9 @@ We welcome discussions and PRs for adding new language primitives or improving t
 - Try it with `npm run install:vscode`, then reload VS Code
 
 ## Before you open a PR
-- Run `node cli/bolt.js check store-app` (must report no problems)
+- Run `node cli/bolt.js check store-app` (must report no problems) and `node cli/bolt.js fmt store-app --check`
 - If you change syntax, update `llms.txt` (the AI cheat-sheet) too
 
 ## Tests
-- `npm test` runs everything (`tests/e2e.test.js`, `tests/features.test.js`, `tests/api.test.js`, `tests/tailwind.test.js`, `tests/extension.test.js`)
+- `npm test` runs everything (`tests/e2e.test.js`, `tests/features.test.js`, `tests/api.test.js`, `tests/tailwind.test.js`, `tests/extension.test.js`, `tests/format.test.js`)
 - Add a test for every new syntax or compiler behavior, and update the docs (README, LANGUAGE_SPEC, ARCHITECTURE, BOLT_HISTORY, ROADMAP) in the same change

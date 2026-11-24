@@ -60,4 +60,4 @@ resource products at "/api/products":
 if logged in: ... otherwise: ...
 
 ## Tools
-bolt init app | bolt dev app | bolt build app | bolt check [--json] | bolt stats | bolt spec
+bolt init app | bolt dev app | bolt build app | bolt check [--json] | bolt stats | bolt fmt [--check] | bolt serve | bolt spec

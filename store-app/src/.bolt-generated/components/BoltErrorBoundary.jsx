@@ -8,14 +8,14 @@ component Footer:
             column:
                 show "BoltStore" as title styled as: text-xl font-bold text-text mb-4
                 show "The next generation of e-commerce built with the Bolt language." as desc styled as: text-gray-500 text-sm leading-relaxed
-                
+
             column:
                 show "Quick Links" as title styled as: font-semibold text-text mb-4
                 column styled as: gap-2 text-sm text-gray-500:
                     link "Home" to home
                     link "Products" to products
                     link "About" to about
-                    
+
             column:
                 show "Subscribe" as title styled as: font-semibold text-text mb-4
                 show "Get the latest updates and offers." as desc styled as: text-sm text-gray-500 mb-4
@@ -39,7 +39,7 @@ component Modal takes title:
 component Navbar:
     row styled as: flex justify-between items-center py-4 px-8 bg-background border-b border-border sticky top-0 z-50:
         show "BoltStore" as title styled as: text-2xl font-black text-blue-600 tracking-tighter
-        
+
         row styled as: flex gap-6 text-sm font-medium text-gray-600:
             link "Home" to home styled as: link-hover
             link "Products" to products styled as: link-hover
@@ -47,7 +47,7 @@ component Navbar:
             link "Contact" to contact styled as: link-hover
             link "Team" to team styled as: link-hover
             link "Admin" to admin styled as: link-hover
-        
+
         row styled as: flex gap-4 items-center:
             if logged in:
                 button "Logout" styled as: text-sm font-medium text-gray-500 hover:text-text:
@@ -56,7 +56,7 @@ component Navbar:
             otherwise:
                 link "Login" to login styled as: text-sm font-medium text-gray-500 hover:text-text
                 link "Sign Up" to signup styled as: bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-blue-700
-                
+
             button "Cart (" + count of cart + ")" as secondary styled as: bg-gray-900 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-800 transition-all
 
 
@@ -65,7 +65,7 @@ component ProductCard for product:
     card styled as: flex flex-col p-0 bg-background border border-border rounded-2xl hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group cursor-pointer overflow-hidden:
         container styled as: aspect-[4/3] bg-cardBg overflow-hidden center-flex p-6:
             image product.image styled as: h-full w-full object-contain group-hover:scale-110 transition-transform duration-500
-                
+
         column styled as: gap-2 p-5:
             row styled as: justify-between items-center:
                 show product.category as category styled as: text-[10px] text-blue-600 font-bold uppercase tracking-widest bg-blue-50 px-2 py-1 rounded-full
@@ -85,7 +85,7 @@ component ProductCard for product:
                     show product.price as price styled as: heading-black text-xl
                 column styled as: items-end:
                     show "In Stock" as stock styled as: text-[10px] text-emerald-600 font-bold uppercase tracking-wider bg-emerald-50 px-2 py-0.5 rounded-full
-            
+
             row styled as: gap-2 mt-3:
                 button "View Details" as secondary styled as: flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg font-medium text-sm transition-colors:
                     go to product(product.id)
@@ -118,7 +118,7 @@ component TeamCard for member:
             row styled as: gap-2 items-center:
                 show "🏢" as icon1
                 show member.company.name as company styled as: text-sm font-semibold text-gray-700
-            
+
             show member.company.catchPhrase as catchphrase styled as: text-xs text-gray-400 italic pl-7
 
             row styled as: gap-2 items-center:
@@ -153,7 +153,7 @@ design system:
             cardBg: "#f8fafc"
             border: "#e2e8f0"
             primary: "#2563eb"
-            
+
         dark:
             background: "#0f172a"
             text: "#f8fafc"
@@ -163,9 +163,9 @@ design system:
 
     components:
         card: "bg-cardBg text-text border border-border rounded-xl shadow-sm p-6"
-        
+
         button primary: "bg-primary text-white rounded-xl px-4 py-2"
-        
+
         button secondary: "bg-cardBg text-text border border-border rounded-xl px-4 py-2"
 
 
@@ -178,45 +178,44 @@ layout:
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\about.bolt ─── */
 page about:
-    
+
     section styled as: max-w-4xl mx-auto px-8 py-24:
-        
+
         column styled as: text-center mb-16:
             show "About BoltStore" as title styled as: text-5xl heading-black tracking-tight mb-6
             show "We're pushing the boundaries of what's possible with modern web technologies." as subtitle styled as: text-xl text-gray-500
-            
+
         column styled as: prose prose-lg prose-blue mx-auto text-gray-600 leading-relaxed:
             show "Our Mission" as h2 styled as: text-3xl font-bold text-text mb-6 mt-12
-            
+
             show "This e-commerce store is entirely built using the new Bolt programming language. Bolt allows developers to write less code while generating highly optimized React applications." as p1 styled as: mb-6
-            
+
             show "The Technology" as h2_2 styled as: text-3xl font-bold text-text mb-6 mt-12
-            
+
             column styled as: gap-4 mb-12:
                 row styled as: gap-4 items-start:
                     container styled as: avatar-badge:
                         show "1" as idx1
                     show "Custom Lexer and Parser written from scratch." as desc1
-                    
+
                 row styled as: gap-4 items-start:
                     container styled as: avatar-badge:
                         show "2" as idx2
                     show "Generates standard AST nodes." as desc2
-                    
+
                 row styled as: gap-4 items-start:
                     container styled as: avatar-badge:
                         show "3" as idx3
                     show "Compiles directly to React and Tailwind CSS." as desc3
-                    
+
                 row styled as: gap-4 items-start:
                     container styled as: avatar-badge:
                         show "4" as idx4
                     show "Supports multi-file architecture and automatic routing." as desc4
-                    
+
         hero styled as: mt-20 p-12 bg-gray-900 rounded-3xl text-center text-white:
             show "Ready to explore?" as ctaTitle styled as: text-3xl font-bold mb-6
             link "Start Shopping" to products styled as: inline-block px-8 py-4 bg-background text-gray-800 hover:bg-gray-100 rounded-xl font-bold transition-colors
-            
 
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\admin.bolt ─── */
@@ -232,30 +231,29 @@ action createProduct(name, price):
 page admin:
     remember newName = ""
     remember newPrice = "0"
-    
 
     container styled as: max-w-4xl mx-auto px-8 py-16:
-        // Phase 4: Authentication natively built in
+    // Phase 4: Authentication natively built in
         if not logged in:
             card styled as: soft-panel:
                 show "Admin Login" as title styled as: text-3xl font-black mb-4
                 show "Please log in to access the dashboard." as desc styled as: text-gray-600 mb-6
-                
+
                 button "Mock Login" as primary:
-                    // Auto-saves session to localStorage if token is returned
+                // Auto-saves session to localStorage if token is returned
                     login "https://fakestoreapi.com/auth/login" with { username: "mor_2314", password: "83r5^_" }
-                    
+
         if logged in:
             show "Admin Dashboard" as title styled as: text-4xl font-black mb-2
             // Global user object is injected automatically!
             show "Welcome back!" as sub styled as: text-gray-500 mb-8
-            
+
             button "Logout" as secondary styled as: mb-8:
                 logout
-                
+
             card styled as: soft-panel:
                 show "Add New Product" as stitle styled as: section-title
-                
+
                 row styled as: gap-4 mb-4:
                     column:
                         show "Product Name" as l1 styled as: text-sm font-semibold text-gray-700 mb-1
@@ -263,7 +261,7 @@ page admin:
                     column:
                         show "Price" as l2 styled as: text-sm font-semibold text-gray-700 mb-1
                         input "Enter price" into newPrice styled as: px-4 py-2 border rounded-lg w-full
-                
+
                 button "Submit Product" as primary styled as: mt-4:
                     response = run createProduct(newName, newPrice)
                     show toast "Product Created Successfully!" as success
@@ -273,13 +271,13 @@ page admin:
             card styled as: soft-panel:
                 show "Update/Delete Actions" as atitle styled as: section-title
                 show "FakeStore API allows mocking these actions. Check network tab." as desc styled as: text-sm text-gray-500 mb-4
-                
+
                 row styled as: gap-4:
                     button "Update Product #1" as secondary:
                         update "https://fakestoreapi.com/products/1" with { title: "Updated Name", price: 99.99 }:
                             success:
                                 show toast "Updated successfully!" as success
-                    
+
                     button "Delete Product #1" styled as: bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-colors:
                         show modal "Are you sure you want to delete this product?"
                         delete "https://fakestoreapi.com/products/1":
@@ -287,16 +285,14 @@ page admin:
                                 show toast "Deleted successfully!" as success
 
 
-
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\contact.bolt ─── */
 page contact:
-    
-    
+
     container styled as: py-12:
         hero styled as: bg-gray-900 text-white p-12 rounded-3xl text-center mb-12:
             show "Contact Us" as title
             show "We'd love to hear from you." as subtitle
-            
+
         row styled as: gap-12:
             column styled as: w-full lg:w-1/2:
                 card:
@@ -310,24 +306,23 @@ page contact:
                             name = ""
                             email = ""
                             message = ""
-                        
+
             column styled as: w-full lg:w-1/2 flex flex-col gap-6:
                 card:
                     show "Watch Our Story (Public Folder)" as title styled as: section-title
                     video "/demo.mp4" styled as: w-full rounded-xl
-                    
+
                 card:
                     show "Our Headquarters (Public Folder)" as title styled as: section-title
                     image "/office.jpg" styled as: w-full rounded-xl object-cover
-                    
+
                 card:
                     show "Product Demo (External URL)" as title styled as: section-title
                     video "https://www.w3schools.com/html/mov_bbb.mp4" styled as: w-full rounded-xl
-                    
+
                 card:
                     show "Remote Office (External URL)" as title styled as: section-title
                     image "https://picsum.photos/600/300" styled as: w-full rounded-xl object-cover
-                    
 
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\home.bolt ─── */
@@ -335,15 +330,14 @@ page home:
     fetch "https://fakestoreapi.com/products?limit=4" into featured
     store showTestModal = false
 
-    
     hero:
         container styled as: inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6:
             show "🚀 Built with Bolt Language" as text
-            
+
         show "The Future of Shopping" as title styled as: text-5xl md:text-7xl font-black tracking-tight text-text mb-6 leading-tight
-        
+
         show "Experience blazing fast performance with our new generated e-commerce platform. No more bloated JavaScript." as subtitle styled as: text-xl text-blue-100 max-w-2xl mb-10 leading-relaxed
-        
+
         row styled as: gap-4:
             link "Shop Collection" to products styled as: px-8 py-4 bg-primary hover:bg-blue-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-200
             link "Learn More" to about styled as: px-8 py-4 bg-background border-2 border-border hover:border-gray-300 text-text rounded-xl font-bold transition-all
@@ -367,7 +361,7 @@ page home:
         // Phase 11: Wrapper Component Test
         button "Test Modal Component" as secondary:
             showTestModal = true
-            
+
         if showTestModal:
             show Modal with title="Warning":
                 show "Are you sure you want to delete this item? This action cannot be undone." as text styled as: text-gray-600 mb-6
@@ -379,49 +373,48 @@ page home:
         if featured != null:
             grid 4 styled as: gap-6:
                 show ProductCard for each product in featured
-            
+
     section styled as: max-w-7xl mx-auto px-8 py-20:
         grid 3 styled as: gap-8:
-            
+
             card:
                 container styled as: icon-box:
                     show "⚡" as emoji1
                 show "Lightning Fast" as title1 styled as: card-title
                 show "Compiled directly to React for maximum performance." as desc1 styled as: body-text
-                
+
             card:
                 container styled as: icon-box:
                     show "🎨" as emoji2
                 show "Beautiful UI" as title2 styled as: card-title
                 show "Styled with Tailwind CSS for perfect modern aesthetics." as desc2 styled as: body-text
-                
+
             card:
                 container styled as: icon-box:
                     show "📱" as emoji3
                 show "Responsive" as title3 styled as: card-title
                 show "Looks amazing on any device, anywhere." as desc3 styled as: body-text
-                
 
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\login.bolt ─── */
 page login:
     layout none
-    
+
     show Navbar
-    
+
     section styled as: max-w-md mx-auto mt-20 p-8 bg-background rounded-3xl shadow-xl shadow-gray-200/50 border border-border:
         show "Welcome Back" as title styled as: text-3xl heading-black mb-2 text-center
         show "Enter your details to access your account." as subtitle styled as: text-gray-500 mb-8 text-center
-        
+
         form:
             input "Email Address" into email:
                 required
                 email
-                
+
             input "Password" into password:
                 required
                 min 8
-                
+
             submit "Login" as primary styled as: w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold mt-4 shadow-lg shadow-blue-200 transition-all:
                 submit "http://localhost:3001/api/login" with { email: email, password: password }:
                     success res:
@@ -433,7 +426,7 @@ page login:
                             go to products
                     error err:
                         show toast "Network error" as danger
-                        
+
         row styled as: justify-center mt-6 gap-2 text-sm:
             show "Don't have an account?" as prompt styled as: text-gray-500
             link "Sign up" to signup styled as: font-bold text-blue-600 hover:text-blue-700
@@ -441,8 +434,8 @@ page login:
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\product.bolt ─── */
 page product(id):
-    
-    // Fetch product details based on the dynamic ID
+
+// Fetch product details based on the dynamic ID
     fetch "https://fakestoreapi.com/products/" + id into product:
         loading:
             section styled as: max-w-7xl mx-auto px-8 py-32 text-center:
@@ -454,25 +447,25 @@ page product(id):
         success:
             section styled as: max-w-7xl mx-auto px-8 py-24:
                 row styled as: items-start gap-12 flex-col md:flex-row:
-                    // Product Image
+                // Product Image
                     container styled as: flex-1 bg-background p-12 rounded-3xl border border-border shadow-sm:
                         image product.image styled as: w-full h-auto max-h-[500px] object-contain
-                    
+
                     // Product Details
                     column styled as: flex-1:
                         show product.category styled as: text-sm font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-3 py-1.5 rounded-full inline-block w-max mb-6
-                        
+
                         show product.title as title styled as: text-4xl md:text-5xl heading-black leading-tight mb-6
-                        
+
                         row styled as: items-center gap-4 mb-8:
                             show "★ " + product.rating.rate styled as: text-lg font-bold text-yellow-500
                             show "(" + product.rating.count + " reviews)" styled as: text-gray-500
-                        
+
                         show "\$" + product.price as price styled as: text-5xl heading-black mb-8
-                        
+
                         show "Description" as label styled as: text-lg font-bold text-text mb-3
                         show product.description as text styled as: body-text text-lg mb-10
-                        
+
                         row styled as: gap-4:
                             button "Add to Cart" as primary styled as: flex-1 py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-lg transition-colors:
                                 if logged in:
@@ -481,20 +474,19 @@ page product(id):
                                 otherwise:
                                     show toast "Please login first" as danger
                                     go to login
-                                    
+
                             button "Back to Home" as secondary styled as: py-4 px-8 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl font-bold transition-colors:
                                 go to home
 
 
-
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\products.bolt ─── */
 page products:
-    
+
     hero styled as: bg-gray-900 text-white py-20 px-8 text-center:
         show "Our Collection" as title styled as: text-4xl md:text-5xl font-black tracking-tight mb-4
         // Phase 1: Native String interpolation!
         show "Live products from FakeStore API — powered by Bolt's fetch keyword!" as subtitle styled as: text-gray-400 text-lg max-w-2xl mx-auto
-        
+
     // Phase 2: Fetch natively handles HTTP fetching, JSON parsing, state management, and loading/error/success rendering states!
     fetch "http://localhost:3001/api/products" into products:
         loading:
@@ -510,32 +502,31 @@ page products:
                     button "Electronics" styled as: pill-button
                     button "Jewelry" styled as: pill-button
                     button "Clothing" styled as: pill-button
-                
+
                 // Native loop rendering
                 grid 4 styled as: gap-6:
                     show ProductCard for each product in products
-            
 
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\signup.bolt ─── */
 page signup:
     layout none
-    
+
     show Navbar
-    
+
     section styled as: max-w-md mx-auto mt-20 p-8 bg-background rounded-3xl shadow-xl shadow-gray-200/50 border border-border:
         show "Create Account" as title styled as: text-3xl heading-black mb-2 text-center
         show "Join the future of shopping today." as subtitle styled as: text-gray-500 mb-8 text-center
-        
+
         form:
             input "Email Address" into email:
                 required
                 email
-                
+
             input "Password" into password:
                 required
                 min 8
-                
+
             submit "Sign Up" as primary styled as: w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold mt-4 shadow-lg shadow-blue-200 transition-all:
                 submit "http://localhost:3001/api/signup" with { email: email, password: password }:
                     success res:
@@ -547,7 +538,7 @@ page signup:
                             go to products
                     error err:
                         show toast "Network error" as danger
-                        
+
         row styled as: justify-center mt-6 gap-2 text-sm:
             show "Already have an account?" as prompt styled as: text-gray-500
             link "Log in" to login styled as: font-bold text-blue-600 hover:text-blue-700
@@ -570,16 +561,16 @@ page store_test:
     column:
         show Header
         show "Products" as title
-        
+
         button "Add Apple":
             add "Apple" to cart
-            
+
         button "Add Banana":
             add "Banana" to cart
-            
+
         button "Clear Cart":
             clear cart
-            
+
         show "Current Cart:"
         show all cart
 
@@ -587,7 +578,6 @@ page store_test:
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\pages\team.bolt ─── */
 page team:
     fetch "https://jsonplaceholder.typicode.com/users" into members
-
 
     container styled as: py-12:
         hero styled as: bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white p-12 rounded-3xl text-center mb-12:
@@ -602,7 +592,6 @@ page team:
         if members != null:
             grid 2 styled as: gap-6:
                 show TeamCard for each member in members
-
 
 
 /* ─── File: C:\Users\Radhe Krishn\OneDrive\Desktop\Projects\Bolt\store-app\src\styles.bolt ─── */
@@ -626,7 +615,7 @@ page testauth:
         show "You are not logged in!"
         button "Login":
             login env.API_URL + "/login" with { email: "test@example.com", password: "password" }
-    
+
     if logged in:
         show "Welcome, " + user.name + "!"
         button "Logout":

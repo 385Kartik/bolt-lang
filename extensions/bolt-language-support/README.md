@@ -10,6 +10,7 @@ Makes `.bolt` files pleasant to write in VS Code.
   - page names after `go to` and `link ... to`
   - file names after `use` (any `.bolt`, `.js`, `.json`, `.css` file in the project)
 - **Problems in the editor** from the real compiler (`bolt check`), for the whole project, every time you save. A status bar item shows `✓ Bolt`, or the number of problems; click it to check again
+- **Format Document** (Shift+Alt+F) tidies the file with `bolt fmt`, including unsaved text
 - **Commands** (Ctrl+Shift+P): `Bolt: Check Project`, `Bolt: Show Size Report (Bolt vs React)`
 
 ## Install

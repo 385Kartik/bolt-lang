@@ -29,6 +29,7 @@ function showHelp() {
     bolt ast <file.bolt | dir>         Show AST (debug)
     bolt check [dir] [--json]          Check the whole project, list every problem
     bolt stats [dir] [--json]          Compare Bolt size with the React it generates
+    bolt fmt [dir|file] [--check]      Tidy .bolt files (indentation, spacing)
     bolt serve [dir]                   Run the built-in API for your 'resource' blocks
     bolt spec                          Print the short language cheat-sheet (for AI)
     bolt help                          Show this message
@@ -153,6 +154,32 @@ if (command === 'check' || command === 'stats' || command === 'spec' || command 
 `);
   }
   process.exit(stats.ok ? 0 : 1);
+}
+
+// ── fmt: tidy .bolt files (indentation, spacing). --check only reports, --stdout prints one file ──
+if (command === 'fmt') {
+  const check = args.includes('--check');
+  const toStdout = args.includes('--stdout');   // print one file; --stdin formats text piped in (used by editors)
+  const target = args.slice(1).find(a => !a.startsWith('--')) || '.';
+  const { formatPath, formatSource } = await import('../src/format.js');
+
+  if (toStdout || args.includes('--stdin')) {
+    const text = args.includes('--stdin') ? readFileSync(0, 'utf-8') : readFileSync(resolve(target), 'utf-8');
+    const r = formatSource(text);
+    process.stdout.write(r.text);
+    process.exit(r.ok ? 0 : 1);
+  }
+
+  const result = formatPath(target, { check });
+  for (const f of result.changed) console.log(`  ${check ? '✗ needs formatting' : '✓ formatted'}  ${f}`);
+  for (const s of result.skipped) console.log(`  ⚠ skipped  ${s.file}\n      ${s.reason}`);
+  const total = result.changed.length + result.unchanged + result.skipped.length;
+  if (check) {
+    console.log(result.changed.length === 0 ? `\n  ✓ All ${total} files are formatted.\n` : `\n  ⚡ ${result.changed.length} of ${total} files need formatting. Run: bolt fmt\n`);
+    process.exit(result.changed.length === 0 ? 0 : 1);
+  }
+  console.log(`\n  ⚡ ${result.changed.length} formatted, ${result.unchanged} already tidy${result.skipped.length ? `, ${result.skipped.length} skipped` : ''}.\n`);
+  process.exit(0);
 }
 
 if (!file) {

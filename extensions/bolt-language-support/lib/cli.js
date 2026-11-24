@@ -40,6 +40,19 @@ function runBolt(projectRoot, sub, configured, timeoutMs = 30000) {
   });
 }
 
+// Formats text with `bolt fmt --stdin`. Resolves with the formatted text, or null if it could not.
+function formatText(projectRoot, text, configured, timeoutMs = 15000) {
+  const cli = findCli(projectRoot, configured);
+  const file = cli.viaNode ? process.execPath : cli.command;
+  const args = cli.viaNode ? [cli.command, 'fmt', '--stdin'] : ['fmt', '--stdin'];
+  return new Promise(resolve => {
+    const child = execFile(file, args, { cwd: projectRoot, timeout: timeoutMs, maxBuffer: 4 * 1024 * 1024, shell: !cli.viaNode && process.platform === 'win32' },
+      (err, stdout) => resolve(err ? null : String(stdout)));
+    child.stdin.on('error', () => {});
+    child.stdin.end(text);
+  });
+}
+
 // Groups errors by file (relative to the project root). Errors with no file go under "".
 function groupErrors(errors) {
   const byFile = new Map();
@@ -55,4 +68,4 @@ function groupErrors(errors) {
   return byFile;
 }
 
-module.exports = { findCli, runBolt, groupErrors };
+module.exports = { findCli, runBolt, formatText, groupErrors };

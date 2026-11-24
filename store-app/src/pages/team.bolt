@@ -1,7 +1,6 @@
 page team:
     fetch "https://jsonplaceholder.typicode.com/users" into members
 
-
     container styled as: py-12:
         hero styled as: bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white p-12 rounded-3xl text-center mb-12:
             show "Our Team" as title styled as: text-4xl md:text-5xl font-black mb-4
@@ -15,4 +14,3 @@ page team:
         if members != null:
             grid 2 styled as: gap-6:
                 show TeamCard for each member in members
-

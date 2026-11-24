@@ -179,3 +179,10 @@
 - store-app: the page background and text follow the theme, hard-coded light colors moved to theme colors, so dark mode now looks right across pages (verified in a real browser in dark and light)
 - Housekeeping: root scratch files moved to `examples/experiments/` and `tests/scratch-modal-state.js`
 - README size numbers refreshed (store-app: 6,542 tokens of Bolt, about 33,100 of React, 5.06x)
+
+## Phase 28: Formatter (`bolt fmt`)
+- `bolt fmt [dir|file]` rewrites `.bolt` files with 4-space indentation, no trailing spaces, Unix line endings, one newline at the end, at most one blank line in a row, and one blank line before each top-level block (`page`, `component`, `styles`, `layout`, ...)
+- It never changes what code means: the formatted file must give the same syntax tree as the original, otherwise the file is skipped with a reason; inconsistent indentation is reported, not guessed
+- `bolt fmt --check` only reports (exit code 1 if something needs formatting, good for CI); `--stdout` prints one file; `--stdin` formats piped text
+- VS Code: Format Document uses it (extension 1.2.0); unsaved text works
+- store-app and the examples were formatted with it, and a test keeps store-app formatted

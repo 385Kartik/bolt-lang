@@ -210,3 +210,12 @@ test('snippets: every snippet expands to Bolt that the compiler accepts', () => 
     assert.doesNotThrow(() => compileToAST(code + '\n'), `snippet "${name}" produced invalid Bolt:\n${code}`);
   }
 });
+
+test('cli: formatText formats unsaved editor text through `bolt fmt --stdin`', async () => {
+  const { formatText } = require(path.join(extDir, 'lib', 'cli.js'));
+  const out = await formatText(root, 'page home:\n\tshow "x"\n', path.join(root, 'cli', 'bolt.js'));
+  assert.equal(out, 'page home:\n    show "x"\n');
+  // text it cannot format safely gives null (the editor then leaves the document alone)
+  const odd = 'page home:\n        show "a"\n    show "b"\n';
+  assert.equal(await formatText(root, odd, path.join(root, 'cli', 'bolt.js')), null);
+});

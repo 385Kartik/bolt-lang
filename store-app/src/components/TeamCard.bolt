@@ -17,7 +17,7 @@ component TeamCard for member:
             row styled as: gap-2 items-center:
                 show "🏢" as icon1
                 show member.company.name as company styled as: text-sm font-semibold text-gray-700
-            
+
             show member.company.catchPhrase as catchphrase styled as: text-xs text-gray-400 italic pl-7
 
             row styled as: gap-2 items-center:

@@ -14,15 +14,15 @@ page store_test:
     column:
         show Header
         show "Products" as title
-        
+
         button "Add Apple":
             add "Apple" to cart
-            
+
         button "Add Banana":
             add "Banana" to cart
-            
+
         button "Clear Cart":
             clear cart
-            
+
         show "Current Cart:"
         show all cart

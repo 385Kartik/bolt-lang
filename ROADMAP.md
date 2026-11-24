@@ -63,5 +63,5 @@ Based on the core necessity of building real-world applications (like e-commerce
 
 ## [ ] Phase 15: Tooling Ecosystem
 - [x] **VS Code Extension:** syntax colors, snippets, name suggestions and inline problems (from `bolt check`)
-- [ ] **Bolt Formatter:** auto-formatting of `.bolt` files
+- [x] **Bolt Formatter:** `bolt fmt` (also Format Document in VS Code)
 - [ ] Publish the extension to the VS Code Marketplace

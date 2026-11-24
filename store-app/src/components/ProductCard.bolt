@@ -2,7 +2,7 @@ component ProductCard for product:
     card styled as: flex flex-col p-0 bg-background border border-border rounded-2xl hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 group cursor-pointer overflow-hidden:
         container styled as: aspect-[4/3] bg-cardBg overflow-hidden center-flex p-6:
             image product.image styled as: h-full w-full object-contain group-hover:scale-110 transition-transform duration-500
-                
+
         column styled as: gap-2 p-5:
             row styled as: justify-between items-center:
                 show product.category as category styled as: text-[10px] text-blue-600 font-bold uppercase tracking-widest bg-blue-50 px-2 py-1 rounded-full
@@ -22,7 +22,7 @@ component ProductCard for product:
                     show product.price as price styled as: heading-black text-xl
                 column styled as: items-end:
                     show "In Stock" as stock styled as: text-[10px] text-emerald-600 font-bold uppercase tracking-wider bg-emerald-50 px-2 py-0.5 rounded-full
-            
+
             row styled as: gap-2 mt-3:
                 button "View Details" as secondary styled as: flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg font-medium text-sm transition-colors:
                     go to product(product.id)
