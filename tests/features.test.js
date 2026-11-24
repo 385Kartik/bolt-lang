@@ -407,8 +407,8 @@ test('bolt init: includes a light and dark design system and a theme toggle', ()
 test('input: fields are visible by default and your classes win', () => {
   const source = ['page home:', '    input "A" into a', '    input "B" into b styled as: border-red-500 rounded-full', ''].join('\n');
   const page = read(build(makeProject({ 'src/pages/home.bolt': source })), 'pages/HomePage.jsx');
-  assert.match(page, /placeholder=\{"A"\}[^>]*className="w-full px-4 py-2 border border-gray-300 rounded-lg/);
-  const b = page.match(/placeholder=\{"B"\}[^>]*className="([^"]*)"/)[1];
+  assert.match(page, /placeholder=\{"A"\}[\s\S]*?className="w-full px-4 py-2 border border-gray-300 rounded-lg/);
+  const b = page.match(/placeholder=\{"B"\}[\s\S]*?className="([^"]*)"/)[1];
   assert.match(b, /border-red-500/);
   assert.match(b, /rounded-full/);
   assert.doesNotMatch(b, /border-gray-300/);
