@@ -13,7 +13,7 @@ Based on the core necessity of building real-world applications (like e-commerce
 - `use <name>` imports files by name from anywhere in the project
 
 ## [ ] Next: Simpler, Smaller Bolt (fewer tokens for people and AI)
-- Custom API endpoints beyond `resource` (for example search, login) and a production database option
+- Production database option and authentication helpers for endpoints (login, sessions)
 
 ## [x] Phase 9: Dynamic Routing ✅
 - URL parameters in page definitions: `page product(id):`

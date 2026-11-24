@@ -102,6 +102,18 @@
           }
         },
         {
+          "comment": "endpoint get \"/api/search\":   (custom API route)",
+          "match": "^\\s*(endpoint)\\s+(get|post|put|patch|delete)\b",
+          "captures": {
+            "1": {
+              "name": "storage.type.endpoint.bolt"
+            },
+            "2": {
+              "name": "keyword.operator.http-method.bolt"
+            }
+          }
+        },
+        {
           "comment": "layout:   (and `layout none` inside a page)",
           "match": "^\\s*(layout)(?=\\s*:|\\s+none\\b)",
           "captures": {
@@ -335,6 +347,11 @@
         {
           "match": "\\b(for|in|from|to|as|takes|and|or|not|print|auto)\\b",
           "name": "keyword.operator.word.bolt"
+        },
+        {
+          "comment": "helpers available inside endpoint blocks",
+          "match": "\b(reply|contains|lower|upper)\b",
+          "name": "support.function.endpoint.bolt"
         }
       ]
     },

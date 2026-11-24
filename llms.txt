@@ -56,6 +56,13 @@ resource products at "/api/products":
  field types: text number email. reserved field names: items item created.
  `bolt dev` / `bolt serve` run a ready API for every resource: no backend code needed.)
 
+## Custom API routes (run on the built-in server)
+endpoint get "/api/search":                       (methods: get post put patch delete; ":id" parts allowed)
+    q = request.query.q                          (request: query params body method path)
+    give data.products filtered by p: contains p.title, q     (data.<resource> = records; give = JSON answer)
+    reply 404, "Not found"                       (stop with a status)   add item to data.products (auto-saved)
+helpers: contains text, word | lower | upper | now.  items[0] = item at position. count of data.products.
+
 ## Auth
 if logged in: ... otherwise: ...
 

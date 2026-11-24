@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { compileToAST } from '../src/index.js';
+import { compileToAST, compile as compileJs } from '../src/index.js';
 import { buildProject, scaffoldProject } from '../src/builder/builder.js';
 
 function makeProject(files) {
@@ -426,4 +426,36 @@ test('check: a single .bolt file can be checked on its own', async () => {
   assert.equal(bad.ok, false);
   assert.equal(bad.errors[0].file, 'bad.bolt');
   assert.equal(bad.errors[0].line, 2);
+});
+
+test('check: endpoint problems are reported (duplicates and broken code)', async () => {
+  const { checkProject } = await import('../src/check.js');
+  const dup = makeProject({
+    'src/a.bolt': 'endpoint get "/api/x":\n    give 1\n\nendpoint get "/api/x":\n    give 2\n'
+  });
+  const r = checkProject(dup);
+  assert.equal(r.ok, false);
+  assert.match(r.errors[0].message, /defined twice/);
+
+  const good = makeProject({ 'src/a.bolt': 'endpoint get "/api/x":\n    give 1\n' });
+  assert.equal(checkProject(good).ok, true);
+});
+
+test('language: count of a.b, items[0] and `filtered by name:` work in any expression', () => {
+  const source = [
+    'function pick data:',
+    '    first_price = data.products[0].price',
+    '    total = count of data.products',
+    '    cheap = data.products filtered by p: p.price < 10',
+    '    give {first_price: first_price, total: total, cheap: cheap}',
+    ''
+  ].join('\n');
+  const js = compileToAST(source) && compileJs(source);
+  assert.match(js, /data\.products\[0\]\.price/);
+  assert.match(js, /data\.products\.length/);
+  assert.match(js, /data\.products\.filter\(p => \(p\.price < 10\)\)/);
+});
+
+test('errors: using a Bolt word as a variable name says so', () => {
+  assert.throws(() => compileToAST('for every row in rows:\n    show row\n'), err => /already uses/.test(err.hint));
 });

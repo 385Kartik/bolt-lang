@@ -11,6 +11,7 @@ import os from 'os';
 import path from 'path';
 import { compileToAST } from './index.js';
 import { buildProject } from './builder/builder.js';
+import { compileEndpoint } from './server/api.js';
 
 const SKIP_DIRS = new Set(['node_modules', '.bolt-generated', 'dist', 'build', 'coverage']);
 
@@ -100,12 +101,27 @@ function loadProject(root, onlyFile = null) {
   return { body, errors, files };
 }
 
-// Every `resource` block in the project, ready for the API server.
-export function findResources(root) {
+// Every `resource` and `endpoint` block in the project, ready for the API server.
+export function findApi(root) {
   const { body } = loadProject(path.resolve(root));
-  return body
-    .filter(n => n.type === 'ResourceDef')
-    .map(n => ({ name: n.name, url: n.url, fields: n.fields }));
+  return {
+    resources: body
+      .filter(n => n.type === 'ResourceDef')
+      .map(n => ({ name: n.name, url: n.url, fields: n.fields })),
+    endpoints: body
+      .filter(n => n.type === 'EndpointDef')
+      .map(n => ({ method: n.method, path: n.path, body: n.body, line: n.line, file: n.fileName ? `${n.fileName}.bolt` : null }))
+  };
+}
+
+export function findResources(root) {
+  return findApi(root).resources;
+}
+
+// Relative path of the .bolt file a node came from (nodes only remember the bare file name).
+function resolvedRel(root, node) {
+  const match = findBoltFiles(root).find(f => path.basename(f, '.bolt') === node.fileName);
+  return match ? path.relative(root, match).split(path.sep).join('/') : `${node.fileName}.bolt`;
 }
 
 export function checkProject(root) {
@@ -127,6 +143,25 @@ export function checkProject(root) {
       errors.push({ file: null, ...describeError(e) });
     } finally {
       fs.rmSync(tmp, { recursive: true, force: true });
+    }
+  }
+
+  // `endpoint` blocks must compile, and no two may claim the same method and address
+  if (errors.length === 0) {
+    const seen = new Set();
+    for (const n of body.filter(x => x.type === 'EndpointDef')) {
+      const file = n.fileName ? `${resolvedRel(resolved, n)}` : null;
+      const key = `${n.method.toUpperCase()} ${n.path}`;
+      if (seen.has(key)) {
+        errors.push({ file, line: n.line, column: null, message: `Endpoint ${key} is defined twice.`, hint: 'Each method and address can only be used once.' });
+        continue;
+      }
+      seen.add(key);
+      try {
+        compileEndpoint({ method: n.method, path: n.path, body: n.body, line: n.line });
+      } catch (e) {
+        errors.push({ file, line: e.line || n.line, column: null, message: e.message.replace(/^Endpoint [^:]+:\s*/, ''), hint: null });
+      }
     }
   }
 

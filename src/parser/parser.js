@@ -58,12 +58,12 @@ export function parse(tokens) {
       return advance();
     }
     const t = peek();
-    console.error("EXPECT FAILED. Expected:", type, "Got token:", t);
+    const isWord = type === TokenType.IDENTIFIER && t && t.type !== TokenType.IDENTIFIER && /^[a-z]+$/.test(String(t.value));
     throw new ParseError(
       `Expected ${friendlyName} but found '${t ? (t.value !== null ? t.value : t.type) : 'EOF'}'`,
       t ? t.line : (tokens.length > 0 ? tokens[tokens.length - 1].line : 1),
       t ? t.column : 1,
-      `Check the syntax around here.`
+      isWord ? `'${t.value}' is a word Bolt already uses. Pick another name (for example 'entry' or '${t.value}Item').` : `Check the syntax around here.`
     );
   }
 
@@ -133,9 +133,11 @@ export function parse(tokens) {
     if (t.type === TokenType.IDENTIFIER || KEYWORD_TYPES_USABLE_AS_NAMES.has(t.type)) {
       return advance();
     }
+    const isWord = t.type !== TokenType.IDENTIFIER && /^[a-z]+$/.test(String(t.value));
     throw new ParseError(
       `Expected ${context} but found '${t.value}'`,
       t.line, t.column,
+      isWord ? `'${t.value}' is a word Bolt already uses. Pick another name (for example 'entry' or '${t.value}Item').` : undefined,
     );
   }
 
@@ -164,6 +166,18 @@ export function parse(tokens) {
         (tokens[pos + 1].type === TokenType.WITH ||
          (tokens[pos + 1].type === TokenType.COLON && tokens[pos + 2] && tokens[pos + 2].type === TokenType.NEWLINE))) {
       return parseShowStatement(true);
+    }
+
+    // Custom API route:  endpoint get "/api/search":
+    if (token.type === TokenType.IDENTIFIER && token.value === 'endpoint' &&
+        tokens[pos + 1] && tokens[pos + 1].line === token.line &&
+        ['get', 'post', 'put', 'patch', 'delete'].includes(String(tokens[pos + 1].value)) &&
+        tokens[pos + 2] && tokens[pos + 2].type === TokenType.STRING) {
+      advance(); // 'endpoint'
+      const method = String(advance().value);
+      const routePath = advance().value;
+      expect(TokenType.COLON, "':' after the endpoint address");
+      return AST.EndpointDef(method, routePath, parseBlock(), token.line);
     }
 
     // Resource block:  resource products at "/api/products":
@@ -1375,7 +1389,19 @@ export function parse(tokens) {
   function parseMemberOrCall() {
     let object = parsePrimary();
 
-    while (check(TokenType.DOT)) {
+    const touching = () => {
+      const prev = tokens[pos - 1];
+      return prev && peek().line === prev.line && peek().column === prev.column + String(prev.value).length;
+    };
+
+    while (check(TokenType.DOT) || (check(TokenType.LBRACKET) && touching())) {
+      if (check(TokenType.LBRACKET)) {
+        const bracket = advance(); // consume [
+        const index = parseExpression();
+        expect(TokenType.RBRACKET, "']' to close the position");
+        object = AST.IndexExpression(object, index, bracket.line);
+        continue;
+      }
       advance(); // consume DOT
       const prop = expectIdentifierLike('a property name after "."');
       object = AST.MemberExpression(object, prop.value, prop.line);
@@ -1405,8 +1431,14 @@ export function parse(tokens) {
         // Simple form: items filtered by name == "X"  → items.filter(item => item.name === "X")
         // For now, parse the condition as a full expression
         // The variable is auto-named based on the collection (singular form)
+        // optional name for each item:  users filtered by user: user.age >= 18
+        let itemName = null;
+        if (isIdentifierLike() && tokens[pos + 1] && tokens[pos + 1].type === TokenType.COLON) {
+          itemName = advance().value;
+          advance(); // ':'
+        }
         const condition = parseExpression();
-        object = AST.FilteredBy(object, null, condition, peek().line);
+        object = AST.FilteredBy(object, itemName, condition, peek().line);
       } else if (check(TokenType.SORTED)) {
         advance(); // consume SORTED
         expect(TokenType.BY, "'by' after 'sorted'");
@@ -1488,7 +1520,7 @@ export function parse(tokens) {
       advance();
       if (check(TokenType.OF)) {
         advance();
-        const collection = parsePrimary();
+        const collection = parseMemberOrCall();
         return AST.CountOf(collection, token.line);
       }
       pos = savedPos;
@@ -1500,7 +1532,7 @@ export function parse(tokens) {
       advance();
       if (check(TokenType.OF)) {
         advance();
-        const collection = parsePrimary();
+        const collection = parseMemberOrCall();
         return AST.FirstOf(collection, token.line);
       }
       pos = savedPos;
@@ -1512,7 +1544,7 @@ export function parse(tokens) {
       advance();
       if (check(TokenType.OF)) {
         advance();
-        const collection = parsePrimary();
+        const collection = parseMemberOrCall();
         return AST.LastOf(collection, token.line);
       }
       pos = savedPos;
@@ -1651,7 +1683,10 @@ export function parse(tokens) {
     //   1. Be a value-starting token
     //   2. Be on the SAME LINE as the identifier
     const isSameLine = next.line === line;
-    const isCallable = VALUE_STARTERS.has(next.type) && isSameLine;
+    // `items[0]`: a bracket right after the name means "item at", not a call with a list argument
+    const bracketIndex = next.type === TokenType.LBRACKET && isSameLine &&
+      next.column === nameToken.column + String(name).length;
+    const isCallable = VALUE_STARTERS.has(next.type) && isSameLine && !bracketIndex;
 
     if (!isCallable) {
       // It's just a variable reference

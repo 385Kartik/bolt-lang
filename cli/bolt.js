@@ -79,11 +79,11 @@ if (command === 'check' || command === 'stats' || command === 'spec' || command 
   }
 
   if (command === 'serve') {
-    const { findResources } = await import('../src/check.js');
+    const { findApi } = await import('../src/check.js');
     const { createApiServer } = await import('../src/server/api.js');
     const root = resolve(target);
-    const resources = findResources(root);
-    if (resources.length === 0) {
+    const { resources, endpoints } = findApi(root);
+    if (resources.length === 0 && endpoints.length === 0) {
       console.log(`
   ⚡ No 'resource' blocks found in ${root}.
      Add one, for example:
@@ -94,7 +94,15 @@ if (command === 'check' || command === 'stats' || command === 'spec' || command 
 `);
       process.exit(1);
     }
-    const api = createApiServer({ resources, dataDir: join(root, '.bolt-data') });
+    let api;
+    try {
+      api = createApiServer({ resources, endpoints, dataDir: join(root, '.bolt-data') });
+    } catch (e) {
+      console.error(`
+  ⚡ ${e.message}
+`);
+      process.exit(1);
+    }
     const port = Number(process.env.BOLT_API_PORT) || 3001;
     try {
       await api.listen(port);
@@ -109,6 +117,7 @@ if (command === 'check' || command === 'stats' || command === 'spec' || command 
   ⚡ Bolt API running on http://localhost:${port}
 `);
     for (const r of resources) console.log(`     ${r.url}   (${r.fields.map(f => f.name).join(', ')})`);
+    for (const e of endpoints) console.log(`     ${e.method.toUpperCase().padEnd(6)} ${e.path}   (endpoint)`);
     console.log(`
      Data is saved in ${join(root, '.bolt-data')}
 `);
@@ -278,16 +287,21 @@ switch (command) {
       // 2.5 Built-in API for `resource` blocks (same process, port 3001)
       let devApi = null;
       const startApi = async () => {
-        const { findResources } = await import('../src/check.js');
-        const resources = findResources(resolvedFile);
-        if (resources.length === 0) return;
-        if (devApi) { devApi.setResources(resources); return; }
+        const { findApi } = await import('../src/check.js');
         const { createApiServer } = await import('../src/server/api.js');
-        devApi = createApiServer({ resources, dataDir: join(resolvedFile, '.bolt-data') });
+        const { resources, endpoints } = findApi(resolvedFile);
+        if (resources.length === 0 && endpoints.length === 0) return;
+        try {
+          if (devApi) { devApi.setApi({ resources, endpoints }); return; }
+          devApi = createApiServer({ resources, endpoints, dataDir: join(resolvedFile, '.bolt-data') });
+        } catch (e) {
+          console.log(`  ⚠️  ${e.message}`);
+          return;
+        }
         const apiPort = Number(process.env.BOLT_API_PORT) || 3001;
         try {
           await devApi.listen(apiPort);
-          console.log(`  🗄️  Bolt API on http://localhost:${apiPort} (${resources.map(r => r.url).join(', ')})`);
+          console.log(`  🗄️  Bolt API on http://localhost:${apiPort} (${[...resources.map(r => r.url), ...endpoints.map(e => `${e.method.toUpperCase()} ${e.path}`)].join(', ')})`);
         } catch (e) {
           console.log(`  ⚠️  Could not start the Bolt API on port ${apiPort}: ${e.message}`);
           devApi = null;

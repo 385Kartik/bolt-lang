@@ -1,27 +1,45 @@
 {
   "Page": {
     "prefix": "page",
-    "body": ["page ${1:home}:", "\tshow \"${2:Hello}\" as title"],
+    "body": [
+      "page ${1:home}:",
+      "\tshow \"${2:Hello}\" as title"
+    ],
     "description": "A page (one per file; the name must match the file name)"
   },
   "Page with URL parameter": {
     "prefix": "pageparam",
-    "body": ["page ${1:product}(${2:id}):", "\tfetch \"/api/${1:product}s/\" + ${2:id} into ${1:product}", "\tshow ${1:product}.${3:name} as title"],
+    "body": [
+      "page ${1:product}(${2:id}):",
+      "\tfetch \"/api/${1:product}s/\" + ${2:id} into ${1:product}",
+      "\tshow ${1:product}.${3:name} as title"
+    ],
     "description": "Dynamic page: /product/:id"
   },
   "Component": {
     "prefix": "component",
-    "body": ["component ${1:Card} for ${2:item}:", "\tshow ${2:item}.${3:name}"],
+    "body": [
+      "component ${1:Card} for ${2:item}:",
+      "\tshow ${2:item}.${3:name}"
+    ],
     "description": "A reusable component with one prop"
   },
   "Component with props": {
     "prefix": "componenttakes",
-    "body": ["component ${1:Card} takes ${2:title}:", "\tcolumn:", "\t\tshow ${2:title} as subtitle", "\t\tslot"],
+    "body": [
+      "component ${1:Card} takes ${2:title}:",
+      "\tcolumn:",
+      "\t\tshow ${2:title} as subtitle",
+      "\t\tslot"
+    ],
     "description": "A wrapper component: content placed inside it goes into the slot"
   },
   "Wrapper block": {
     "prefix": "wrap",
-    "body": ["${1:Card} with ${2:title}=\"${3:Hello}\":", "\t$0"],
+    "body": [
+      "${1:Card} with ${2:title}=\"${3:Hello}\":",
+      "\t$0"
+    ],
     "description": "Use a component and put content inside it"
   },
   "Store": {
@@ -41,7 +59,10 @@
   },
   "Button": {
     "prefix": "button",
-    "body": ["button \"${1:Save}\":", "\t$0"],
+    "body": [
+      "button \"${1:Save}\":",
+      "\t$0"
+    ],
     "description": "A button with actions"
   },
   "Form": {
@@ -63,7 +84,10 @@
   },
   "Fetch": {
     "prefix": "fetch",
-    "body": ["fetch \"${1:/api/items}\" into ${2:items}", "show all ${2:items}"],
+    "body": [
+      "fetch \"${1:/api/items}\" into ${2:items}",
+      "show all ${2:items}"
+    ],
     "description": "Load data (loading and error messages are built in)"
   },
   "Fetch with blocks": {
@@ -92,7 +116,10 @@
   },
   "Styles": {
     "prefix": "styles",
-    "body": ["styles:", "\t${1:card}: ${2:bg-surface border border-line rounded-2xl p-6}"],
+    "body": [
+      "styles:",
+      "\t${1:card}: ${2:bg-surface border border-line rounded-2xl p-6}"
+    ],
     "description": "Named Tailwind class sets, usable anywhere"
   },
   "Styled as": {
@@ -102,7 +129,12 @@
   },
   "Layout": {
     "prefix": "layout",
-    "body": ["layout:", "\tshow ${1:Navbar}", "\tslot", "\tshow ${2:Footer}"],
+    "body": [
+      "layout:",
+      "\tshow ${1:Navbar}",
+      "\tslot",
+      "\tshow ${2:Footer}"
+    ],
     "description": "Wraps every page. slot = where the page goes"
   },
   "No layout": {
@@ -144,17 +176,30 @@
   },
   "If / otherwise": {
     "prefix": "if",
-    "body": ["if ${1:condition}:", "\t$2", "otherwise:", "\t$0"],
+    "body": [
+      "if ${1:condition}:",
+      "\t$2",
+      "otherwise:",
+      "\t$0"
+    ],
     "description": "Condition"
   },
   "If logged in": {
     "prefix": "iflogged",
-    "body": ["if logged in:", "\t$1", "otherwise:", "\t$0"],
+    "body": [
+      "if logged in:",
+      "\t$1",
+      "otherwise:",
+      "\t$0"
+    ],
     "description": "Show something only to signed-in users"
   },
   "For every": {
     "prefix": "forevery",
-    "body": ["for every ${1:item} in ${2:items}:", "\t$0"],
+    "body": [
+      "for every ${1:item} in ${2:items}:",
+      "\t$0"
+    ],
     "description": "Repeat the content for each item"
   },
   "Show all": {
@@ -164,12 +209,18 @@
   },
   "When changes": {
     "prefix": "when",
-    "body": ["when ${1:query} changes:", "\t$0"],
+    "body": [
+      "when ${1:query} changes:",
+      "\t$0"
+    ],
     "description": "Run something when a value changes"
   },
   "Action": {
     "prefix": "action",
-    "body": ["action ${1:calculateTotal}:", "\tgive ${2:0}"],
+    "body": [
+      "action ${1:calculateTotal}:",
+      "\tgive ${2:0}"
+    ],
     "description": "Reusable logic that can give a value back"
   },
   "Toast": {
@@ -186,5 +237,19 @@
     "prefix": "link",
     "body": "link \"${1:Home}\" to ${2:home}",
     "description": "A link to a page"
+  },
+  "Endpoint": {
+    "prefix": "endpoint",
+    "body": [
+      "endpoint ${1|get,post,put,patch,delete|} \"/api/${2:search}\":",
+      "\tq = request.query.${3:q}",
+      "\tgive data.${4:products} filtered by p: contains p.${5:title}, q"
+    ],
+    "description": "A custom API route (runs on the built-in server)"
+  },
+  "Endpoint reply": {
+    "prefix": "reply",
+    "body": "reply ${1:404}, \"${2:Not found}\"",
+    "description": "Stop an endpoint with an error status"
   }
 }

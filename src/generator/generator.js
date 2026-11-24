@@ -243,6 +243,8 @@ export function generate(ast, existingRegistry = null, globalStoresList = [], de
         return genObjectLiteral(node);
       case 'MemberExpression':
         return genMemberExpression(node);
+      case 'IndexExpression':
+        return `${gen(node.object)}[${gen(node.index)}]`;
 
       // ── Phase 2a: Collections ─────────────────────────────────
       case 'AddTo':

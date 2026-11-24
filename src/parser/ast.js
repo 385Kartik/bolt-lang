@@ -65,6 +65,11 @@ export function FunctionCall(name, args, line) {
   return { type: 'FunctionCall', name, args, line };
 }
 
+// items[0]   (item at a position, no space before the bracket)
+export function IndexExpression(object, index, line) {
+  return { type: 'IndexExpression', object, index, line };
+}
+
 // helpers.money(5)  (call on a member of an imported file)
 export function CallExpression(callee, args, line) {
   return { type: 'CallExpression', callee, args, line };
@@ -363,4 +368,11 @@ export function NoLayout(line) {
 export function ResourceDef(name, url, fields, line) {
   // resource products at "/api/products":  title text required
   return { type: 'ResourceDef', name, url, fields, line };
+}
+
+// ── Endpoint (custom API route, runs on the built-in server) ────────────────
+
+export function EndpointDef(method, path, body, line) {
+  // endpoint get "/api/search":
+  return { type: 'EndpointDef', method, path, body, line };
 }

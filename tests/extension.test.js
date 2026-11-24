@@ -201,7 +201,7 @@ test('snippets: no duplicate prefixes and every snippet has a description', () =
 
 test('snippets: every snippet expands to Bolt that the compiler accepts', () => {
   const snippets = readJson('snippets/bolt.json');
-  const topLevel = /^(page|component|action|resource|styles|layout:|design system|use)\b/;
+  const topLevel = /^(page|component|action|resource|endpoint|styles|layout:|design system|use)\b/;
   for (const [name, s] of Object.entries(snippets)) {
     let code = expandSnippet(s.body);
     if (!topLevel.test(code)) {

@@ -742,6 +742,42 @@ saved as plain JSON in `.bolt-data/<name>.json` (already in the `.gitignore` mad
 so you can read or edit it by hand. It is meant for development and prototypes; point the
 `resource` at your own server when you go to production.
 
+### 9.4 Your own API routes (`endpoint`)
+
+`resource` covers list, add and delete. For everything else (search, totals, login, bulk actions)
+write an `endpoint`. It runs on the built-in server (`bolt dev` / `bolt serve`), in Bolt:
+
+**Bolt Code:**
+```bolt
+endpoint get "/api/search":
+    q = request.query.q
+    give data.products filtered by p: contains p.title, q
+
+endpoint get "/api/products/:id/discount":
+    found = data.products filtered by p: p.id == request.params.id * 1
+    if count of found == 0:
+        reply 404, "No such product"
+    give {price: found[0].price * 0.9}
+
+endpoint post "/api/products/bulk":
+    for every entry in request.body.items:
+        add entry to data.products
+    give {added: count of request.body.items}
+```
+
+Then the page can call it like any API: `fetch "/api/search?q=pen" into results`.
+
+- **Methods:** `get`, `post`, `put`, `patch`, `delete`. The address can have `:name` parts.
+- **`request`:** `request.query` (the `?a=b` part), `request.params` (the `:name` parts), `request.body` (JSON sent by the page), `request.method`, `request.path`.
+- **`data`:** the records of every `resource`, for example `data.products`. Reading `data.products` and adding to it (`add entry to data.products`) is saved to disk for you.
+- **`give`** sends the answer as JSON (nothing given = empty answer). **`reply 404, "message"`** stops with an error status; the page gets `{"error": "message"}`.
+- **Helpers:** `contains text, word` (ignores upper/lower case), `lower text`, `upper text`, `now`.
+- **Order:** your endpoints are checked before the `resource` routes, so `/api/products/stats` is not mistaken for a product with the id `stats`.
+- `bolt check` compiles every endpoint and reports mistakes (including two endpoints with the same method and address).
+- It is for development and prototypes. A crash inside an endpoint answers `500` with the reason.
+
+Small helpers in the language that endpoints use (they work everywhere): `items[0]` (item at a position, no space before the bracket), `count of data.products` (works on `a.b` too), and `users filtered by user: user.age >= 18` (name each item yourself).
+
 ---
 
 ## 10. Authentication
@@ -951,6 +987,12 @@ CallExpression
 ResourceDef
     := resource IDENTIFIER at StringLiteral : INDENT (IDENTIFIER Type required?)+ DEDENT
     Type := text | number | email
+
+EndpointDef
+    := endpoint (get|post|put|patch|delete) StringLiteral : Block
+
+IndexExpression
+    := Expression '[' Expression ']'          // no space before '['
 
 Block
     := INDENT Statement* DEDENT

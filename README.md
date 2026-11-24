@@ -107,6 +107,7 @@ bolt stats store-app
 - **Automatic routing:** pages map to URLs, with dynamic params `page store(storeId, productId):`
 - **Compile-time route validation:** `go to product(1, 2)` is a compiler error, not a 404
 - **One-line CRUD:** `resource products at "/api/products":` builds a list, add form and delete buttons
+- **Custom API routes:** `endpoint get "/api/search":` written in Bolt (search, totals, bulk actions) next to your resources
 - **Built-in API:** `bolt dev` / `bolt serve` run a ready REST API for every `resource` (data in plain JSON files)
 - **Fetch with defaults:** `fetch "/api/x" into x` handles loading and errors for you
 - **Dark mode out of the box:** `bolt init` ships a light/dark design system and a theme toggle

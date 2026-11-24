@@ -186,3 +186,12 @@
 - `bolt fmt --check` only reports (exit code 1 if something needs formatting, good for CI); `--stdout` prints one file; `--stdin` formats piped text
 - VS Code: Format Document uses it (extension 1.2.0); unsaved text works
 - store-app and the examples were formatted with it, and a test keeps store-app formatted
+
+## Phase 29: Custom API Endpoints
+- `endpoint get|post|put|patch|delete "/api/path":` blocks written in Bolt run on the built-in server: `request` (query, params, body), `data.<resource>` (saved to disk when you change it), `give`, `reply 404, "message"`, and helpers `contains`, `lower`, `upper`, `now`
+- Endpoints are checked before resource routes, support `:name` address parts, and a crash answers `500` with the reason
+- `bolt check` compiles every endpoint and reports duplicates and mistakes; `bolt serve` and `bolt dev` list them and reload them when `.bolt` files change
+- Language fixes found on the way: `count of data.products` (was `data.length.products`), `items[0]` position syntax (was parsed as a call), `users filtered by user: ...` (documented in the spec but not implemented)
+- Clearer error when a Bolt word is used as a variable name (`for every row in ...`: "'row' is a word Bolt already uses"); removed a leftover debug print from parse errors
+- VS Code extension 1.3.0: `endpoint` colors, helper words, two snippets (`endpoint`, `reply`)
+- Verified over real HTTP: search, path parameter, `reply 404`, bulk insert saved to disk, resource routes still working
