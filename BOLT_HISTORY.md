@@ -165,7 +165,7 @@
 
 ## Phase 26: VS Code Extension 1.1
 - New syntax colors for everything added since the first version: `styles:` (names and class lists), `layout:` and `slot`, `resource ... at`, `use`, `design system:` blocks, `styled as:` class lists, wrapper components such as `Card:`, and a split of keywords into groups (control, state, UI, data, validation, auth)
-- 25 snippets (`page`, `component`, `resource`, `styles`, `layout`, `form`, `fetch`, `design`, `themetoggle` ...); a test expands every snippet and checks that the real compiler accepts it
+- 30 snippets (`page`, `component`, `resource`, `styles`, `layout`, `form`, `fetch`, `design`, `themetoggle` ...); a test expands every snippet and checks that the real compiler accepts it
 - Suggestions: style names after `styled as:`, components after `show` (inserted with their props), pages after `go to` / `link ... to`, files after `use`
 - Problems now come from `bolt check`, so the editor shows exactly what the compiler reports, for the whole project, on save (the old version loaded the compiler from `src/` and only worked inside the Bolt repo itself)
 - Status bar item, commands `Bolt: Check Project` and `Bolt: Show Size Report`, settings `bolt.checkOnSave` and `bolt.cliPath`

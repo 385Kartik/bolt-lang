@@ -127,7 +127,7 @@ bolt stats store-app
 - **Named styles:** define classes once in `styles:` and use the name anywhere
 - **Import by name:** `use helpers` finds `helpers.js` anywhere in the project, no paths
 - **Source maps and error overlay:** runtime crashes show the original `.bolt` file and line
-- **VS Code extension:** colors, 25 snippets, name suggestions and live problem checking ([`extensions/bolt-language-support`](extensions/bolt-language-support)). Install with `npm run install:vscode`
+- **VS Code extension:** colors, 32 snippets, name suggestions and live problem checking ([`extensions/bolt-language-support`](extensions/bolt-language-support)). Install with `npm run install:vscode`
 - **Hot reload:** `bolt dev` with Vite HMR
 
 ## Quick start
