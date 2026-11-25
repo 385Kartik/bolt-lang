@@ -107,6 +107,7 @@ bolt stats store-app
 - **Automatic routing:** pages map to URLs, with dynamic params `page store(storeId, productId):`
 - **Compile-time route validation:** `go to product(1, 2)` is a compiler error, not a 404
 - **One-line CRUD:** `resource products at "/api/products":` builds a list, add form and delete buttons
+- **Login for your API:** `hash_password`, `check_password`, `sign_token`, `need_login`, and `hidden` fields that are never sent to the browser
 - **Custom API routes:** `endpoint get "/api/search":` written in Bolt (search, totals, bulk actions) next to your resources
 - **Built-in API:** `bolt dev` / `bolt serve` run a ready REST API for every `resource` (data in plain JSON files)
 - **Fetch with defaults:** `fetch "/api/x" into x` handles loading and errors for you
@@ -127,7 +128,7 @@ bolt stats store-app
 - **Named styles:** define classes once in `styles:` and use the name anywhere
 - **Import by name:** `use helpers` finds `helpers.js` anywhere in the project, no paths
 - **Source maps and error overlay:** runtime crashes show the original `.bolt` file and line
-- **VS Code extension:** colors, 32 snippets, name suggestions and live problem checking ([`extensions/bolt-language-support`](extensions/bolt-language-support)). Install with `npm run install:vscode`
+- **VS Code extension:** colors, 33 snippets, name suggestions and live problem checking ([`extensions/bolt-language-support`](extensions/bolt-language-support)). Install with `npm run install:vscode`
 - **Hot reload:** `bolt dev` with Vite HMR
 
 ## Quick start

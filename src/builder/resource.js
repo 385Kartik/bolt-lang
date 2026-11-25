@@ -66,7 +66,7 @@ export function resourceSource(node) {
   add(16, 'for every item in items:');
   add(20, 'row styled as: items-center justify-between gap-4 py-3 border-b border-gray-100:');
   add(24, 'row styled as: items-center gap-6:');
-  for (const f of fields) add(28, `show item.${f.name} styled as: text-gray-800`);
+  for (const f of fields.filter(x => !x.hidden)) add(28, `show item.${f.name} styled as: text-gray-800`);
   add(24, 'button "Delete" styled as: text-sm text-red-600 hover:text-red-700 font-medium:');
   add(28, `delete ${q(url + '/')} + item.id:`);
   add(32, 'success:');

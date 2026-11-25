@@ -350,8 +350,13 @@
         },
         {
           "comment": "helpers available inside endpoint blocks",
-          "match": "\b(reply|contains|lower|upper)\b",
+          "match": "\b(reply|contains|lower|upper|now|hash_password|check_password|sign_token|need_login)\b",
           "name": "support.function.endpoint.bolt"
+        },
+        {
+          "comment": "resource field option",
+          "match": "\b(hidden)\b",
+          "name": "support.constant.field-option.bolt"
         }
       ]
     },

@@ -61,6 +61,7 @@ endpoint get "/api/search":                       (methods: get post put patch d
     q = request.query.q                          (request: query params body method path)
     give data.products filtered by p: contains p.title, q     (data.<resource> = records; give = JSON answer)
     reply 404, "Not found"                       (stop with a status)   add item to data.products (auto-saved)
+login: hash_password pw | check_password pw, hash | token = sign_token payload | request.user | need_login request (401). resource field `password text required hidden` is never sent out.
 helpers: contains text, word | lower | upper | now.  items[0] = item at position. count of data.products.
 
 ## Auth

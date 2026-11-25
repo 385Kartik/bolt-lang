@@ -162,3 +162,74 @@ test('endpoints: wrong method falls through, and a crash is a clear 500', async 
     await api.close();
   }
 });
+
+// ── login helpers and hidden fields ───────────────────────────────────
+
+test('auth: signup, login, tokens, hidden password field', async () => {
+  const resources = [{ name: 'users', url: '/api/users', fields: [
+    { name: 'email', type: 'email', required: true },
+    { name: 'password', type: 'text', required: true, hidden: true }] }];
+  const eps = endpointsFrom([
+    'endpoint post "/api/signup":',
+    '    email = request.body.email',
+    '    exists = data.users filtered by u: u.email == email',
+    '    if count of exists > 0:',
+    '        reply 409, "Email already used"',
+    '    user = {id: count of data.users + 1, email: email, password: hash_password request.body.password}',
+    '    add user to data.users',
+    '    payload = {id: user.id, email: email}',
+    '    token = sign_token payload',
+    '    give {token: token, user: payload}',
+    '',
+    'endpoint post "/api/login":',
+    '    found = data.users filtered by u: u.email == request.body.email',
+    '    if count of found == 0:',
+    '        reply 401, "Wrong email or password"',
+    '    user = found[0]',
+    '    if not check_password request.body.password, user.password:',
+    '        reply 401, "Wrong email or password"',
+    '    payload = {id: user.id, email: user.email}',
+    '    token = sign_token payload',
+    '    give {token: token, user: payload}',
+    '',
+    'endpoint get "/api/me":',
+    '    me = need_login request',
+    '    give me',
+    ''
+  ].join('\n'));
+
+  const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bolt-auth-'));
+  const api = createApiServer({ resources, endpoints: eps, dataDir });
+  const port = await api.listen(0);
+  const base = `http://localhost:${port}/api`;
+  const json = { 'Content-Type': 'application/json' };
+  const post = (p, body) => fetch(base + p, { method: 'POST', headers: json, body: JSON.stringify(body) });
+
+  try {
+    let res = await post('/signup', { email: 'a@b.com', password: 'secret1' });
+    assert.equal(res.status, 200);
+    assert.deepEqual(Object.keys(await res.json()).sort(), ['token', 'user']);
+
+    assert.equal((await post('/signup', { email: 'a@b.com', password: 'x' })).status, 409);          // duplicate
+    assert.equal((await post('/login', { email: 'a@b.com', password: 'wrong' })).status, 401);        // wrong password
+    assert.equal((await post('/login', { email: 'nobody@b.com', password: 'x' })).status, 401);       // unknown user
+
+    res = await post('/login', { email: 'a@b.com', password: 'secret1' });
+    const { token } = await res.json();
+
+    assert.equal((await fetch(`${base}/me`)).status, 401);                                            // no token
+    res = await fetch(`${base}/me`, { headers: { Authorization: `Bearer ${token}` } });
+    assert.equal((await res.json()).email, 'a@b.com');                                                // good token
+    res = await fetch(`${base}/me`, { headers: { Authorization: `Bearer ${token.slice(0, -3)}abc` } });
+    assert.equal(res.status, 401);                                                                     // forged token
+
+    const list = await (await fetch(`${base}/users`)).json();                                          // password never sent out
+    assert.deepEqual(list, [{ id: 1, email: 'a@b.com' }]);
+
+    const stored = JSON.parse(fs.readFileSync(path.join(dataDir, 'users.json'), 'utf-8'));
+    assert.ok(stored[0].password.includes(':'));                                                       // saved hashed
+    assert.ok(!JSON.stringify(stored).includes('secret1'));
+  } finally {
+    await api.close();
+  }
+});

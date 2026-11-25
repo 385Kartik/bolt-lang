@@ -251,5 +251,21 @@
     "prefix": "reply",
     "body": "reply ${1:404}, \"${2:Not found}\"",
     "description": "Stop an endpoint with an error status"
+  },
+  "Login endpoint": {
+    "prefix": "loginendpoint",
+    "body": [
+      "endpoint post \"/api/login\":",
+      "\tfound = data.users filtered by u: u.email == request.body.email",
+      "\tif count of found == 0:",
+      "\t\treply 401, \"Wrong email or password\"",
+      "\tuser = found[0]",
+      "\tif not check_password request.body.password, user.password:",
+      "\t\treply 401, \"Wrong email or password\"",
+      "\tpayload = {id: user.id, email: user.email}",
+      "\ttoken = sign_token payload",
+      "\tgive {token: token, user: payload}"
+    ],
+    "description": "Login: checks the password and gives back a token"
   }
 }

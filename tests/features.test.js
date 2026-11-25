@@ -459,3 +459,14 @@ test('language: count of a.b, items[0] and `filtered by name:` work in any expre
 test('errors: using a Bolt word as a variable name says so', () => {
   assert.throws(() => compileToAST('for every row in rows:\n    show row\n'), err => /already uses/.test(err.hint));
 });
+
+test('resource: `hidden` fields parse, and the generated page does not list them', () => {
+  const root = makeProject({
+    'src/users.bolt': ['resource users at "/api/users":', '    email email required', '    password text required hidden', ''].join('\n')
+  });
+  const page = read(build(root), 'pages/UsersPage.jsx');
+  assert.match(page, /item\.email/);
+  assert.doesNotMatch(page, /item\.password/);
+  assert.match(page, /setPassword/);                                   // can still be typed into the add form
+  assert.throws(() => build(makeProject({ 'src/u.bolt': 'resource u at "/api/u":\n    x text secret\n' })), /Unknown field option 'secret'/);
+});

@@ -195,3 +195,9 @@
 - Clearer error when a Bolt word is used as a variable name (`for every row in ...`: "'row' is a word Bolt already uses"); removed a leftover debug print from parse errors
 - VS Code extension 1.3.0: `endpoint` colors, helper words, two snippets (`endpoint`, `reply`)
 - Verified over real HTTP: search, path parameter, `reply 404`, bulk insert saved to disk, resource routes still working
+
+## Phase 30: Login for Endpoints
+- Endpoint helpers `hash_password`, `check_password` (scrypt), `sign_token` (signed, expires in 7 days) and `need_login request`; `request.user` holds the logged-in user from the `Authorization: Bearer` header (empty if missing, forged or expired)
+- Resource field option `hidden` (`password text required hidden`): saved, never sent to the browser, and left out of the generated list
+- Fixed: after `login`, the page stored the user but dropped the token, so later requests were never authenticated; it now keeps the token
+- Verified over real HTTP: signup (stored hashed), duplicate 409, wrong password 401, login, `/api/me` with no token, a good token and a forged token, and the password never appearing in `GET /api/users`

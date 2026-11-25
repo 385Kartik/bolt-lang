@@ -778,6 +778,50 @@ Then the page can call it like any API: `fetch "/api/search?q=pen" into results`
 
 Small helpers in the language that endpoints use (they work everywhere): `items[0]` (item at a position, no space before the bracket), `count of data.products` (works on `a.b` too), and `users filtered by user: user.age >= 18` (name each item yourself).
 
+### 9.5 Login for your API (passwords and tokens)
+
+Endpoints come with login helpers, so you can build signup and login in a few lines:
+
+```bolt
+resource users at "/api/users":
+    email email required
+    password text required hidden
+
+endpoint post "/api/signup":
+    email = request.body.email
+    exists = data.users filtered by u: u.email == email
+    if count of exists > 0:
+        reply 409, "Email already used"
+    user = {id: count of data.users + 1, email: email, password: hash_password request.body.password}
+    add user to data.users
+    payload = {id: user.id, email: email}
+    token = sign_token payload
+    give {token: token, user: payload}
+
+endpoint post "/api/login":
+    found = data.users filtered by u: u.email == request.body.email
+    if count of found == 0:
+        reply 401, "Wrong email or password"
+    user = found[0]
+    if not check_password request.body.password, user.password:
+        reply 401, "Wrong email or password"
+    payload = {id: user.id, email: user.email}
+    token = sign_token payload
+    give {token: token, user: payload}
+
+endpoint get "/api/me":
+    me = need_login request
+    give me
+```
+
+- `hash_password text` returns a safe hash to store (never store the plain password). `check_password text, hash` is true when they match.
+- `sign_token payload` returns a signed token that expires in 7 days. A page that calls `login "/api/login" with credentials` keeps it, and every later request sends it as `Authorization: Bearer <token>`.
+- `request.user` is the token's payload, or empty when nobody is logged in. `need_login request` stops with `401 Login required` when there is no user, and returns the user otherwise.
+- A resource field marked **`hidden`** is saved but never sent to the browser (the list, get and add answers leave it out). Inside an endpoint, `data.users` still has it.
+- The signing secret is created once in `.bolt-data/.secret`. Keep `.bolt-data` out of git (`bolt init` already does).
+- Inside `{ ... }` give plain values: write `token = sign_token payload` on its own line first, then use `token`.
+- This is meant for development and prototypes. Use a hardened auth service for a real production site.
+
 ---
 
 ## 10. Authentication

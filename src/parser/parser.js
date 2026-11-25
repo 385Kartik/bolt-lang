@@ -1885,12 +1885,12 @@ export function parse(tokens) {
           'Field types are: text, number, email.');
       }
       for (const f of flags) {
-        if (f !== 'required') {
+        if (f !== 'required' && f !== 'hidden') {
           throw new ParseError(`Unknown field option '${f}' for '${fieldName}'`, fieldLine, null,
-            "The only option is 'required'.");
+            "The options are 'required' and 'hidden' (hidden = saved but never sent to the browser, for passwords).");
         }
       }
-      fields.push({ name: fieldName, type, required: flags.includes('required') });
+      fields.push({ name: fieldName, type, required: flags.includes('required'), hidden: flags.includes('hidden') });
     }
     expect(TokenType.DEDENT, "dedentation to end the resource block");
     if (fields.length === 0) {

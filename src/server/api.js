@@ -13,10 +13,13 @@
 //   endpoint get "/api/search":
 //       give data.products filtered by p: contains p.title, request.query.q
 //
+// Login helpers for endpoints: hash_password, check_password, sign_token, request.user, need_login.
+//
 // Data is saved as plain JSON files (one per resource) so there is nothing
 // to install and you can read or edit the data by hand.
 
 import fs from 'fs';
+import crypto from 'crypto';
 import http from 'http';
 import path from 'path';
 import { generateWithRuntime } from '../generator/generator.js';
@@ -68,8 +71,55 @@ const helpers = {
   contains: (text, part) => String(text ?? '').toLowerCase().includes(String(part ?? '').toLowerCase()),
   lower: text => String(text ?? '').toLowerCase(),
   upper: text => String(text ?? '').toUpperCase(),
-  now: () => new Date().toISOString()
+  now: () => new Date().toISOString(),
+  // login helpers; the real versions are built per server (they need its secret)
+  hash_password: () => { throw new HttpError(500, 'Login helpers are not ready'); },
+  check_password: () => { throw new HttpError(500, 'Login helpers are not ready'); },
+  sign_token: () => { throw new HttpError(500, 'Login helpers are not ready'); },
+  need_login: () => { throw new HttpError(500, 'Login helpers are not ready'); }
 };
+
+const TOKEN_DAYS = 7;
+const b64 = buf => Buffer.from(buf).toString('base64url');
+
+// Password hashing (scrypt), signed tokens (HMAC-SHA256) and the login check.
+function makeAuthHelpers(getSecret) {
+  const sign = text => crypto.createHmac('sha256', getSecret()).update(text).digest('base64url');
+  return {
+    hash_password(text) {
+      const salt = crypto.randomBytes(16);
+      return `${salt.toString('hex')}:${crypto.scryptSync(String(text), salt, 32).toString('hex')}`;
+    },
+    check_password(text, hashed) {
+      const [saltHex, hashHex] = String(hashed || '').split(':');
+      if (!saltHex || !hashHex) return false;
+      const actual = crypto.scryptSync(String(text ?? ''), Buffer.from(saltHex, 'hex'), 32);
+      const expected = Buffer.from(hashHex, 'hex');
+      return actual.length === expected.length && crypto.timingSafeEqual(actual, expected);
+    },
+    sign_token(payload) {
+      const body = b64(JSON.stringify({ ...payload, exp: Date.now() + TOKEN_DAYS * 86400000 }));
+      return `${body}.${sign(body)}`;
+    },
+    need_login(request) {
+      if (!request || !request.user) throw new HttpError(401, 'Login required');
+      return request.user;
+    },
+    // used by the server (not callable from endpoints): token -> payload or null
+    verify(token) {
+      const [body, sig] = String(token || '').split('.');
+      if (!body || !sig) return null;
+      const expected = sign(body);
+      if (sig.length !== expected.length || !crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return null;
+      try {
+        const payload = JSON.parse(Buffer.from(body, 'base64url').toString('utf-8'));
+        return payload.exp && payload.exp > Date.now() ? payload : null;
+      } catch {
+        return null;
+      }
+    }
+  };
+}
 
 // "/api/items/:id" -> { regex, keys: ['id'] }
 function routePattern(routePath) {
@@ -82,7 +132,7 @@ function routePattern(routePath) {
 }
 
 // Turns an `endpoint` block into a JavaScript function (request, data) => result.
-export function compileEndpoint(endpoint) {
+export function compileEndpoint(endpoint, extra = {}) {
   const fn = FunctionDef('handler', ['request', 'data'], endpoint.body, endpoint.line);
   let js;
   try {
@@ -93,10 +143,11 @@ export function compileEndpoint(endpoint) {
     err.line = e.line || endpoint.line;
     throw err;
   }
-  const names = Object.keys(helpers);
+  const all = { ...helpers, ...extra };
+  const names = Object.keys(all);
   // eslint-disable-next-line no-new-func
   const build = new Function(...names, `${js}\nreturn handler;`);
-  return build(...names.map(n => helpers[n]));
+  return build(...names.map(n => all[n]));
 }
 
 export function createApiServer({ resources = [], endpoints = [], dataDir }) {
@@ -104,15 +155,40 @@ export function createApiServer({ resources = [], endpoints = [], dataDir }) {
   let routes = [];
   const cache = new Map(); // resource name -> array of records
 
+  // The secret that signs login tokens is created once and kept next to the data.
+  let secret = null;
+  function getSecret() {
+    if (secret) return secret;
+    const file = path.join(dataDir, '.secret');
+    try {
+      secret = fs.readFileSync(file, 'utf-8').trim();
+    } catch {
+      secret = crypto.randomBytes(32).toString('hex');
+      fs.mkdirSync(dataDir, { recursive: true });
+      fs.writeFileSync(file, secret);
+    }
+    return secret;
+  }
+  const { verify, ...authHelpers } = makeAuthHelpers(getSecret);
+
   function setEndpoints(list) {
     routes = list.map(ep => ({
       method: ep.method.toUpperCase(),
       path: ep.path,
       ...routePattern(ep.path),
-      run: compileEndpoint(ep)
+      run: compileEndpoint(ep, authHelpers)
     }));
   }
   setEndpoints(endpoints);
+
+  // Fields marked `hidden` (like a password) are saved but never sent to the browser.
+  const publicRecord = (r, row) => {
+    const hidden = r.fields.filter(f => f.hidden).map(f => f.name);
+    if (!hidden.length || !row) return row;
+    const copy = { ...row };
+    for (const name of hidden) delete copy[name];
+    return copy;
+  };
 
   const fileFor = r => path.join(dataDir, `${r.name}.json`);
 
@@ -174,7 +250,8 @@ export function createApiServer({ resources = [], endpoints = [], dataDir }) {
       path: url.pathname,
       params,
       query: Object.fromEntries(url.searchParams),
-      body
+      body,
+      user: verify((req.headers.authorization || '').replace(/^Bearer\s+/i, ''))   // null when not logged in
     };
 
     const touched = new Set();
@@ -222,7 +299,7 @@ export function createApiServer({ resources = [], endpoints = [], dataDir }) {
 
       // Collection: list or create
       if (rest === '') {
-        if (req.method === 'GET') return send(res, 200, rows);
+        if (req.method === 'GET') return send(res, 200, rows.map(row => publicRecord(resource, row)));
         if (req.method === 'POST') {
           const body = await readBody(req);
           const { value, errors } = validateRecord(resource.fields, body);
@@ -231,7 +308,7 @@ export function createApiServer({ resources = [], endpoints = [], dataDir }) {
           const record = { id, ...value };
           rows.push(record);
           save(resource);
-          return send(res, 201, record);
+          return send(res, 201, publicRecord(resource, record));
         }
         return send(res, 405, { error: 'Method not allowed' });
       }
@@ -240,11 +317,11 @@ export function createApiServer({ resources = [], endpoints = [], dataDir }) {
       const index = rows.findIndex(row => String(row.id) === rest);
       if (index === -1) return send(res, 404, { error: 'Not found' });
 
-      if (req.method === 'GET') return send(res, 200, rows[index]);
+      if (req.method === 'GET') return send(res, 200, publicRecord(resource, rows[index]));
       if (req.method === 'DELETE') {
         const [removed] = rows.splice(index, 1);
         save(resource);
-        return send(res, 200, removed);
+        return send(res, 200, publicRecord(resource, removed));
       }
       if (req.method === 'PUT' || req.method === 'PATCH') {
         const body = await readBody(req);
@@ -252,7 +329,7 @@ export function createApiServer({ resources = [], endpoints = [], dataDir }) {
         if (errors) return send(res, 400, { error: errors.join(', '), errors });
         rows[index] = { ...rows[index], ...value, id: rows[index].id };
         save(resource);
-        return send(res, 200, rows[index]);
+        return send(res, 200, publicRecord(resource, rows[index]));
       }
       return send(res, 405, { error: 'Method not allowed' });
     } catch (e) {

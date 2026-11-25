@@ -96,6 +96,8 @@ Every `.bolt` file in the project is merged automatically, so all pages, compone
 
 **Endpoints:** an `EndpointDef` body is wrapped in a `FunctionDef('handler', ['request', 'data'])`, compiled with the normal generator, and evaluated with the helper functions in scope (`compileEndpoint` in `src/server/api.js`). The server matches routes by method and a `:name` pattern, runs the handler, and saves every resource touched through `data`.
 
+**Login helpers:** `makeAuthHelpers` in `src/server/api.js` builds the password and token functions per server (the signing secret lives in `.bolt-data/.secret`). The server turns the `Authorization: Bearer` header into `request.user` before each endpoint runs, and `publicRecord` strips `hidden` fields from resource answers.
+
 **Layout:** the builder finds the single `LayoutDef`, validates it has exactly one `slot`, and injects each page's body into a copy of the layout body before code generation (pages with `layout none` are skipped).
 
 **Scaffold:** `bolt init` (`scaffoldProject` in `builder.js`) writes `src/styles.bolt` (the `DEFAULT_STYLES_BOLT` vocabulary) and `src/pages/home.bolt`.

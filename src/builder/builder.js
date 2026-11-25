@@ -611,7 +611,8 @@ export function AuthProvider({ children }) {
     }
   }, [user]);
 
-  const loginUser = (data) => setUser(data.user || data);
+  // keep the token with the user, so every request after login can send it
+  const loginUser = (data) => setUser(data.user ? { ...data.user, token: data.token || data.user.token } : data);
   const logoutUser = () => setUser(null);
   const isLoggedIn = !!user;
 
