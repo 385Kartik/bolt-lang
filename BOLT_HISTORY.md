@@ -225,3 +225,13 @@
 - Resource pages no longer force dark text, so they are readable in dark mode
 - Verified in a real browser against `bolt start`: add, list and delete through the page, and an endpoint seeing the new count
 - 77 tests, including real HTTP against a fake upstream API and a real `bolt start` process
+
+## Phase 34: Requests in Plain Words
+- No braces, no quotes: `submit "/api/items" with name, price, header key as X-Key` instead of `with { name: name, price: price }, headers { "X-Key": key }`
+- After `with`: `a, b` sends the fields a and b; `user.email` sends `email`; `a as title` renames; `"new" as status` sends a fixed value; `all form` sends a whole object; `header token as Authorization` adds a header (names with dashes need no quotes)
+- Works on `fetch` (headers only), `submit`, `update`, `patch`, `delete` and `login`; clear errors when a value has no name, when `fetch` is given data, or when `all` is mixed with fields
+- `login` gained `success:` and `error err:` blocks, so a wrong password can be shown to the user (before, it only wrote to the console)
+- The braces forms still work (`with { ... }`, `with headers { ... }`)
+- **Changed:** a single bare name after `with` now means a field of that name (`with email` sends `{ email }`). To send a whole object use `with all data`
+- store-app converted (`with email, password`); the requests it sends are identical
+- Found and fixed in store-app (verified in a real browser): sign up and log in used `run loginUser(res)`, which was never a real function, so a successful signup never logged anyone in; both now use `login ... with email, password:` with `success:` and `error err:` blocks, keep the token, and a duplicate email shows the server's message

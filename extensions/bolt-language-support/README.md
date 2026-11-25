@@ -3,7 +3,7 @@
 Makes `.bolt` files pleasant to write in VS Code.
 
 - **Colors** for every Bolt keyword: pages, components, `styles:`, `layout:`, `resource`, `use`, `slot`, `styled as:` class lists, the `design system:` block and more
-- **Snippets**: type `page`, `component`, `resource`, `styles`, `layout`, `form`, `fetch`, `design`, `themetoggle` ... and press Tab (37 snippets; every one is checked against the real compiler)
+- **Snippets**: type `page`, `component`, `resource`, `styles`, `layout`, `form`, `fetch`, `design`, `themetoggle` ... and press Tab (39 snippets; every one is checked against the real compiler)
 - **Suggestions** while you type:
   - style names after `styled as:` (from your `styles:` blocks)
   - component names after `show` or at the start of a line (inserted with their props)

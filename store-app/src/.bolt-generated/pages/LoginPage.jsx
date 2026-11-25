@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { boltFetch } from '../api.js';
+import { useAuth } from '../components/AuthContext.jsx';
 import { useToast } from '../components/ToastContext.jsx';
 import * as actions from '../actions.js';
 import Navbar from '../components/Navbar.jsx';
@@ -8,6 +9,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const { user, isLoggedIn, loginUser, logoutUser } = useAuth();
   const { addToast } = useToast();
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
@@ -60,17 +62,13 @@ export default function LoginPage() {
               return isValid;
             };
             return <form onSubmit={async (e) => { e.preventDefault(); if (validateForm()) { await boltFetch("http://localhost:3001/api/login", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email, password: password }) })
-            .then(res => res.text().then(t => (t ? JSON.parse(t) : null))).then(async res => {
-          if (res.error) {
-            addToast(res.error, "danger");
-          } else {
-            await actions.loginUser(res);
-            addToast("Logged in successfully!", "success");
-            navigate('/products');
-          }
+            .then(res => res.json()).then(async data => {
+              if (data.token || data.user) loginUser(data);
+          addToast("Logged in successfully!", "success");
+          navigate('/products');
             })
             .catch(async err => {
-          addToast("Network error", "danger");
+          addToast(err.message, "danger");
             }); } }}>
             <div className="flex flex-col gap-1">
               <input placeholder={"Email Address"} value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500" />
@@ -95,7 +93,7 @@ export default function LoginPage() {
               try {
                 return <><p className="text-gray-500">Don't have an account?</p></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 32; }
+                if (!e.__boltLine) { e.__boltLine = 28; }
                 throw e;
               }
             })()}
@@ -103,14 +101,14 @@ export default function LoginPage() {
               try {
                 return <><Link to="/signup" className="font-bold text-blue-600 hover:text-blue-700">Sign up</Link></>;
               } catch (e) {
-                if (!e.__boltLine) { e.__boltLine = 33; }
+                if (!e.__boltLine) { e.__boltLine = 29; }
                 throw e;
               }
             })()}
 
           </div></>;
             } catch (e) {
-              if (!e.__boltLine) { e.__boltLine = 31; }
+              if (!e.__boltLine) { e.__boltLine = 27; }
               throw e;
             }
           })()}
@@ -127,5 +125,5 @@ export default function LoginPage() {
   );
 }
 window.__BOLT_MAPS = window.__BOLT_MAPS || {};
-window.__BOLT_MAPS['LoginPage.jsx'] = {"11":11,"12":15,"17":4,"25":6,"28":7,"36":8,"44":10,"90":31,"93":32,"101":33};
+window.__BOLT_MAPS['LoginPage.jsx'] = {"13":11,"14":15,"19":4,"27":6,"30":7,"38":8,"46":10,"88":27,"91":28,"99":29};
 //# sourceMappingURL=LoginPage.jsx.map

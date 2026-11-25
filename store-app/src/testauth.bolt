@@ -3,7 +3,7 @@ page testauth:
     if not logged in:
         show "You are not logged in!"
         button "Login":
-            login env.API_URL + "/login" with { email: "test@example.com", password: "password" }
+            login env.API_URL + "/login" with "test@example.com" as email, "password" as password
 
     if logged in:
         show "Welcome, " + user.name + "!"

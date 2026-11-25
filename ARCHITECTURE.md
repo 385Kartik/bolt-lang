@@ -102,6 +102,8 @@ Every `.bolt` file in the project is merged automatically, so all pages, compone
 
 **Requests and production:** the generated `boltFetch` throws on non-2xx answers (with the server's message), so every request statement can rely on its `error` block. `submit`, `update`, `patch` and `delete` generate `await` chains, so several in a row run in order. On the server, `callApi` backs the `http_*` helpers (endpoint code gets `async` and `await` added by `compileEndpoint`), `Respond` and `HttpError` end an endpoint early, and `serveStatic` plus `SECURITY_HEADERS` are what `bolt start` adds around the same server (`staticDir` option).
 
+**Request clauses:** `parsePayloadAndHeaders` reads the plain-word list after `with` and builds the same object-literal nodes the braces syntax produces, so the generator does not care which style was written.
+
 **Layout:** the builder finds the single `LayoutDef`, validates it has exactly one `slot`, and injects each page's body into a copy of the layout body before code generation (pages with `layout none` are skipped).
 
 **Scaffold:** `bolt init` (`scaffoldProject` in `builder.js`) writes `src/styles.bolt` (the `DEFAULT_STYLES_BOLT` vocabulary) and `src/pages/home.bolt`.

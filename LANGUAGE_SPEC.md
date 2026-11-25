@@ -675,8 +675,8 @@ replaces only that default.
 ### 9.2 Mutating Data (POST, PUT, DELETE)
 **Bolt Code:**
 ```bolt
-submit "/api/users" with user_data
-update "/api/users/1" with user_data
+submit "/api/users" with name, email
+update "/api/users/1" with name, email
 delete "/api/users/1"
 ```
 
@@ -821,7 +821,7 @@ endpoint get "/api/me":
 ```
 
 - `hash_password text` returns a safe hash to store (never store the plain password). `check_password text, hash` is true when they match.
-- `sign_token payload` returns a signed token that expires in 7 days. A page that calls `login "/api/login" with credentials` keeps it, and every later request sends it as `Authorization: Bearer <token>`.
+- `sign_token payload` returns a signed token that expires in 7 days. A page that calls `login "/api/login" with email, password` keeps it (and an `error:` block under it shows a wrong password), and every later request sends it as `Authorization: Bearer <token>`.
 - `request.user` is the token's payload, or empty when nobody is logged in. `need_login request` stops with `401 Login required` when there is no user, and returns the user otherwise.
 - A resource field marked **`hidden`** is saved but never sent to the browser (the list, get and add answers leave it out). Inside an endpoint, `data.users` still has it.
 - The signing secret is created once in `.bolt-data/.secret`. Keep `.bolt-data` out of git (`bolt init` already does).
@@ -833,21 +833,38 @@ endpoint get "/api/me":
 Pages work with any HTTP API, yours or someone else's, with every method:
 
 ```bolt
-fetch "https://api.example.com/items" into items with headers {Authorization: "Bearer abc"}   // GET
+fetch "https://api.example.com/items" into items with header token as Authorization      // GET
 
 button "Save":
-    submit "/api/items" with {name: name}, headers {"X-Key": key}:                              // POST
+    submit "/api/items" with name, price, header key as X-Key:                            // POST
         success created:
             add created to items
         error err:
             show toast err.message as danger
-    update "/api/items/1" with {name: name}                                                      // PUT
-    patch "/api/items/1" with {name: name}                                                       // PATCH
-    delete "/api/items/1" with headers {"X-Key": key}                                            // DELETE
+    update "/api/items/1" with name                                                      // PUT
+    patch "/api/items/1" with name                                                       // PATCH
+    delete "/api/items/1" with header key as X-Key                                       // DELETE
 ```
 
+**What you can write after `with`** (separate things with commas):
+
+| You write | What is sent |
+|---|---|
+| `with name, price` | the fields `name` and `price`, using the values of your variables `name` and `price` |
+| `with user.email` | the field `email` (the last word is the field name) |
+| `with name as title` | the value of `name`, under the field name `title` |
+| `with "new" as status` | a fixed value, under the field `status` |
+| `with all form` | the whole object `form`, exactly as it is |
+| `with header token as Authorization` | not data: an HTTP header called `Authorization` with the value of `token` |
+| `with header key as X-Key` | a header name can have dashes, no quotes needed |
+
+Read it as English: *submit to this address with name and price, and the header X-Key set to key*.
+
+(Older style, still works: `with { name: name }` for data and `with headers { "X-Key": key }` for headers.
+You only need it when you build the data by hand.)
+
 - **Addresses** can be full (`https://...`) or start with `/` for your own server, and can be built: `"/api/items/" + id`. A base address from `.env` (`VITE_API_URL=https://api.example.com`) is `env.API_URL`.
-- **Headers** go after the address and payload: `with headers {...}` or `, headers {...}`. A header name with a dash is quoted: `{"X-Key": 1}`. If the user is logged in, the token is sent as `Authorization: Bearer ...` automatically (you can still set your own).
+- **Headers** are added with `header <value> as <Name>` inside the same `with` list. If the user is logged in, the token is sent as `Authorization: Bearer ...` automatically (you can still set your own).
 - **Failures are errors.** A `404`, `500` or any non-2xx answer, or no connection at all, runs the page's `error:` block (and the default error message of `fetch`). The message is the server's `error` or `message` field when it sends one, otherwise `Request failed (404)`. A request with no `error:` block logs the problem in the browser console instead of breaking the page.
 - **Answers** are read as JSON; an empty answer (such as `204`) is fine.
 - **Several requests in one block** run one after another, so the second can rely on the first. This also holds inside `when x changes:`.
@@ -927,7 +944,9 @@ if logged in:
 otherwise:
     go to login
 
-login "/api/login" with credentials
+login "/api/login" with email, password:
+    error err:
+        show toast err.message as danger
 logout
 ```
 
@@ -943,7 +962,7 @@ if (user) {
 }
 
 // login compiles to:
-await loginFn("/api/login", credentials);
+await loginFn("/api/login", { email, password });
 
 // logout compiles to:
 logoutFn();
@@ -1128,9 +1147,16 @@ EndpointDef
     := endpoint (get|post|put|patch|delete) StringLiteral : Block
 
 DataRequest
-    := fetch Expression into IDENTIFIER (with headers Expression)? (: handlers)?
-    | (submit|update|patch) Expression (with Expression)? (, headers Expression)? (: handlers)?
-    | delete Expression (with headers Expression)? (: handlers)?
+    := fetch Expression into IDENTIFIER (with WithItem (, WithItem)*)? (: handlers)?
+    | (submit|update|patch|login) Expression (with WithItem (, WithItem)*)? (: handlers)?
+    | delete Expression (with WithItem (, WithItem)*)? (: handlers)?
+
+WithItem
+    := header Expression as Name              // an HTTP header (Name may have dashes)
+    | all Expression                          // send a whole object
+    | Expression as Name                      // a value under a field name
+    | Identifier | MemberExpression           // a field named after the variable
+    | ObjectLiteral                           // older style: { name: name }
 
 IndexExpression
     := Expression '[' Expression ']'          // no space before '['

@@ -21,7 +21,7 @@ export default function TestauthPage() {
         {(() => {
           try {
             return <><button className="bg-primary text-white rounded-xl px-4 py-2" onClick={async () => { await boltFetch((import.meta.env.VITE_API_URL + "/login"), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: "test@example.com", password: "password" }) })
-          .then(res => res.json()).then(data => {
+          .then(res => res.json()).then(async data => {
             if (data.token || data.user) loginUser(data);
           })
           .catch(err => console.error(err)); }}>Login</button></>;

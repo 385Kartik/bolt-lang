@@ -1616,11 +1616,17 @@ ${indent()}})()}`;
   function genLoginStatement(node) {
     const url = gen(node.url);
     const data = gen(node.data);
-    let output = `${indent()}await boltFetch(${url}, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(${data}) })\n`;
-    output += `${indent()}  .then(res => res.json()).then(data => {\n`;
+    const extra = node.headers ? `, ...(${gen(node.headers)})` : '';
+    let output = `${indent()}await boltFetch(${url}, { method: 'POST', headers: { 'Content-Type': 'application/json'${extra} }, body: JSON.stringify(${data}) })\n`;
+    output += `${indent()}  .then(res => res.json()).then(async data => {\n`;
     output += `${indent()}    if (data.token || data.user) loginUser(data);\n`;
-    output += `${indent()}  })\n`;
-    output += `${indent()}  .catch(err => console.error(err));`;
+    if (node.successBody && node.successBody.length) output += node.successBody.map(st => gen(st)).join('\n') + '\n';
+    output += `${indent()}  })`;
+    if (node.errorBody && node.errorBody.length) {
+      output += `\n${indent()}  .catch(async ${node.errorVar || 'err'} => {\n${node.errorBody.map(st => gen(st)).join('\n')}\n${indent()}  });`;
+    } else {
+      output += `\n${indent()}  .catch(err => console.error(err));`;
+    }
     return output;
   }
 

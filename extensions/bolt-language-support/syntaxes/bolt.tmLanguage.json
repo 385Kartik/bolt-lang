@@ -326,7 +326,7 @@
         },
         {
           "comment": "data",
-          "match": "\\b(fetch|update|patch|delete|into|with|headers|loading|error|success|empty)\\b",
+          "match": "\\b(fetch|update|patch|delete|into|with|header|headers|loading|error|success|empty)\\b",
           "name": "support.function.data.bolt"
         },
         {

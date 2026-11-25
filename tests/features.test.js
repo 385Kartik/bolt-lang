@@ -512,3 +512,64 @@ test('when changes: requests inside are awaited in order', () => {
   assert.match(page, /useEffect\(\(\) => \{\s*\(async \(\) => \{/);
   assert.equal((page.match(/await boltFetch/g) || []).length, 2);
 });
+
+// ── requests in plain words ──────────────────────────────────────────
+
+function pageWith(lines) {
+  return read(build(makeProject({ 'src/pages/home.bolt': ['page home:', '    store name = ""', '    store price = ""', '    store token = ""', ...lines.map(l => '    ' + l), ''].join('\n') })), 'pages/HomePage.jsx');
+}
+
+test('plain-word requests: fields, renames, fixed values, whole objects and headers', () => {
+  const page = pageWith([
+    'fetch "https://api.example.com/items" into items with header token as Authorization',
+    'button "Go":',
+    '    submit "/api/items" with name, price, header token as X-Key',
+    '    submit "/api/items" with name as title, "new" as status',
+    '    patch "/api/items/1" with name',
+    '    delete "/api/items/1" with header token as X-Key',
+    '    update "/api/items/2" with all item'
+  ]);
+  assert.match(page, /boltFetch\("https:\/\/api\.example\.com\/items", \{ headers: \{ "Authorization": token \} \}\)/);
+  assert.match(page, /\.\.\.\(\{ "X-Key": token \}\) \}, body: JSON\.stringify\(\{ name: name, price: price \}\)/);   // fields + header
+  assert.match(page, /JSON\.stringify\(\{ title: name, status: "new" \}\)/);                                        // rename + fixed value
+  assert.match(page, /method: 'PATCH'[^]*?JSON\.stringify\(\{ name: name \}\)/);                                    // one bare name = one field
+  assert.match(page, /method: 'DELETE', headers: \{ "X-Key": token \}/);
+  assert.match(page, /method: 'PUT'[^]*?JSON\.stringify\(item\)/);                                                  // `all` sends the object as is
+});
+
+test('plain-word requests: a member value sends the last word as the field', () => {
+  const source = ['page home:', '    store user = {email: "a@b.com"}', '    button "Go":', '        submit "/api/x" with user.email', ''].join('\n');
+  assert.match(read(build(makeProject({ 'src/pages/home.bolt': source })), 'pages/HomePage.jsx'), /JSON\.stringify\(\{ email: user\.email \}\)/);
+});
+
+test('plain-word requests: the older braces forms still work', () => {
+  const page = pageWith([
+    'button "Go":',
+    '    submit "/api/items" with { name: name, price: price }, headers { "X-Key": token }'
+  ]);
+  assert.match(page, /JSON\.stringify\(\{ name: name, price: price \}\)/);
+  assert.match(page, /\.\.\.\(\{ "X-Key": token \}\)/);
+});
+
+test('plain-word requests: mistakes get a clear message', () => {
+  const failsWith = (line, pattern) => assert.throws(() => pageWith(['button "Go":', '    ' + line]), pattern);
+  failsWith('submit "/api/x" with "new"', /Say what to call this value/);
+  failsWith('submit "/api/x" with all name, name', /not both/);
+  failsWith('submit "/api/x" with header token', /'as' and the header name/);
+  assert.throws(() => pageWith(['fetch "/api/x" into items with name']), /fetch does not send data/);
+  assert.throws(() => pageWith(['button "Go":', '    login "/api/login"']), /values to send after the login address/);
+});
+
+test('login: success and error blocks, so a wrong password can be shown', () => {
+  const page = pageWith([
+    'button "Go":',
+    '    login "/api/login" with name, price:',
+    '        success:',
+    '            show toast "Welcome" as success',
+    '        error err:',
+    '            show toast err.message as danger'
+  ]);
+  assert.match(page, /JSON\.stringify\(\{ name: name, price: price \}\)/);
+  assert.match(page, /loginUser\(data\);\s*addToast\("Welcome", "success"\)/);
+  assert.match(page, /\.catch\(async err => \{\s*addToast\(err\.message, "danger"\)/);
+});

@@ -1,7 +1,7 @@
 // Phase 3: Reusable Actions
 // Actions decouple business logic from UI components.
 action createProduct(name, price):
-    submit "https://fakestoreapi.com/products" with { title: name, price: price, description: "New item", image: "https://i.pravatar.cc", category: "electronic" }:
+    submit "https://fakestoreapi.com/products" with name as title, price, "New item" as description, "https://i.pravatar.cc" as image, "electronic" as category:
         success result:
             give result
         error err:
@@ -20,7 +20,7 @@ page admin:
 
                 button "Mock Login" as primary:
                 // Auto-saves session to localStorage if token is returned
-                    login "https://fakestoreapi.com/auth/login" with { username: "mor_2314", password: "83r5^_" }
+                    login "https://fakestoreapi.com/auth/login" with "mor_2314" as username, "83r5^_" as password
 
         if logged in:
             show "Admin Dashboard" as title styled as: text-4xl font-black mb-2
@@ -53,7 +53,7 @@ page admin:
 
                 row styled as: gap-4:
                     button "Update Product #1" as secondary:
-                        update "https://fakestoreapi.com/products/1" with { title: "Updated Name", price: 99.99 }:
+                        update "https://fakestoreapi.com/products/1" with "Updated Name" as title, 99.99 as price:
                             success:
                                 show toast "Updated successfully!" as success
 

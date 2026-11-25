@@ -1042,23 +1042,110 @@ export function parse(tokens) {
     return node;
   }
 
-  // `with headers h` / `, headers h` after the address (and the payload, when there is one)
-  function parsePayloadAndHeaders() {
-    let payload = null;
-    let headers = null;
+  // What a request sends, in plain words (no braces needed):
+  //
+  //   with name, price                       send the fields name and price
+  //   with name as title, "new" as status    send a value under another name
+  //   with all credentials                   send a whole object as it is
+  //   with header token as Authorization     add a header (names with dashes work: X-Key)
+  //   with name, header key as X-Key         both together
+  //
+  // The older forms still work:  with { name: name }   and   with headers { ... }
+  function parsePayloadAndHeaders(options = {}) {
+    const fields = [];        // [{ key, quoted, value }]
+    const headerList = [];    // [{ key, value }]
+    let rawPayload = null;    // `with all x`, or a single { ... } / old style value
+    let oldHeaders = null;
+
+    const isWord = (t, word) => t && String(t.value) === word && (t.type === TokenType.IDENTIFIER || t.type === TokenType.ALL);
+
+    // a name given after `as`: "X-Key", X-Key, or title
+    const readName = (what) => {
+      if (check(TokenType.STRING)) return { text: advance().value, quoted: true };
+      const parts = [];
+      while (!check(TokenType.COMMA) && !check(TokenType.NEWLINE) && !check(TokenType.EOF) && !check(TokenType.DEDENT) &&
+             !(check(TokenType.COLON) && tokens[pos + 1] && tokens[pos + 1].type === TokenType.NEWLINE)) {
+        parts.push(advance());
+      }
+      if (parts.length === 0) {
+        throw new ParseError(`Expected a name for the ${what} after 'as'`, peek().line, peek().column,
+          'Example: with header token as Authorization');
+      }
+      return { text: joinTokensByColumn(parts), quoted: !/^[A-Za-z_][A-Za-z0-9_]*$/.test(joinTokensByColumn(parts)) };
+    };
+
+    const parseOne = () => {
+      // header <value> as <Name>
+      if (isWord(peek(), 'header') && tokens[pos + 1] && tokens[pos + 1].line === peek().line &&
+          ![TokenType.ASSIGN, TokenType.COMMA].includes(tokens[pos + 1].type)) {
+        advance();
+        const value = parseExpression();
+        expect(TokenType.AS, "'as' and the header name (example: with header token as Authorization)");
+        headerList.push({ key: readName('header').text, value });
+        return;
+      }
+      // old style:  headers { ... }
+      if (isWord(peek(), 'headers') && tokens[pos + 1] && tokens[pos + 1].line === peek().line &&
+          ![TokenType.ASSIGN, TokenType.COMMA].includes(tokens[pos + 1].type)) {
+        advance();
+        oldHeaders = parseExpression();
+        return;
+      }
+      // all <object>
+      if (check(TokenType.ALL)) {
+        advance();
+        rawPayload = parseExpression();
+        return;
+      }
+      const startLine = peek().line;
+      const value = parseExpression();
+      if (match(TokenType.AS)) {
+        const name = readName('value');
+        fields.push({ key: name.text, quoted: name.quoted, value });
+        return;
+      }
+      if (value.type === 'Identifier') { fields.push({ key: value.name, quoted: false, value }); return; }
+      if (value.type === 'MemberExpression') { fields.push({ key: value.property, quoted: false, value }); return; }
+      if (value.type === 'ObjectLiteral') { rawPayload = value; return; }   // with { ... } (older style)
+      throw new ParseError('Say what to call this value', startLine, null,
+        'Add a name with "as", for example:  with "new" as status');
+    };
+
     if (check(TokenType.WITH)) {
       advance();
-      if (String(peek().value) === 'headers' && tokens[pos + 1] && tokens[pos + 1].line === peek().line) {
+      parseOne();
+      while (check(TokenType.COMMA)) {
         advance();
-        headers = parseExpression();
-      } else {
-        payload = parseExpression();
+        parseOne();
       }
     }
-    if (!headers && check(TokenType.COMMA) && tokens[pos + 1] && String(tokens[pos + 1].value) === 'headers') {
-      advance(); // ,
-      advance(); // headers
-      headers = parseExpression();
+    // old style after the payload:  , headers { ... }
+    if (!oldHeaders && check(TokenType.COMMA) && tokens[pos + 1] && String(tokens[pos + 1].value) === 'headers') {
+      advance(); advance();
+      oldHeaders = parseExpression();
+    }
+
+    let payload = null;
+    if (rawPayload) {
+      if (fields.length) {
+        throw new ParseError("Use either 'with all ...' or a list of fields, not both", peek().line);
+      }
+      payload = rawPayload;
+    } else if (fields.length) {
+      payload = AST.ObjectLiteral(fields.map(f => ({ key: f.key, quoted: f.quoted || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(f.key), value: f.value })), peek().line);
+    }
+
+    let headers = oldHeaders;
+    if (headerList.length) {
+      if (oldHeaders) {
+        throw new ParseError("Use either 'headers { ... }' or 'header x as Name', not both", peek().line);
+      }
+      headers = AST.ObjectLiteral(headerList.map(h => ({ key: h.key, quoted: true, value: h.value })), peek().line);
+    }
+
+    if (options.noPayload && payload) {
+      throw new ParseError(`${options.noPayload} does not send data`, peek().line, null,
+        'Use submit to send data. Here you can only add headers: with header token as Authorization');
     }
     return { payload, headers };
   }
@@ -1069,11 +1156,7 @@ export function parse(tokens) {
     const urlExpr = parseExpression();
     expect(TokenType.INTO, "'into' after fetch URL");
     const varToken = expectIdentifierLike("a variable name after 'into'");
-    let fetchHeaders = null;
-    if (check(TokenType.WITH) && tokens[pos + 1] && String(tokens[pos + 1].value) === 'headers') {
-      advance(); advance();
-      fetchHeaders = parseExpression();
-    }
+    const { headers: fetchHeaders } = parsePayloadAndHeaders({ noPayload: 'fetch' });
     let handlers = { loading: null, error: null, empty: null, success: null };
     if (match(TokenType.COLON)) {
       handlers = parseAsyncHandlers();
@@ -1153,7 +1236,7 @@ export function parse(tokens) {
     const token = advance(); // consume DELETE_DATA
     const line = token.line;
     const urlExpr = parseExpression();
-    const { headers } = parsePayloadAndHeaders();
+    const { headers } = parsePayloadAndHeaders({ noPayload: 'delete' });
     let handlers = { successVar: null, success: null, errorVar: null, error: null };
     if (match(TokenType.COLON)) {
       handlers = parseAsyncHandlers();
@@ -1303,13 +1386,26 @@ export function parse(tokens) {
   function parseLoginStatement() {
     const loginToken = advance(); // LOGIN
     const url = parseExpression();
-    
+
     // Skip newlines if the user put `with` on the next line
     skipNewlines();
-    expect(TokenType.WITH, "'with' after login url");
-    const data = parseExpression();
-    match(TokenType.NEWLINE);
-    return AST.LoginStatement(url, data, loginToken.line);
+    if (!check(TokenType.WITH)) {
+      throw new ParseError("Expected 'with' and the values to send after the login address", loginToken.line, null,
+        'Example: login "/api/login" with email, password');
+    }
+    const { payload: data, headers } = parsePayloadAndHeaders();
+    let handlers = { successVar: null, success: null, errorVar: null, error: null };
+    if (match(TokenType.COLON)) {
+      handlers = parseAsyncHandlers();
+    } else {
+      match(TokenType.NEWLINE);
+    }
+    const loginNode = AST.LoginStatement(url, data, loginToken.line);
+    loginNode.headers = headers;
+    loginNode.successBody = handlers.success;
+    loginNode.errorVar = handlers.errorVar;
+    loginNode.errorBody = handlers.error;
+    return loginNode;
   }
 
   function parseLogoutStatement() {

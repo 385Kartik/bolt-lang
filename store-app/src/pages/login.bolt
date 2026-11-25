@@ -17,16 +17,12 @@ page login:
                 min 8
 
             submit "Login" as primary styled as: w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold mt-4 shadow-lg shadow-blue-200 transition-all:
-                submit "http://localhost:3001/api/login" with { email: email, password: password }:
-                    success res:
-                        if res.error:
-                            show toast res.error as danger
-                        otherwise:
-                            run loginUser(res)
-                            show toast "Logged in successfully!" as success
-                            go to products
+                login "http://localhost:3001/api/login" with email, password:
+                    success:
+                        show toast "Logged in successfully!" as success
+                        go to products
                     error err:
-                        show toast "Network error" as danger
+                        show toast err.message as danger
 
         row styled as: justify-center mt-6 gap-2 text-sm:
             show "Don't have an account?" as prompt styled as: text-gray-500

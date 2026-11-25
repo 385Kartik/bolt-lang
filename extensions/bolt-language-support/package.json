@@ -2,7 +2,7 @@
   "name": "bolt-language-support",
   "displayName": "Bolt Language Support",
   "description": "Syntax colors, snippets, suggestions and live problem checking for the Bolt language",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "publisher": "bolt-framework",
   "license": "MIT",
   "repository": {

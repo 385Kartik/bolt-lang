@@ -36,8 +36,10 @@ when count changes: ...          if x: ... otherwise: ...          repeat 3 time
 ## Data
 fetch "/api/products" into products          (default Loading... and error UI included)
 fetch url into items:  loading: ...  error err: ...  empty: ...  success: ...   (optional blocks)
-submit "/api/x" with data, headers h   update "/api/x/1" with data   patch "/api/x/1" with data   delete "/api/x/1"
-fetch url into x with headers {Authorization: "Bearer k"}   (non-2xx = error block; several requests in a block run in order; header names with dashes are quoted)
+submit "/api/x" with name, price, header key as X-Key   update "/api/x/1" with name   patch "/api/x/1" with name   delete "/api/x/1"
+with: `a, b` sends fields a and b | `a as title` renames | `"new" as status` fixed value | `all obj` sends the object as is | `header token as Authorization` adds a header (X-Key ok, no quotes)
+fetch url into x with header token as Authorization   (non-2xx = error block; requests in a block run in order)
+login "/api/login" with email, password:  (error err: shows a wrong password)
 
 ## Forms
 form:

@@ -68,7 +68,7 @@ export default function AdminPage() {
             {(() => {
               try {
                 return <><button className="bg-primary text-white rounded-xl px-4 py-2" onClick={async () => { await boltFetch("https://fakestoreapi.com/auth/login", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: "mor_2314", password: "83r5^_" }) })
-              .then(res => res.json()).then(data => {
+              .then(res => res.json()).then(async data => {
                 if (data.token || data.user) loginUser(data);
               })
               .catch(err => console.error(err)); }}>Mock Login</button></>;

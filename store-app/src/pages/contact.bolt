@@ -14,7 +14,7 @@ page contact:
                         input "Email Address" into email styled as: p-3 border rounded-lg w-full
                         input "Your Message" into message styled as: p-3 border rounded-lg w-full min-h-[120px]
                         button "Submit" as primary styled as: w-full py-3 mt-4:
-                            submit "https://jsonplaceholder.typicode.com/posts" with { name: name, email: email, message: message }
+                            submit "https://jsonplaceholder.typicode.com/posts" with name, email, message
                             name = ""
                             email = ""
                             message = ""

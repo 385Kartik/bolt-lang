@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.6.0
+- Plain-word requests: colors for `header`, snippets `submit`, `loginreq`, and simpler `fetchheaders` / `patch`
+
 ## 1.5.0
 - Colors for `patch`, `headers`, `respond` and the `http_get` / `http_post` / `http_put` / `http_patch` / `http_delete` helpers
 - Four new snippets: `fetchheaders`, `patch`, `httpget`, `respond`

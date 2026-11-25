@@ -222,7 +222,7 @@ page about:
 // Phase 3: Reusable Actions
 // Actions decouple business logic from UI components.
 action createProduct(name, price):
-    submit "https://fakestoreapi.com/products" with { title: name, price: price, description: "New item", image: "https://i.pravatar.cc", category: "electronic" }:
+    submit "https://fakestoreapi.com/products" with name as title, price, "New item" as description, "https://i.pravatar.cc" as image, "electronic" as category:
         success result:
             give result
         error err:
@@ -241,7 +241,7 @@ page admin:
 
                 button "Mock Login" as primary:
                 // Auto-saves session to localStorage if token is returned
-                    login "https://fakestoreapi.com/auth/login" with { username: "mor_2314", password: "83r5^_" }
+                    login "https://fakestoreapi.com/auth/login" with "mor_2314" as username, "83r5^_" as password
 
         if logged in:
             show "Admin Dashboard" as title styled as: text-4xl font-black mb-2
@@ -274,7 +274,7 @@ page admin:
 
                 row styled as: gap-4:
                     button "Update Product #1" as secondary:
-                        update "https://fakestoreapi.com/products/1" with { title: "Updated Name", price: 99.99 }:
+                        update "https://fakestoreapi.com/products/1" with "Updated Name" as title, 99.99 as price:
                             success:
                                 show toast "Updated successfully!" as success
 
@@ -302,7 +302,7 @@ page contact:
                         input "Email Address" into email styled as: p-3 border rounded-lg w-full
                         input "Your Message" into message styled as: p-3 border rounded-lg w-full min-h-[120px]
                         button "Submit" as primary styled as: w-full py-3 mt-4:
-                            submit "https://jsonplaceholder.typicode.com/posts" with { name: name, email: email, message: message }
+                            submit "https://jsonplaceholder.typicode.com/posts" with name, email, message
                             name = ""
                             email = ""
                             message = ""
@@ -416,16 +416,12 @@ page login:
                 min 8
 
             submit "Login" as primary styled as: w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold mt-4 shadow-lg shadow-blue-200 transition-all:
-                submit "http://localhost:3001/api/login" with { email: email, password: password }:
-                    success res:
-                        if res.error:
-                            show toast res.error as danger
-                        otherwise:
-                            run loginUser(res)
-                            show toast "Logged in successfully!" as success
-                            go to products
+                login "http://localhost:3001/api/login" with email, password:
+                    success:
+                        show toast "Logged in successfully!" as success
+                        go to products
                     error err:
-                        show toast "Network error" as danger
+                        show toast err.message as danger
 
         row styled as: justify-center mt-6 gap-2 text-sm:
             show "Don't have an account?" as prompt styled as: text-gray-500
@@ -528,16 +524,12 @@ page signup:
                 min 8
 
             submit "Sign Up" as primary styled as: w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold mt-4 shadow-lg shadow-blue-200 transition-all:
-                submit "http://localhost:3001/api/signup" with { email: email, password: password }:
-                    success res:
-                        if res.error:
-                            show toast res.error as danger
-                        otherwise:
-                            run loginUser(res)
-                            show toast "Signed up successfully!" as success
-                            go to products
+                login "http://localhost:3001/api/signup" with email, password:
+                    success:
+                        show toast "Signed up successfully!" as success
+                        go to products
                     error err:
-                        show toast "Network error" as danger
+                        show toast err.message as danger
 
         row styled as: justify-center mt-6 gap-2 text-sm:
             show "Already have an account?" as prompt styled as: text-gray-500
@@ -614,7 +606,7 @@ page testauth:
     if not logged in:
         show "You are not logged in!"
         button "Login":
-            login env.API_URL + "/login" with { email: "test@example.com", password: "password" }
+            login env.API_URL + "/login" with "test@example.com" as email, "password" as password
 
     if logged in:
         show "Welcome, " + user.name + "!"

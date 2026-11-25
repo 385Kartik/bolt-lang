@@ -271,15 +271,15 @@
   "Fetch with headers": {
     "prefix": "fetchheaders",
     "body": [
-      "fetch \"${1:https://api.example.com/items}\" into ${2:items} with headers {Authorization: \"Bearer ${3:token}\"}",
+      "fetch \"${1:https://api.example.com/items}\" into ${2:items} with header ${3:token} as ${4:Authorization}",
       "show all ${2:items}"
     ],
-    "description": "Load data from any API with headers"
+    "description": "Load data from any API with a header"
   },
   "Patch": {
     "prefix": "patch",
-    "body": "patch \"/api/${1:items}/${2:1}\" with {${3:name}: ${4:value}}",
-    "description": "A PATCH request"
+    "body": "patch \"/api/${1:items}/${2:1}\" with ${3:name}",
+    "description": "A PATCH request (sends the field you name)"
   },
   "Call another API": {
     "prefix": "httpget",
@@ -295,5 +295,23 @@
     "prefix": "respond",
     "body": "respond ${1:201}, ${2:{ok: true}}",
     "description": "Answer with your own status"
+  },
+  "Submit": {
+    "prefix": "submit",
+    "body": [
+      "submit \"/api/${1:items}\" with ${2:name}, ${3:price}:",
+      "\terror err:",
+      "\t\tshow toast err.message as danger"
+    ],
+    "description": "Send data to an API (POST) with an error message"
+  },
+  "Login request": {
+    "prefix": "loginreq",
+    "body": [
+      "login \"/api/login\" with ${1:email}, ${2:password}:",
+      "\terror err:",
+      "\t\tshow toast err.message as danger"
+    ],
+    "description": "Sign in; shows the server's message if it fails"
   }
 }
