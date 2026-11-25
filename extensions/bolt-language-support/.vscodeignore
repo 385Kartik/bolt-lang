@@ -1,0 +1,6 @@
+.vscode/**
+*.vsix
+tests/**
+node_modules/**
+.gitignore
+PUBLISHING.md

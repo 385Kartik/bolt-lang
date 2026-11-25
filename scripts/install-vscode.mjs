@@ -21,6 +21,6 @@ for (const name of fs.readdirSync(extensionsDir)) {
   }
 }
 
-fs.cpSync(source, target, { recursive: true });
+fs.cpSync(source, target, { recursive: true, filter: src => !src.endsWith('.vsix') });
 console.log(`\n  ⚡ Bolt extension ${pkg.version} installed in:\n     ${target}\n`);
 console.log('  Restart VS Code (or run "Developer: Reload Window") to start using it.\n');

@@ -31,3 +31,7 @@ Then restart VS Code.
 | `bolt.cliPath` | empty | path to `bolt` (for example `C:/projects/bolt-lang/cli/bolt.js`). Empty = find it automatically: `cli/bolt.js` in the project, then `node_modules/bolt-lang`, then `bolt` on your PATH |
 
 If problems are not showing, open your Bolt project as the VS Code folder, or set `bolt.cliPath`.
+
+## Publishing
+
+See [PUBLISHING.md](PUBLISHING.md). `npm run package:vscode` (in the Bolt repository) builds the `.vsix` file.

@@ -13,6 +13,7 @@
     "test:features": "node --test tests/features.test.js",
     "test:api": "node --test tests/api.test.js",
     "install:vscode": "node scripts/install-vscode.mjs",
+    "package:vscode": "cd extensions/bolt-language-support && npx --yes @vscode/vsce package --no-dependencies",
     "compile": "node cli/bolt.js compile",
     "run": "node cli/bolt.js run"
   },

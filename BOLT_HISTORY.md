@@ -207,3 +207,9 @@
 - Records saved earlier as JSON move over the first time; ids never repeat after a delete; every change is one transaction
 - Storage is a small adapter (`jsonStorage`, `sqliteStorage` in `src/server/api.js`); needs Node 22.5+ (`node:sqlite`) and says so clearly otherwise
 - Verified: records survive a restart, deletes stick, and the command line creates `bolt.db`
+
+## Phase 32: Extension Ready to Publish
+- `npm run package:vscode` builds `bolt-language-support-<version>.vsix` (13 files, about 96 KB); verified with `@vscode/vsce`
+- Icon converted from a JPEG named `.png` to a real 256x256 PNG (the Marketplace needs a real PNG)
+- Added `LICENSE`, `CHANGELOG.md`, `.vscodeignore`, marketplace fields (`icon`, `keywords`, `bugs`, `homepage`, `galleryBanner`) and `PUBLISHING.md`, a step-by-step guide (accounts, token, publisher, `vsce publish`, Open VSX)
+- Publishing itself needs your own Microsoft/Azure account and token, so it is not done; the guide lists every step

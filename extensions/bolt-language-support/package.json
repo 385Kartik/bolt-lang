@@ -5,7 +5,10 @@
   "version": "1.4.0",
   "publisher": "bolt-framework",
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/385Kartik/bolt-lang" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/385Kartik/bolt-lang"
+  },
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -21,8 +24,13 @@
     "languages": [
       {
         "id": "bolt",
-        "aliases": ["Bolt", "bolt"],
-        "extensions": [".bolt"],
+        "aliases": [
+          "Bolt",
+          "bolt"
+        ],
+        "extensions": [
+          ".bolt"
+        ],
         "configuration": "./language-configuration.json",
         "icon": {
           "light": "./icon.png",
@@ -44,8 +52,14 @@
       }
     ],
     "commands": [
-      { "command": "bolt.check", "title": "Bolt: Check Project" },
-      { "command": "bolt.stats", "title": "Bolt: Show Size Report (Bolt vs React)" }
+      {
+        "command": "bolt.check",
+        "title": "Bolt: Check Project"
+      },
+      {
+        "command": "bolt.stats",
+        "title": "Bolt: Show Size Report (Bolt vs React)"
+      }
     ],
     "configuration": {
       "title": "Bolt",
@@ -62,5 +76,23 @@
         }
       }
     }
+  },
+  "icon": "icon.png",
+  "keywords": [
+    "bolt",
+    "react",
+    "tailwind",
+    "vite",
+    "language",
+    "dsl",
+    "snippets"
+  ],
+  "bugs": {
+    "url": "https://github.com/385Kartik/bolt-lang/issues"
+  },
+  "homepage": "https://github.com/385Kartik/bolt-lang#readme",
+  "galleryBanner": {
+    "color": "#2563eb",
+    "theme": "dark"
   }
 }

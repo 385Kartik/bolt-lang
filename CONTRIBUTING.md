@@ -25,6 +25,7 @@ We welcome discussions and PRs for adding new language primitives or improving t
 ## VS Code extension
 - Add new keywords to `extensions/bolt-language-support/syntaxes/bolt.tmLanguage.json` and a snippet to `snippets/bolt.json` when you add syntax (a test checks every snippet compiles)
 - Try it with `npm run install:vscode`, then reload VS Code
+- Build the package with `npm run package:vscode`; publishing steps are in `extensions/bolt-language-support/PUBLISHING.md`
 
 ## Before you open a PR
 - Run `node cli/bolt.js check store-app` (must report no problems) and `node cli/bolt.js fmt store-app --check`
