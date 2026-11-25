@@ -36,7 +36,8 @@ when count changes: ...          if x: ... otherwise: ...          repeat 3 time
 ## Data
 fetch "/api/products" into products          (default Loading... and error UI included)
 fetch url into items:  loading: ...  error err: ...  empty: ...  success: ...   (optional blocks)
-submit "/api/x"   update "/api/x/1"   delete "/api/x/1"
+submit "/api/x" with data, headers h   update "/api/x/1" with data   patch "/api/x/1" with data   delete "/api/x/1"
+fetch url into x with headers {Authorization: "Bearer k"}   (non-2xx = error block; several requests in a block run in order; header names with dashes are quoted)
 
 ## Forms
 form:
@@ -62,10 +63,12 @@ endpoint get "/api/search":                       (methods: get post put patch d
     give data.products filtered by p: contains p.title, q     (data.<resource> = records; give = JSON answer)
     reply 404, "Not found"                       (stop with a status)   add item to data.products (auto-saved)
 login: hash_password pw | check_password pw, hash | token = sign_token payload | request.user | need_login request (401). resource field `password text required hidden` is never sent out.
+call other APIs: x = http_get url, headers | http_post url, body, headers | http_put | http_patch | http_delete (non-2xx = 502). secrets: .env file, read as env.KEY
+respond 201, body, headers (ends the endpoint). request.headers["x"]. body is JSON / form object / text.
 helpers: contains text, word | lower | upper | now.  items[0] = item at position. count of data.products.
 
 ## Auth
 if logged in: ... otherwise: ...
 
 ## Tools
-bolt init app | bolt dev app | bolt build app | bolt check [--json] | bolt stats | bolt fmt [--check] | bolt serve [--db sqlite] | bolt spec
+bolt init app | bolt dev app | bolt build app | bolt check [--json] | bolt stats | bolt fmt [--check] | bolt serve [--db sqlite] | bolt start [--port N] (built site + API, production) | bolt spec

@@ -213,3 +213,15 @@
 - Icon converted from a JPEG named `.png` to a real 256x256 PNG (the Marketplace needs a real PNG)
 - Added `LICENSE`, `CHANGELOG.md`, `.vscodeignore`, marketplace fields (`icon`, `keywords`, `bugs`, `homepage`, `galleryBanner`) and `PUBLISHING.md`, a step-by-step guide (accounts, token, publisher, `vsce publish`, Open VSX)
 - Publishing itself needs your own Microsoft/Azure account and token, so it is not done; the guide lists every step
+
+## Phase 33: Real-World APIs and Running for Real
+- Pages: `headers` on every request (`fetch ... with headers {...}`, `submit ... with data, headers {...}`), a new `patch` statement, quoted object keys for header names (`{"X-Key": 1}`)
+- Failed requests (404, 500, no connection) now reach the page's `error:` block with the server's message; before, an error answer was treated as data. A request with no `error:` block logs instead of breaking
+- Several requests in one block now all run, in order (they used to `return`, so only the first ran); `when x changes:` is async too; the login now keeps the token (Phase 30)
+- Endpoints call other APIs: `http_get`, `http_post`, `http_put`, `http_patch`, `http_delete` (headers, JSON or text answers, 15 second limit, errors become `502`), read secrets with `env.NAME` from a `.env` file, answer with `respond status, body, headers`, read `request.headers`, and accept JSON, form and plain text bodies
+- Configurable CORS (`BOLT_CORS_ORIGIN`), off by default when serving the built site
+- `bolt start`: one process serving the built website (page addresses, hashed assets cached for a year, security headers, no path escapes) plus the API and data, with `--port`, `PORT` and `--db sqlite`
+- The "prototype only" wording was replaced with what the server really is and is not (spec 9.9)
+- Resource pages no longer force dark text, so they are readable in dark mode
+- Verified in a real browser against `bolt start`: add, list and delete through the page, and an endpoint seeing the new count
+- 77 tests, including real HTTP against a fake upstream API and a real `bolt start` process

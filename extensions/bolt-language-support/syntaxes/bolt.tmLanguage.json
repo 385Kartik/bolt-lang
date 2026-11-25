@@ -326,7 +326,7 @@
         },
         {
           "comment": "data",
-          "match": "\\b(fetch|update|delete|into|with|loading|error|success|empty)\\b",
+          "match": "\\b(fetch|update|patch|delete|into|with|headers|loading|error|success|empty)\\b",
           "name": "support.function.data.bolt"
         },
         {
@@ -350,7 +350,7 @@
         },
         {
           "comment": "helpers available inside endpoint blocks",
-          "match": "\b(reply|contains|lower|upper|now|hash_password|check_password|sign_token|need_login)\b",
+          "match": "\\b(reply|respond|contains|lower|upper|now|hash_password|check_password|sign_token|need_login|http_get|http_post|http_put|http_patch|http_delete)\\b",
           "name": "support.function.endpoint.bolt"
         },
         {

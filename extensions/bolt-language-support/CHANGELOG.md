@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0
+- Colors for `patch`, `headers`, `respond` and the `http_get` / `http_post` / `http_put` / `http_patch` / `http_delete` helpers
+- Four new snippets: `fetchheaders`, `patch`, `httpget`, `respond`
+
 ## 1.4.0
 - Colors for login helpers (`hash_password`, `check_password`, `sign_token`, `need_login`) and the `hidden` field option
 - Snippet for a login endpoint

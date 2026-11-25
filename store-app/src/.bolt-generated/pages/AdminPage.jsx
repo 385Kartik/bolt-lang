@@ -234,10 +234,11 @@ export default function AdminPage() {
                 return <><div className="flex flex-row flex-wrap gap-4">
               {(() => {
                 try {
-                  return <><button className="bg-primary text-white rounded-xl px-4 py-2" onClick={async () => { return boltFetch("https://fakestoreapi.com/products/1", { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title: "Updated Name", price: 99.99 }) })
+                  return <><button className="bg-primary text-white rounded-xl px-4 py-2" onClick={async () => { await boltFetch("https://fakestoreapi.com/products/1", { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title: "Updated Name", price: 99.99 }) })
                 .then(res => res.text().then(t => (t ? JSON.parse(t) : null))).then(async res => {
               addToast("Updated successfully!", "success");
-                }); }}>Update Product #1</button></>;
+                })
+                .catch(err => { console.error(err); }); }}>Update Product #1</button></>;
                 } catch (e) {
                   if (!e.__boltLine) { e.__boltLine = 55; }
                   throw e;
@@ -247,10 +248,11 @@ export default function AdminPage() {
                 try {
                   return <><button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-colors" onClick={async () => {
                 if (!(await showModal("Are you sure you want to delete this product?"))) return;
-                return boltFetch("https://fakestoreapi.com/products/1", { method: 'DELETE' })
+                await boltFetch("https://fakestoreapi.com/products/1", { method: 'DELETE' })
                   .then(res => res.text().then(t => (t ? JSON.parse(t) : null))).then(async res => {
                 addToast("Deleted successfully!", "success");
-                  });
+                  })
+                  .catch(err => { console.error(err); });
               }}>Delete Product #1</button></>;
                 } catch (e) {
                   if (!e.__boltLine) { e.__boltLine = 60; }
@@ -295,5 +297,5 @@ export default function AdminPage() {
   );
 }
 window.__BOLT_MAPS = window.__BOLT_MAPS || {};
-window.__BOLT_MAPS['AdminPage.jsx'] = {"13":11,"22":12,"35":2,"43":14,"46":16,"48":17,"51":18,"59":19,"67":21,"89":25,"91":26,"99":28,"107":30,"115":33,"118":34,"126":36,"129":37,"132":38,"140":39,"157":40,"160":41,"168":42,"192":44,"212":50,"215":51,"223":52,"231":54,"234":55,"245":60,"283":4};
+window.__BOLT_MAPS['AdminPage.jsx'] = {"13":11,"22":12,"35":2,"43":14,"46":16,"48":17,"51":18,"59":19,"67":21,"89":25,"91":26,"99":28,"107":30,"115":33,"118":34,"126":36,"129":37,"132":38,"140":39,"157":40,"160":41,"168":42,"192":44,"212":50,"215":51,"223":52,"231":54,"234":55,"246":60,"285":4};
 //# sourceMappingURL=AdminPage.jsx.map

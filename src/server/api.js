@@ -14,6 +14,8 @@
 //       give data.products filtered by p: contains p.title, request.query.q
 //
 // Login helpers for endpoints: hash_password, check_password, sign_token, request.user, need_login.
+// Calling other APIs from an endpoint: http_get, http_post, http_put, http_patch, http_delete.
+// Answers with a status or headers: respond 201, body.  Secrets: env.NAME (from the .env file).
 //
 // Data is saved as plain JSON files (one per resource) so there is nothing
 // to install and you can read or edit the data by hand. For a single-file
@@ -67,6 +69,44 @@ export class HttpError extends Error {
   }
 }
 
+// `respond 201, body` answers with your own status (and optional headers) and ends the endpoint.
+export class Respond {
+  constructor(status, body, headers) {
+    this.status = Number(status) || 200;
+    this.body = body;
+    this.headers = headers || {};
+  }
+}
+
+// Calling another API from an endpoint. Answers are parsed as JSON when they are JSON, text otherwise.
+// A failed call (not 2xx) stops the endpoint with 502 and the other side's message.
+async function callApi(method, url, body, headers) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 15000);
+  try {
+    const hasBody = body !== undefined && body !== null && !['GET', 'DELETE'].includes(method);
+    const res = await fetch(String(url), {
+      method,
+      headers: { ...(hasBody ? { 'Content-Type': 'application/json' } : {}), ...(headers || {}) },
+      body: hasBody ? JSON.stringify(body) : undefined,
+      signal: controller.signal
+    });
+    const text = await res.text();
+    let data = text;
+    try { data = text ? JSON.parse(text) : null; } catch { /* not JSON: keep the text */ }
+    if (!res.ok) {
+      const message = data && typeof data === 'object' ? (data.error || data.message) : null;
+      throw new HttpError(502, `${method} ${url} answered ${res.status}${message ? `: ${message}` : ''}`);
+    }
+    return data;
+  } catch (e) {
+    if (e instanceof HttpError) throw e;
+    throw new HttpError(502, `${method} ${url} failed: ${e.name === 'AbortError' ? 'timed out after 15 seconds' : e.message}`);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 // Helpers every endpoint can call (Bolt's natural call style: `contains title, word`).
 const helpers = {
   reply: (status, message) => { throw new HttpError(Number(status) || 400, String(message ?? 'Error')); },
@@ -74,6 +114,14 @@ const helpers = {
   lower: text => String(text ?? '').toLowerCase(),
   upper: text => String(text ?? '').toUpperCase(),
   now: () => new Date().toISOString(),
+  // like `reply`, `respond` ends the endpoint right there with the status you choose
+  respond: (status, body, headers) => { throw new Respond(status, body, headers); },
+  http_get: (url, headers) => callApi('GET', url, undefined, headers),
+  http_post: (url, body, headers) => callApi('POST', url, body, headers),
+  http_put: (url, body, headers) => callApi('PUT', url, body, headers),
+  http_patch: (url, body, headers) => callApi('PATCH', url, body, headers),
+  http_delete: (url, headers) => callApi('DELETE', url, undefined, headers),
+  env: process.env,
   // login helpers; the real versions are built per server (they need its secret)
   hash_password: () => { throw new HttpError(500, 'Login helpers are not ready'); },
   check_password: () => { throw new HttpError(500, 'Login helpers are not ready'); },
@@ -145,11 +193,58 @@ export function compileEndpoint(endpoint, extra = {}) {
     err.line = e.line || endpoint.line;
     throw err;
   }
+  // Calls to other APIs wait for the answer; env.NAME reads the environment.
+  js = js
+    .replace(/(^|\n)function handler/, '$1async function handler')
+    .replace(/\b(http_(?:get|post|put|patch|delete))\(/g, 'await $1(')
+    .replace(/import\.meta\.env\.VITE_([\w]+)/g, 'env.$1');
   const all = { ...helpers, ...extra };
   const names = Object.keys(all);
   // eslint-disable-next-line no-new-func
   const build = new Function(...names, `${js}\nreturn handler;`);
   return build(...names.map(n => all[n]));
+}
+
+// ── Serving the built website (used by `bolt start`) ───────────────────
+
+const MIME = {
+  '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.map': 'application/json',
+  '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif',
+  '.webp': 'image/webp', '.ico': 'image/x-icon', '.mp4': 'video/mp4', '.webm': 'video/webm',
+  '.woff': 'font/woff', '.woff2': 'font/woff2', '.ttf': 'font/ttf', '.txt': 'text/plain; charset=utf-8'
+};
+
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'Referrer-Policy': 'same-origin'
+};
+
+// Sends a file from the build folder. Unknown paths without a file extension get index.html
+// (so page addresses like /products/3 work after a refresh). Returns false if nothing was sent.
+function serveStatic(staticDir, pathname, res) {
+  const root = path.resolve(staticDir);
+  let target = path.resolve(root, '.' + path.posix.normalize('/' + pathname));
+  if (target !== root && !target.startsWith(root + path.sep)) return false;      // never leave the build folder
+
+  let isIndex = false;
+  if (!fs.existsSync(target) || fs.statSync(target).isDirectory()) {
+    if (path.extname(pathname)) return false;                                    // a missing image or script is a real 404
+    target = path.join(root, 'index.html');
+    isIndex = true;
+    if (!fs.existsSync(target)) return false;
+  }
+  const ext = path.extname(target).toLowerCase();
+  const headers = {
+    'Content-Type': MIME[ext] || 'application/octet-stream',
+    ...SECURITY_HEADERS,
+    // built files have a hash in their name, so they can be kept for a year; the page itself never
+    'Cache-Control': isIndex || ext === '.html' ? 'no-cache' : (pathname.startsWith('/assets/') ? 'public, max-age=31536000, immutable' : 'public, max-age=3600')
+  };
+  res.writeHead(200, headers);
+  fs.createReadStream(target).pipe(res);
+  return true;
 }
 
 // ── Storage: where the records live ───────────────────────────────────
@@ -214,7 +309,9 @@ function sqliteStorage(dataDir) {
   };
 }
 
-export function createApiServer({ resources = [], endpoints = [], dataDir, storage = 'json' }) {
+// cors: '*' (default, for `bolt dev` where the page and API are on different ports), a
+// specific origin like 'https://myapp.com', or false for none (same-origin, used by `bolt start`).
+export function createApiServer({ resources = [], endpoints = [], dataDir, storage = 'json', cors = '*', staticDir = null }) {
   const store = storage === 'sqlite' ? sqliteStorage(dataDir) : jsonStorage(dataDir);
   let currentResources = resources;
   let routes = [];
@@ -266,17 +363,19 @@ export function createApiServer({ resources = [], endpoints = [], dataDir, stora
     store.write(r.name, cache.get(r.name));
   }
 
-  function send(res, status, data) {
+  function send(res, status, data, extraHeaders = {}) {
     const body = data === undefined ? '' : JSON.stringify(data);
-    res.writeHead(status, {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type'
-    });
+    const headers = { 'Content-Type': 'application/json', ...(staticDir ? SECURITY_HEADERS : {}), ...extraHeaders };
+    if (cors) {
+      headers['Access-Control-Allow-Origin'] = cors;
+      headers['Access-Control-Allow-Methods'] = 'GET,POST,PUT,PATCH,DELETE,OPTIONS';
+      headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization';
+    }
+    res.writeHead(status, headers);
     res.end(body);
   }
 
+  // JSON by default; forms (a=1&b=2) become an object; any other text stays a string.
   function readBody(req) {
     return new Promise((resolve, reject) => {
       let size = 0;
@@ -288,7 +387,10 @@ export function createApiServer({ resources = [], endpoints = [], dataDir, stora
       });
       req.on('end', () => {
         const text = Buffer.concat(chunks).toString('utf-8');
+        const type = String(req.headers['content-type'] || '').toLowerCase();
         if (!text) return resolve({});
+        if (type.includes('application/x-www-form-urlencoded')) return resolve(Object.fromEntries(new URLSearchParams(text)));
+        if (type && !type.includes('json')) return resolve(text);
         try { resolve(JSON.parse(text)); } catch { reject(new Error('Body must be valid JSON')); }
       });
       req.on('error', reject);
@@ -306,6 +408,7 @@ export function createApiServer({ resources = [], endpoints = [], dataDir, stora
       path: url.pathname,
       params,
       query: Object.fromEntries(url.searchParams),
+      headers: req.headers,
       body,
       user: verify((req.headers.authorization || '').replace(/^Bearer\s+/i, ''))   // null when not logged in
     };
@@ -341,6 +444,7 @@ export function createApiServer({ resources = [], endpoints = [], dataDir, stora
           const result = await runEndpoint(route, match, url, req);
           return result === undefined ? send(res, 204) : send(res, 200, result);
         } catch (e) {
+          if (e instanceof Respond) return send(res, e.status, e.body, e.headers);
           if (e instanceof HttpError) return send(res, e.status, { error: e.message });
           return send(res, 500, { error: `Endpoint ${route.method} ${route.path} failed: ${e.message}` });
         }
@@ -348,7 +452,11 @@ export function createApiServer({ resources = [], endpoints = [], dataDir, stora
 
       // 2. resources
       const resource = currentResources.find(r => pathname === r.url || pathname.startsWith(r.url + '/'));
-      if (!resource) return send(res, 404, { error: 'Not found' });
+      if (!resource) {
+        // not an API address: serve the website if there is one
+        if (staticDir && ['GET', 'HEAD'].includes(req.method) && !pathname.startsWith('/api/') && serveStatic(staticDir, pathname, res)) return;
+        return send(res, 404, { error: 'Not found' });
+      }
 
       const rest = pathname.slice(resource.url.length).replace(/^\//, '');
       const rows = load(resource);
@@ -399,10 +507,12 @@ export function createApiServer({ resources = [], endpoints = [], dataDir, stora
     setEndpoints,
     storage: store.kind,
     setApi({ resources: r = currentResources, endpoints: e = [] }) { currentResources = r; setEndpoints(e); },
-    listen(port) {
+    listen(port, host) {
       return new Promise((resolve, reject) => {
         server.once('error', reject);
-        server.listen(port, () => resolve(server.address().port));
+        const onListening = () => resolve(server.address().port);
+        if (host) server.listen(port, host, onListening);
+        else server.listen(port, onListening);
       });
     },
     close() { return new Promise(resolve => server.close(resolve)); }

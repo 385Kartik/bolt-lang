@@ -663,7 +663,7 @@ export function generate(ast, existingRegistry = null, globalStoresList = [], de
       return '{}';
     }
     const props = node.properties.map(
-      prop => `${prop.key}: ${gen(prop.value)}`
+      prop => `${prop.quoted ? JSON.stringify(prop.key) : prop.key}: ${gen(prop.value)}`
     ).join(', ');
     return `{ ${props} }`;
   }
@@ -1448,7 +1448,8 @@ ${indent()}})()}`;
     output += `${indent()}const [${node.variable}Error, set${capitalize(node.variable)}Error] = useState(null);\n`;
     output += `${indent()}useEffect(() => {\n`;
     indentLevel++;
-    output += `${indent()}boltFetch(${urlCode})\n`;
+    const fetchHeaders = node.headers ? `, { headers: ${gen(node.headers)} }` : '';
+    output += `${indent()}boltFetch(${urlCode}${fetchHeaders})\n`;
     output += `${indent()}  .then(res => res.json())\n`;
     output += `${indent()}  .then(data => { ${setterName}(data); set${capitalize(node.variable)}Loading(false); })\n`;
     output += `${indent()}  .catch(err => { set${capitalize(node.variable)}Error(err.message); set${capitalize(node.variable)}Loading(false); });\n`;
@@ -1470,7 +1471,7 @@ ${indent()}})()}`;
   function genSubmitStatement(node) {
     const urlCode = gen(node.url);
     const bodyCode = node.payload ? `, body: JSON.stringify(${gen(node.payload)})` : '';
-    let output = `${indent()}return boltFetch(${urlCode}, { method: 'POST', headers: { 'Content-Type': 'application/json' }${bodyCode} })`;
+    let output = `${indent()}await boltFetch(${urlCode}, { method: 'POST', headers: { 'Content-Type': 'application/json'${node.headers ? `, ...(${gen(node.headers)})` : ''} }${bodyCode} })`;
     if (node.successBody) {
       const resVar = node.successVar || 'res';
       output += `\n${indent()}  .then(res => res.text().then(t => (t ? JSON.parse(t) : null))).then(async ${resVar} => {\n${node.successBody.map(s => gen(s)).join('\n')}\n${indent()}  })`;
@@ -1478,6 +1479,9 @@ ${indent()}})()}`;
     if (node.errorBody) {
       const errVar = node.errorVar || 'err';
       output += `\n${indent()}  .catch(async ${errVar} => {\n${node.errorBody.map(s => gen(s)).join('\n')}\n${indent()}  })`;
+    }
+    else {
+      output += `\n${indent()}  .catch(err => { console.error(err); })`;
     }
     return output + ';';
   }
@@ -1485,7 +1489,7 @@ ${indent()}})()}`;
   function genUpdateDataStatement(node) {
     const urlCode = gen(node.url);
     const bodyCode = node.payload ? `, body: JSON.stringify(${gen(node.payload)})` : '';
-    let output = `${indent()}return boltFetch(${urlCode}, { method: 'PUT', headers: { 'Content-Type': 'application/json' }${bodyCode} })`;
+    let output = `${indent()}await boltFetch(${urlCode}, { method: '${node.method || 'PUT'}', headers: { 'Content-Type': 'application/json'${node.headers ? `, ...(${gen(node.headers)})` : ''} }${bodyCode} })`;
     if (node.successBody) {
       const resVar = node.successVar || 'res';
       output += `\n${indent()}  .then(res => res.text().then(t => (t ? JSON.parse(t) : null))).then(async ${resVar} => {\n${node.successBody.map(s => gen(s)).join('\n')}\n${indent()}  })`;
@@ -1493,13 +1497,16 @@ ${indent()}})()}`;
     if (node.errorBody) {
       const errVar = node.errorVar || 'err';
       output += `\n${indent()}  .catch(async ${errVar} => {\n${node.errorBody.map(s => gen(s)).join('\n')}\n${indent()}  })`;
+    }
+    else {
+      output += `\n${indent()}  .catch(err => { console.error(err); })`;
     }
     return output + ';';
   }
 
   function genDeleteDataStatement(node) {
     const urlCode = gen(node.url);
-    let output = `${indent()}return boltFetch(${urlCode}, { method: 'DELETE' })`;
+    let output = `${indent()}await boltFetch(${urlCode}, { method: 'DELETE'${node.headers ? `, headers: ${gen(node.headers)}` : ''} })`;
     if (node.successBody) {
       const resVar = node.successVar || 'res';
       output += `\n${indent()}  .then(res => res.text().then(t => (t ? JSON.parse(t) : null))).then(async ${resVar} => {\n${node.successBody.map(s => gen(s)).join('\n')}\n${indent()}  })`;
@@ -1507,6 +1514,9 @@ ${indent()}})()}`;
     if (node.errorBody) {
       const errVar = node.errorVar || 'err';
       output += `\n${indent()}  .catch(async ${errVar} => {\n${node.errorBody.map(s => gen(s)).join('\n')}\n${indent()}  })`;
+    }
+    else {
+      output += `\n${indent()}  .catch(err => { console.error(err); })`;
     }
     return output + ';';
   }
@@ -1581,11 +1591,12 @@ ${indent()}})()}`;
   }
 
   function genWhenChanges(node) {
-    let output = `${indent()}useEffect(() => {\n`;
+    // async, so requests inside can be awaited one after another
+    let output = `${indent()}useEffect(() => {\n${indent()}  (async () => {\n`;
     indentLevel++;
     output += genBody(node.body);
     indentLevel--;
-    output += `${indent()}}, [${node.variable}]);`;
+    output += `${indent()}  })();\n${indent()}}, [${node.variable}]);`;
     return output;
   }
 

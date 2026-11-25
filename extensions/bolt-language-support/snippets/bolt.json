@@ -267,5 +267,33 @@
       "\tgive {token: token, user: payload}"
     ],
     "description": "Login: checks the password and gives back a token"
+  },
+  "Fetch with headers": {
+    "prefix": "fetchheaders",
+    "body": [
+      "fetch \"${1:https://api.example.com/items}\" into ${2:items} with headers {Authorization: \"Bearer ${3:token}\"}",
+      "show all ${2:items}"
+    ],
+    "description": "Load data from any API with headers"
+  },
+  "Patch": {
+    "prefix": "patch",
+    "body": "patch \"/api/${1:items}/${2:1}\" with {${3:name}: ${4:value}}",
+    "description": "A PATCH request"
+  },
+  "Call another API": {
+    "prefix": "httpget",
+    "body": [
+      "endpoint get \"/api/${1:proxy}\":",
+      "\theaders = {Authorization: \"Bearer \" + env.${2:API_KEY}}",
+      "\tanswer = http_get \"${3:https://api.example.com/data}\", headers",
+      "\tgive answer"
+    ],
+    "description": "An endpoint that calls another API (the key stays secret)"
+  },
+  "Respond": {
+    "prefix": "respond",
+    "body": "respond ${1:201}, ${2:{ok: true}}",
+    "description": "Answer with your own status"
   }
 }

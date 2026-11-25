@@ -180,6 +180,14 @@ export function parse(tokens) {
       return AST.EndpointDef(method, routePath, parseBlock(), token.line);
     }
 
+    // PATCH request:  patch "/api/items/1" with data
+    if (token.type === TokenType.IDENTIFIER && token.value === 'patch' && tokens[pos + 1] &&
+        tokens[pos + 1].line === token.line && [TokenType.STRING, TokenType.IDENTIFIER].includes(tokens[pos + 1].type)) {
+      const patchNode = parseUpdateDataStatement();
+      patchNode.method = 'PATCH';
+      return patchNode;
+    }
+
     // Resource block:  resource products at "/api/products":
     if (token.type === TokenType.IDENTIFIER && token.value === 'resource' &&
         tokens[pos + 1] && tokens[pos + 1].line === token.line &&
@@ -1034,19 +1042,47 @@ export function parse(tokens) {
     return node;
   }
 
+  // `with headers h` / `, headers h` after the address (and the payload, when there is one)
+  function parsePayloadAndHeaders() {
+    let payload = null;
+    let headers = null;
+    if (check(TokenType.WITH)) {
+      advance();
+      if (String(peek().value) === 'headers' && tokens[pos + 1] && tokens[pos + 1].line === peek().line) {
+        advance();
+        headers = parseExpression();
+      } else {
+        payload = parseExpression();
+      }
+    }
+    if (!headers && check(TokenType.COMMA) && tokens[pos + 1] && String(tokens[pos + 1].value) === 'headers') {
+      advance(); // ,
+      advance(); // headers
+      headers = parseExpression();
+    }
+    return { payload, headers };
+  }
+
   function parseFetchStatement() {
     const token = advance(); // consume FETCH
     const line = token.line;
     const urlExpr = parseExpression();
     expect(TokenType.INTO, "'into' after fetch URL");
     const varToken = expectIdentifierLike("a variable name after 'into'");
+    let fetchHeaders = null;
+    if (check(TokenType.WITH) && tokens[pos + 1] && String(tokens[pos + 1].value) === 'headers') {
+      advance(); advance();
+      fetchHeaders = parseExpression();
+    }
     let handlers = { loading: null, error: null, empty: null, success: null };
     if (match(TokenType.COLON)) {
       handlers = parseAsyncHandlers();
     } else {
       match(TokenType.NEWLINE);
     }
-    return AST.FetchStatement(urlExpr, varToken.value, handlers.loading, handlers.errorVar, handlers.error, handlers.empty, handlers.successVar, handlers.success, line);
+    const fetchNode = AST.FetchStatement(urlExpr, varToken.value, handlers.loading, handlers.errorVar, handlers.error, handlers.empty, handlers.successVar, handlers.success, line);
+    fetchNode.headers = fetchHeaders;
+    return fetchNode;
   }
 
   function parseSubmitStatement() {
@@ -1085,49 +1121,48 @@ export function parse(tokens) {
       return stmt;
     }
 
-    let payload = null;
-    if (check(TokenType.WITH)) {
-      advance();
-      payload = parseExpression();
-    }
+    const { payload, headers } = parsePayloadAndHeaders();
     let handlers = { successVar: null, success: null, errorVar: null, error: null };
     if (match(TokenType.COLON)) {
       handlers = parseAsyncHandlers();
     } else {
       match(TokenType.NEWLINE);
     }
-    return AST.SubmitStatement(firstExpr, payload, handlers.successVar, handlers.success, handlers.errorVar, handlers.error, line);
+    const submitNode = AST.SubmitStatement(firstExpr, payload, handlers.successVar, handlers.success, handlers.errorVar, handlers.error, line);
+    submitNode.headers = headers;
+    return submitNode;
   }
 
   function parseUpdateDataStatement() {
     const token = advance(); // consume UPDATE_DATA
     const line = token.line;
     const urlExpr = parseExpression();
-    let payload = null;
-    if (check(TokenType.WITH)) {
-      advance();
-      payload = parseExpression();
-    }
+    const { payload, headers } = parsePayloadAndHeaders();
     let handlers = { successVar: null, success: null, errorVar: null, error: null };
     if (match(TokenType.COLON)) {
       handlers = parseAsyncHandlers();
     } else {
       match(TokenType.NEWLINE);
     }
-    return AST.UpdateDataStatement(urlExpr, payload, handlers.successVar, handlers.success, handlers.errorVar, handlers.error, line);
+    const updateNode = AST.UpdateDataStatement(urlExpr, payload, handlers.successVar, handlers.success, handlers.errorVar, handlers.error, line);
+    updateNode.headers = headers;
+    return updateNode;
   }
 
   function parseDeleteDataStatement() {
     const token = advance(); // consume DELETE_DATA
     const line = token.line;
     const urlExpr = parseExpression();
+    const { headers } = parsePayloadAndHeaders();
     let handlers = { successVar: null, success: null, errorVar: null, error: null };
     if (match(TokenType.COLON)) {
       handlers = parseAsyncHandlers();
     } else {
       match(TokenType.NEWLINE);
     }
-    return AST.DeleteDataStatement(urlExpr, handlers.successVar, handlers.success, handlers.errorVar, handlers.error, line);
+    const deleteNode = AST.DeleteDataStatement(urlExpr, handlers.successVar, handlers.success, handlers.errorVar, handlers.error, line);
+    deleteNode.headers = headers;
+    return deleteNode;
   }
 
   function parseUseStatement() {
@@ -1632,6 +1667,14 @@ export function parse(tokens) {
   // ── Object Literal ────────────────────────────────────────────────
   // {name: "Kartik", age: 22}
 
+  // A property name: a word (name) or a quoted text ("Content-Type") for names with dashes or spaces
+  function parseObjectKey() {
+    if (check(TokenType.STRING)) {
+      return { key: advance().value, quoted: true };
+    }
+    return { key: expectIdentifierLike('a property name').value, quoted: false };
+  }
+
   function parseObjectLiteral() {
     const braceToken = advance(); // consume LBRACE
     const line = braceToken.line;
@@ -1640,20 +1683,20 @@ export function parse(tokens) {
     skipWhitespaceTokens();
     if (!check(TokenType.RBRACE)) {
       // Parse first property
-      const key = expectIdentifierLike('a property name').value;
+      const first = parseObjectKey();
       expect(TokenType.COLON, "':' after property name");
       skipWhitespaceTokens();
       const value = parseExpression();
-      properties.push({ key, value });
+      properties.push({ key: first.key, quoted: first.quoted, value });
       skipWhitespaceTokens();
 
       while (match(TokenType.COMMA)) {
         skipWhitespaceTokens();
-        const nextKey = expectIdentifierLike('a property name').value;
+        const next = parseObjectKey();
         expect(TokenType.COLON, "':' after property name");
         skipWhitespaceTokens();
         const nextValue = parseExpression();
-        properties.push({ key: nextKey, value: nextValue });
+        properties.push({ key: next.key, quoted: next.quoted, value: nextValue });
         skipWhitespaceTokens();
       }
     }

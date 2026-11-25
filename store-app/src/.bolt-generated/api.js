@@ -11,5 +11,17 @@ export async function boltFetch(url, options = {}) {
     headers.Authorization = `Bearer ${user.token || user.jwt || user.access_token}`;
   }
 
-  return fetch(url, { ...options, headers });
+  const res = await fetch(url, { ...options, headers });
+  if (!res.ok) {
+    // a failed request (404, 500 ...) is an error, not data: the page's error block runs
+    let message = 'Request failed (' + res.status + ')';
+    try {
+      const body = await res.clone().json();
+      message = body.error || body.message || message;
+    } catch { /* the answer was not JSON */ }
+    const error = new Error(message);
+    error.status = res.status;
+    throw error;
+  }
+  return res;
 }

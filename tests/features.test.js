@@ -470,3 +470,45 @@ test('resource: `hidden` fields parse, and the generated page does not list them
   assert.match(page, /setPassword/);                                   // can still be typed into the add form
   assert.throws(() => build(makeProject({ 'src/u.bolt': 'resource u at "/api/u":\n    x text secret\n' })), /Unknown field option 'secret'/);
 });
+
+test('http from pages: headers, PATCH, awaited requests in order, and failed requests reach the error block', () => {
+  const source = [
+    'page home:',
+    '    fetch "https://api.example.com/items" into items with headers {Authorization: "Bearer abc"}',
+    '    button "Go":',
+    '        submit "/api/a" with {a: 1}, headers {"X-Key": "1"}:',
+    '            success r:',
+    '                print r',
+    '        patch "/api/a/1" with {a: 2}',
+    '        delete "/api/a/1" with headers {"X-Key": "1"}',
+    '        update "/api/a/2" with {a: 3}',
+    ''
+  ].join('\n');
+  const out = build(makeProject({ 'src/pages/home.bolt': source }));
+  const page = read(out, 'pages/HomePage.jsx');
+
+  assert.match(page, /boltFetch\("https:\/\/api\.example\.com\/items", \{ headers: \{ Authorization: "Bearer abc" \} \}\)/);
+  assert.match(page, /method: 'POST', headers: \{ 'Content-Type': 'application\/json', \.\.\.\(\{ "X-Key": "1" \}\) \}/);
+  assert.match(page, /method: 'PATCH'/);
+  assert.match(page, /method: 'DELETE', headers: \{ "X-Key": "1" \}/);
+  assert.match(page, /method: 'PUT'/);
+  assert.equal((page.match(/await boltFetch/g) || []).length, 4);                    // all four run, one after another
+  assert.doesNotMatch(page, /return boltFetch/);
+  assert.match(page, /\.catch\(err => \{ console\.error\(err\); \}\)/);              // no unhandled failures
+
+  const api = read(out, 'api.js');                                                    // 404 / 500 are errors, not data
+  assert.match(api, /if \(!res\.ok\)/);
+  assert.match(api, /body\.error \|\| body\.message/);
+});
+
+test('language: object keys can be quoted text (for header names)', () => {
+  const js = compileJs('function h:\n    give {"Content-Type": "json", plain: 1}\n');
+  assert.match(js, /\{ "Content-Type": "json", plain: 1 \}/);
+});
+
+test('when changes: requests inside are awaited in order', () => {
+  const source = ['page home:', '    store q = ""', '    when q changes:', '        submit "/api/a" with {q: q}', '        delete "/api/b"', ''].join('\n');
+  const page = read(build(makeProject({ 'src/pages/home.bolt': source })), 'pages/HomePage.jsx');
+  assert.match(page, /useEffect\(\(\) => \{\s*\(async \(\) => \{/);
+  assert.equal((page.match(/await boltFetch/g) || []).length, 2);
+});

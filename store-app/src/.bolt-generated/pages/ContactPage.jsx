@@ -84,7 +84,8 @@ export default function ContactPage() {
                     <input placeholder={"Your Message"} value={message} onChange={(e) => setMessage(e.target.value)} className="border-gray-300 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 p-3 border rounded-lg w-full min-h-[120px]" />
                   </div>
                   <button className="bg-primary text-white rounded-xl px-4 w-full py-3 mt-4" onClick={async () => {
-                    return boltFetch("https://jsonplaceholder.typicode.com/posts", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name, email: email, message: message }) });
+                    await boltFetch("https://jsonplaceholder.typicode.com/posts", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name, email: email, message: message }) })
+                      .catch(err => { console.error(err); });
                     setName("");
                     setEmail("");
                     setMessage("");
@@ -252,5 +253,5 @@ export default function ContactPage() {
   );
 }
 window.__BOLT_MAPS = window.__BOLT_MAPS || {};
-window.__BOLT_MAPS['ContactPage.jsx'] = {"7":13,"8":14,"9":15,"14":2,"22":3,"25":4,"28":5,"36":6,"51":8,"54":9,"57":10,"60":11,"68":12,"112":22,"115":23,"118":24,"126":25,"141":27,"144":28,"152":29,"167":31,"170":32,"178":33,"193":35,"196":36,"204":37,"240":4};
+window.__BOLT_MAPS['ContactPage.jsx'] = {"7":13,"8":14,"9":15,"14":2,"22":3,"25":4,"28":5,"36":6,"51":8,"54":9,"57":10,"60":11,"68":12,"113":22,"116":23,"119":24,"127":25,"142":27,"145":28,"153":29,"168":31,"171":32,"179":33,"194":35,"197":36,"205":37,"241":4};
 //# sourceMappingURL=ContactPage.jsx.map

@@ -13,7 +13,8 @@ Based on the core necessity of building real-world applications (like e-commerce
 - `use <name>` imports files by name from anywhere in the project
 
 ## [ ] Next: Simpler, Smaller Bolt (fewer tokens for people and AI)
-- Hosting a built Bolt app (deploy guide) and a server-side database beyond one SQLite file
+- A deploy guide for popular hosts (Docker, Railway, Render, a VPS) and a server-side database beyond one SQLite file
+- Optional rate limiting and built-in compression in `bolt start`
 
 ## [x] Phase 9: Dynamic Routing ✅
 - URL parameters in page definitions: `page product(id):`

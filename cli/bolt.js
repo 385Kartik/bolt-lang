@@ -31,6 +31,7 @@ function showHelp() {
     bolt stats [dir] [--json]          Compare Bolt size with the React it generates
     bolt fmt [dir|file] [--check]      Tidy .bolt files (indentation, spacing)
     bolt serve [dir] [--db sqlite]     Run the built-in API for your 'resource' and 'endpoint' blocks
+    bolt start [dir] [--port N]        Run the built website and its API together (production)
     bolt spec                          Print the short language cheat-sheet (for AI)
     bolt help                          Show this message
 `);
@@ -67,7 +68,7 @@ if (!command || command === 'help' || command === '--help') {
 }
 
 // ── check / stats / spec: work on a whole project (default: current folder) ──
-if (command === 'check' || command === 'stats' || command === 'spec' || command === 'serve') {
+if (command === 'check' || command === 'stats' || command === 'spec' || command === 'serve' || command === 'start') {
   const wantJson = args.includes('--json');
   const target = args.slice(1).find(a => !a.startsWith('--')) || '.';
 
@@ -78,10 +79,43 @@ if (command === 'check' || command === 'stats' || command === 'spec' || command 
     process.exit(0);
   }
 
+  // start: run the built website and its API together (for a real server)
+  if (command === 'start') {
+    const { findApi } = await import('../src/check.js');
+    const { createApiServer } = await import('../src/server/api.js');
+    const { loadEnvFile } = await import('../src/server/env.js');
+    const { existsSync } = await import('fs');
+    const root = resolve(target);
+    const dist = join(root, 'dist');
+    if (!existsSync(join(dist, 'index.html'))) {
+      console.error(`\n  ⚡ No built website found in ${dist}\n     Build it first:  npm run build\n`);
+      process.exit(1);
+    }
+    loadEnvFile(root);
+    const { resources, endpoints } = findApi(root);
+    const portFlag = args.indexOf('--port');
+    const port = Number(portFlag > -1 ? args[portFlag + 1] : process.env.PORT) || 8080;
+    const storage = (args.includes('--db') && args.includes('sqlite')) || process.env.BOLT_DB === 'sqlite' ? 'sqlite' : 'json';
+    // same origin: the website and the API share one address, so CORS is off unless you ask for an origin
+    const cors = process.env.BOLT_CORS_ORIGIN || false;
+    let server;
+    try {
+      server = createApiServer({ resources, endpoints, storage, cors, staticDir: dist, dataDir: join(root, '.bolt-data') });
+      await server.listen(port);
+    } catch (e) {
+      console.error(`\n  ⚡ Could not start on port ${port}: ${e.message}\n     Use another port:  bolt start --port 3000\n`);
+      process.exit(1);
+    }
+    console.log(`\n  ⚡ Bolt is running on http://localhost:${port}\n\n     Website   ${dist}\n     API       ${resources.length} resource(s), ${endpoints.length} endpoint(s)\n     Data      ${storage === 'sqlite' ? join(root, '.bolt-data', 'bolt.db') : join(root, '.bolt-data')}\n`);
+    await new Promise(() => {});
+  }
+
   if (command === 'serve') {
     const { findApi } = await import('../src/check.js');
     const { createApiServer } = await import('../src/server/api.js');
     const root = resolve(target);
+    const { loadEnvFile } = await import('../src/server/env.js');
+    const envNames = loadEnvFile(root);   // secrets from the .env file, read in endpoints as env.NAME
     const { resources, endpoints } = findApi(root);
     if (resources.length === 0 && endpoints.length === 0) {
       console.log(`
@@ -119,6 +153,7 @@ if (command === 'check' || command === 'stats' || command === 'spec' || command 
 `);
     for (const r of resources) console.log(`     ${r.url}   (${r.fields.map(f => f.name).join(', ')})`);
     for (const e of endpoints) console.log(`     ${e.method.toUpperCase().padEnd(6)} ${e.path}   (endpoint)`);
+    if (envNames.length) console.log(`\n     Loaded from .env: ${envNames.join(', ')}`);
     console.log(`
      Data is saved in ${storage === 'sqlite' ? join(root, '.bolt-data', 'bolt.db') + ' (SQLite)' : join(root, '.bolt-data')}
 `);
@@ -290,6 +325,7 @@ switch (command) {
       const startApi = async () => {
         const { findApi } = await import('../src/check.js');
         const { createApiServer } = await import('../src/server/api.js');
+        (await import('../src/server/env.js')).loadEnvFile(resolvedFile);
         const { resources, endpoints } = findApi(resolvedFile);
         if (resources.length === 0 && endpoints.length === 0) return;
         try {

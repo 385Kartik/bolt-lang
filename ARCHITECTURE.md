@@ -100,6 +100,8 @@ Every `.bolt` file in the project is merged automatically, so all pages, compone
 
 **Storage:** the server reads and writes through a small adapter (`jsonStorage` or `sqliteStorage`), with the whole resource kept in memory and written after each change. SQLite uses Node's built-in `node:sqlite` (no extra install), one table `records(resource, id, data)`.
 
+**Requests and production:** the generated `boltFetch` throws on non-2xx answers (with the server's message), so every request statement can rely on its `error` block. `submit`, `update`, `patch` and `delete` generate `await` chains, so several in a row run in order. On the server, `callApi` backs the `http_*` helpers (endpoint code gets `async` and `await` added by `compileEndpoint`), `Respond` and `HttpError` end an endpoint early, and `serveStatic` plus `SECURITY_HEADERS` are what `bolt start` adds around the same server (`staticDir` option).
+
 **Layout:** the builder finds the single `LayoutDef`, validates it has exactly one `slot`, and injects each page's body into a copy of the layout body before code generation (pages with `layout none` are skipped).
 
 **Scaffold:** `bolt init` (`scaffoldProject` in `builder.js`) writes `src/styles.bolt` (the `DEFAULT_STYLES_BOLT` vocabulary) and `src/pages/home.bolt`.

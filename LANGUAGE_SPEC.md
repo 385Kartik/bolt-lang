@@ -739,8 +739,8 @@ bolt serve
 For every `resource` it provides `GET`, `POST`, `PUT`, `PATCH` and `DELETE`, checks the fields
 (required, number, email) and answers `400` with the problems when something is wrong. Data is
 saved as plain JSON in `.bolt-data/<name>.json` (already in the `.gitignore` made by `bolt init`),
-so you can read or edit it by hand. It is meant for development and prototypes; point the
-`resource` at your own server when you go to production.
+so you can read or edit it by hand. When you outgrow the built-in API, point the `resource` at your own
+server (9.6): the page code does not change.
 
 **SQLite instead of JSON files.** By default records are JSON files (easy to read and edit). For a single
 database file run `bolt serve --db sqlite`, or set `BOLT_DB=sqlite` (this also works with `bolt dev`).
@@ -780,7 +780,7 @@ Then the page can call it like any API: `fetch "/api/search?q=pen" into results`
 - **Helpers:** `contains text, word` (ignores upper/lower case), `lower text`, `upper text`, `now`.
 - **Order:** your endpoints are checked before the `resource` routes, so `/api/products/stats` is not mistaken for a product with the id `stats`.
 - `bolt check` compiles every endpoint and reports mistakes (including two endpoints with the same method and address).
-- It is for development and prototypes. A crash inside an endpoint answers `500` with the reason.
+- A crash inside an endpoint answers `500` with the reason. See "Running for real" (9.9) for what the built-in server is and is not.
 
 Small helpers in the language that endpoints use (they work everywhere): `items[0]` (item at a position, no space before the bracket), `count of data.products` (works on `a.b` too), and `users filtered by user: user.age >= 18` (name each item yourself).
 
@@ -826,7 +826,93 @@ endpoint get "/api/me":
 - A resource field marked **`hidden`** is saved but never sent to the browser (the list, get and add answers leave it out). Inside an endpoint, `data.users` still has it.
 - The signing secret is created once in `.bolt-data/.secret`. Keep `.bolt-data` out of git (`bolt init` already does).
 - Inside `{ ... }` give plain values: write `token = sign_token payload` on its own line first, then use `token`.
-- This is meant for development and prototypes. Use a hardened auth service for a real production site.
+- Passwords are hashed with scrypt, tokens are signed (HMAC-SHA256) and expire, and a forged token is rejected. For sign-in with Google or similar, or for rules such as lockouts and email checks, call that service from an endpoint with `http_post` (9.7) or point your pages at it (9.6).
+
+### 9.6 Talking to any REST API from a page
+
+Pages work with any HTTP API, yours or someone else's, with every method:
+
+```bolt
+fetch "https://api.example.com/items" into items with headers {Authorization: "Bearer abc"}   // GET
+
+button "Save":
+    submit "/api/items" with {name: name}, headers {"X-Key": key}:                              // POST
+        success created:
+            add created to items
+        error err:
+            show toast err.message as danger
+    update "/api/items/1" with {name: name}                                                      // PUT
+    patch "/api/items/1" with {name: name}                                                       // PATCH
+    delete "/api/items/1" with headers {"X-Key": key}                                            // DELETE
+```
+
+- **Addresses** can be full (`https://...`) or start with `/` for your own server, and can be built: `"/api/items/" + id`. A base address from `.env` (`VITE_API_URL=https://api.example.com`) is `env.API_URL`.
+- **Headers** go after the address and payload: `with headers {...}` or `, headers {...}`. A header name with a dash is quoted: `{"X-Key": 1}`. If the user is logged in, the token is sent as `Authorization: Bearer ...` automatically (you can still set your own).
+- **Failures are errors.** A `404`, `500` or any non-2xx answer, or no connection at all, runs the page's `error:` block (and the default error message of `fetch`). The message is the server's `error` or `message` field when it sends one, otherwise `Request failed (404)`. A request with no `error:` block logs the problem in the browser console instead of breaking the page.
+- **Answers** are read as JSON; an empty answer (such as `204`) is fine.
+- **Several requests in one block** run one after another, so the second can rely on the first. This also holds inside `when x changes:`.
+
+### 9.7 Calling other APIs from an endpoint
+
+Endpoints can call any API too, which is how you keep keys secret, join services, or receive webhooks:
+
+```bolt
+endpoint get "/api/weather":
+    key = env.WEATHER_KEY
+    headers = {Authorization: "Bearer " + key}
+    forecast = http_get "https://api.weather.example/v1/today?city=" + request.query.city, headers
+    give {temp: forecast.temp, city: request.query.city}
+
+endpoint post "/api/notify":
+    result = http_post "https://hooks.example.com/notify", {text: request.body.text}
+    give result
+```
+
+| Helper | Does |
+|---|---|
+| `http_get url, headers` | GET |
+| `http_post url, body, headers` | POST with a JSON body |
+| `http_put url, body, headers` | PUT |
+| `http_patch url, body, headers` | PATCH |
+| `http_delete url, headers` | DELETE |
+
+`headers` is optional everywhere. The answer is JSON when it is JSON, and text otherwise. If the other side answers
+with an error (not 2xx), cannot be reached, or takes longer than 15 seconds, your endpoint stops with **502** and a
+message such as `GET https://... answered 404: not found`, so your page's `error:` block can show it.
+
+**Secrets** live in a `.env` file next to your `.bolt` files (`WEATHER_KEY=abc123`, one per line, `#` for notes).
+`bolt dev`, `bolt serve` and `bolt start` read it, and an endpoint reads a value as `env.WEATHER_KEY`. A value
+already set in the real environment wins. `bolt init` puts `.env` in `.gitignore`; never commit it.
+
+### 9.8 Answers, headers, forms and webhooks
+
+- **Answer with your own status and headers:** `respond 201, body` or `respond 201, body, headers`. It ends the endpoint, like `reply`.
+- **`request.headers`** has the request headers in lowercase: `request.headers["x-api-key"]`.
+- **`request.body`** follows the content type: JSON becomes an object, a form (`a=1&b=2`, `application/x-www-form-urlencoded`) becomes an object, and any other text (`text/plain`, a webhook that sends text) stays a string. Broken JSON answers `400`.
+- **Any method** works on an endpoint, so receiving webhooks (`endpoint post "/api/stripe-hook":`) is the same as any route.
+- **CORS** (which websites may call your API from a browser): by default `*`, which suits `bolt dev`. Set `BOLT_CORS_ORIGIN=https://myapp.com` to allow only that site.
+- Keep calls inside `{ ... }` plain: write `x = http_get url` on its own line and put `x` in the object.
+
+### 9.9 Running for real (`bolt start`)
+
+```bash
+npm run build        # builds the website into dist/
+bolt start           # serves the website and the API together on port 8080
+bolt start --port 3000 --db sqlite
+```
+
+`bolt start` is one process that serves the built website (page addresses like `/products/3` work after a refresh),
+your `resource` and `endpoint` routes, and your data, all on **one address**, so the page needs no CORS and no proxy.
+It sets security headers (`X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`), caches built files for a
+year and the page itself never, refuses paths that try to leave the `dist` folder, limits request size to 1 MB,
+and lets you choose the port with `--port` or `PORT`.
+
+**What this is good for:** apps, internal tools, MVPs, side projects and small to medium sites. Use SQLite
+(`--db sqlite`) so the data lives in one file you can back up.
+
+**What it does not do for you** (do these with the platform or a reverse proxy such as Caddy or nginx, which is also
+how almost every Node server is run): HTTPS certificates, compression, rate limiting, and running several copies
+of the server. If you outgrow it, keep your Bolt pages and point them at your own backend: pages talk to any REST API (9.6).
 
 ---
 
@@ -1040,6 +1126,11 @@ ResourceDef
 
 EndpointDef
     := endpoint (get|post|put|patch|delete) StringLiteral : Block
+
+DataRequest
+    := fetch Expression into IDENTIFIER (with headers Expression)? (: handlers)?
+    | (submit|update|patch) Expression (with Expression)? (, headers Expression)? (: handlers)?
+    | delete Expression (with headers Expression)? (: handlers)?
 
 IndexExpression
     := Expression '[' Expression ']'          // no space before '['

@@ -37,10 +37,10 @@ export function resourceSource(node) {
   add(4, `fetch ${q(url)} into items:`);
   add(8, 'success:');
   add(12, 'column styled as: flex flex-col gap-6 max-w-3xl mx-auto py-8:');
-  add(16, `show ${q(cap(name))} as title styled as: text-3xl font-extrabold text-gray-900`);
+  add(16, `show ${q(cap(name))} as title styled as: text-3xl font-extrabold`);
 
   // Add form
-  add(16, 'form styled as: flex flex-col gap-3 p-6 bg-white border border-gray-100 rounded-2xl shadow-sm:');
+  add(16, 'form styled as: flex flex-col gap-3 p-6 border border-gray-300 rounded-2xl:');
   for (const f of fields) {
     const flags = [];
     if (f.required) flags.push('required');
@@ -64,10 +64,10 @@ export function resourceSource(node) {
 
   // List with delete
   add(16, 'for every item in items:');
-  add(20, 'row styled as: items-center justify-between gap-4 py-3 border-b border-gray-100:');
+  add(20, 'row styled as: items-center justify-between gap-4 py-3 border-b border-gray-300:');
   add(24, 'row styled as: items-center gap-6:');
-  for (const f of fields.filter(x => !x.hidden)) add(28, `show item.${f.name} styled as: text-gray-800`);
-  add(24, 'button "Delete" styled as: text-sm text-red-600 hover:text-red-700 font-medium:');
+  for (const f of fields.filter(x => !x.hidden)) add(28, `show item.${f.name}`);
+  add(24, 'button "Delete" styled as: text-sm font-medium text-red-500 bg-transparent:');
   add(28, `delete ${q(url + '/')} + item.id:`);
   add(32, 'success:');
   add(36, 'remove item from items');

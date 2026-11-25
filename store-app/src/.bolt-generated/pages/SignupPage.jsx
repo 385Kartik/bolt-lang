@@ -59,7 +59,7 @@ export default function SignupPage() {
               if (_passwordErr) isValid = false;
               return isValid;
             };
-            return <form onSubmit={async (e) => { e.preventDefault(); if (validateForm()) { return boltFetch("http://localhost:3001/api/signup", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email, password: password }) })
+            return <form onSubmit={async (e) => { e.preventDefault(); if (validateForm()) { await boltFetch("http://localhost:3001/api/signup", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email, password: password }) })
             .then(res => res.text().then(t => (t ? JSON.parse(t) : null))).then(async res => {
           if (res.error) {
             addToast(res.error, "danger");
