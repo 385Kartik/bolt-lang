@@ -30,7 +30,7 @@ function showHelp() {
     bolt check [dir] [--json]          Check the whole project, list every problem
     bolt stats [dir] [--json]          Compare Bolt size with the React it generates
     bolt fmt [dir|file] [--check]      Tidy .bolt files (indentation, spacing)
-    bolt serve [dir]                   Run the built-in API for your 'resource' blocks
+    bolt serve [dir] [--db sqlite]     Run the built-in API for your 'resource' and 'endpoint' blocks
     bolt spec                          Print the short language cheat-sheet (for AI)
     bolt help                          Show this message
 `);
@@ -94,9 +94,10 @@ if (command === 'check' || command === 'stats' || command === 'spec' || command 
 `);
       process.exit(1);
     }
+    const storage = args.includes('sqlite') && args.includes('--db') ? 'sqlite' : (process.env.BOLT_DB === 'sqlite' ? 'sqlite' : 'json');
     let api;
     try {
-      api = createApiServer({ resources, endpoints, dataDir: join(root, '.bolt-data') });
+      api = createApiServer({ resources, endpoints, storage, dataDir: join(root, '.bolt-data') });
     } catch (e) {
       console.error(`
   ⚡ ${e.message}
@@ -119,7 +120,7 @@ if (command === 'check' || command === 'stats' || command === 'spec' || command 
     for (const r of resources) console.log(`     ${r.url}   (${r.fields.map(f => f.name).join(', ')})`);
     for (const e of endpoints) console.log(`     ${e.method.toUpperCase().padEnd(6)} ${e.path}   (endpoint)`);
     console.log(`
-     Data is saved in ${join(root, '.bolt-data')}
+     Data is saved in ${storage === 'sqlite' ? join(root, '.bolt-data', 'bolt.db') + ' (SQLite)' : join(root, '.bolt-data')}
 `);
     await new Promise(() => {}); // keep running
   }
@@ -293,7 +294,7 @@ switch (command) {
         if (resources.length === 0 && endpoints.length === 0) return;
         try {
           if (devApi) { devApi.setApi({ resources, endpoints }); return; }
-          devApi = createApiServer({ resources, endpoints, dataDir: join(resolvedFile, '.bolt-data') });
+          devApi = createApiServer({ resources, endpoints, storage: process.env.BOLT_DB === 'sqlite' ? 'sqlite' : 'json', dataDir: join(resolvedFile, '.bolt-data') });
         } catch (e) {
           console.log(`  ⚠️  ${e.message}`);
           return;

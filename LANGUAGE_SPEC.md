@@ -742,6 +742,12 @@ saved as plain JSON in `.bolt-data/<name>.json` (already in the `.gitignore` mad
 so you can read or edit it by hand. It is meant for development and prototypes; point the
 `resource` at your own server when you go to production.
 
+**SQLite instead of JSON files.** By default records are JSON files (easy to read and edit). For a single
+database file run `bolt serve --db sqlite`, or set `BOLT_DB=sqlite` (this also works with `bolt dev`).
+Records then live in `.bolt-data/bolt.db`. Records you saved earlier as JSON are moved over the first time.
+SQLite needs Node 22.5 or newer (Node marks it experimental, so it prints a warning). Everything else
+(resources, endpoints, login helpers) works the same on both.
+
 ### 9.4 Your own API routes (`endpoint`)
 
 `resource` covers list, add and delete. For everything else (search, totals, login, bulk actions)

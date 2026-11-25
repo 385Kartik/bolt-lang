@@ -233,3 +233,48 @@ test('auth: signup, login, tokens, hidden password field', async () => {
     await api.close();
   }
 });
+
+// ── SQLite storage ────────────────────────────────────────────────────
+
+import { createRequire } from 'node:module';
+
+const hasSqlite = (() => { try { createRequire(import.meta.url)('node:sqlite'); return true; } catch { return false; } })();
+
+test('sqlite: records survive a restart, ids keep counting, deletes stick', { skip: !hasSqlite && 'node:sqlite needs Node 22.5+' }, async () => {
+  const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bolt-db-'));
+  const resource = { name: 'notes', url: '/api/notes', fields: [{ name: 'text', type: 'text', required: true }] };
+  const json = { 'Content-Type': 'application/json' };
+  const add = (base, text) => fetch(`${base}/api/notes`, { method: 'POST', headers: json, body: JSON.stringify({ text }) }).then(r => r.json());
+
+  let api = createApiServer({ resources: [resource], dataDir, storage: 'sqlite' });
+  assert.equal(api.storage, 'sqlite');
+  let base = `http://localhost:${await api.listen(0)}`;
+  await add(base, 'a');
+  await add(base, 'b');
+  await fetch(`${base}/api/notes/1`, { method: 'DELETE' });
+  await api.close();
+  assert.ok(fs.existsSync(path.join(dataDir, 'bolt.db')));
+  assert.ok(!fs.existsSync(path.join(dataDir, 'notes.json')));        // not using JSON files
+
+  api = createApiServer({ resources: [resource], dataDir, storage: 'sqlite' });
+  base = `http://localhost:${await api.listen(0)}`;
+  try {
+    assert.deepEqual((await (await fetch(`${base}/api/notes`)).json()).map(r => r.text), ['b']);
+    assert.equal((await add(base, 'c')).id, 3);                       // ids never reused
+  } finally {
+    await api.close();
+  }
+});
+
+test('sqlite: records saved earlier as JSON move over on first use', { skip: !hasSqlite && 'node:sqlite needs Node 22.5+' }, async () => {
+  const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bolt-db-'));
+  fs.writeFileSync(path.join(dataDir, 'notes.json'), JSON.stringify([{ id: 7, text: 'old' }]));
+  const resource = { name: 'notes', url: '/api/notes', fields: [{ name: 'text', type: 'text', required: true }] };
+  const api = createApiServer({ resources: [resource], dataDir, storage: 'sqlite' });
+  const base = `http://localhost:${await api.listen(0)}`;
+  try {
+    assert.deepEqual(await (await fetch(`${base}/api/notes`)).json(), [{ id: 7, text: 'old' }]);
+  } finally {
+    await api.close();
+  }
+});

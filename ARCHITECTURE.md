@@ -98,6 +98,8 @@ Every `.bolt` file in the project is merged automatically, so all pages, compone
 
 **Login helpers:** `makeAuthHelpers` in `src/server/api.js` builds the password and token functions per server (the signing secret lives in `.bolt-data/.secret`). The server turns the `Authorization: Bearer` header into `request.user` before each endpoint runs, and `publicRecord` strips `hidden` fields from resource answers.
 
+**Storage:** the server reads and writes through a small adapter (`jsonStorage` or `sqliteStorage`), with the whole resource kept in memory and written after each change. SQLite uses Node's built-in `node:sqlite` (no extra install), one table `records(resource, id, data)`.
+
 **Layout:** the builder finds the single `LayoutDef`, validates it has exactly one `slot`, and injects each page's body into a copy of the layout body before code generation (pages with `layout none` are skipped).
 
 **Scaffold:** `bolt init` (`scaffoldProject` in `builder.js`) writes `src/styles.bolt` (the `DEFAULT_STYLES_BOLT` vocabulary) and `src/pages/home.bolt`.

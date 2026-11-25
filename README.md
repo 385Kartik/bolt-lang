@@ -109,7 +109,7 @@ bolt stats store-app
 - **One-line CRUD:** `resource products at "/api/products":` builds a list, add form and delete buttons
 - **Login for your API:** `hash_password`, `check_password`, `sign_token`, `need_login`, and `hidden` fields that are never sent to the browser
 - **Custom API routes:** `endpoint get "/api/search":` written in Bolt (search, totals, bulk actions) next to your resources
-- **Built-in API:** `bolt dev` / `bolt serve` run a ready REST API for every `resource` (data in plain JSON files)
+- **Built-in API:** `bolt dev` / `bolt serve` run a ready REST API for every `resource` (data in plain JSON files, or one SQLite file with `--db sqlite`)
 - **Fetch with defaults:** `fetch "/api/x" into x` handles loading and errors for you
 - **Dark mode out of the box:** `bolt init` ships a light/dark design system and a theme toggle
 - **Your classes win:** `styled as:` overrides Bolt's default classes (a red button is red)
@@ -158,7 +158,7 @@ bolt ast <file.bolt | dir>         Show AST (debug)
 bolt check [dir] [--json]          Check the whole project and list every problem
 bolt stats [dir] [--json]          Compare Bolt size with the React it generates
 bolt fmt [dir|file] [--check]      Tidy .bolt files (indentation, spacing)
-bolt serve [dir]                   Run the built-in API for your resource blocks
+bolt serve [dir] [--db sqlite]     Run the built-in API for your resource and endpoint blocks
 bolt spec                          Print the short cheat-sheet (for AI)
 ```
 

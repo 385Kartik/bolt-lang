@@ -201,3 +201,9 @@
 - Resource field option `hidden` (`password text required hidden`): saved, never sent to the browser, and left out of the generated list
 - Fixed: after `login`, the page stored the user but dropped the token, so later requests were never authenticated; it now keeps the token
 - Verified over real HTTP: signup (stored hashed), duplicate 409, wrong password 401, login, `/api/me` with no token, a good token and a forged token, and the password never appearing in `GET /api/users`
+
+## Phase 31: SQLite Storage
+- `bolt serve --db sqlite` (or `BOLT_DB=sqlite`, also for `bolt dev`) keeps records in one database file, `.bolt-data/bolt.db`, instead of JSON files; same API, endpoints and login helpers on both
+- Records saved earlier as JSON move over the first time; ids never repeat after a delete; every change is one transaction
+- Storage is a small adapter (`jsonStorage`, `sqliteStorage` in `src/server/api.js`); needs Node 22.5+ (`node:sqlite`) and says so clearly otherwise
+- Verified: records survive a restart, deletes stick, and the command line creates `bolt.db`

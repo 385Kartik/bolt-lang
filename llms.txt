@@ -68,4 +68,4 @@ helpers: contains text, word | lower | upper | now.  items[0] = item at position
 if logged in: ... otherwise: ...
 
 ## Tools
-bolt init app | bolt dev app | bolt build app | bolt check [--json] | bolt stats | bolt fmt [--check] | bolt serve | bolt spec
+bolt init app | bolt dev app | bolt build app | bolt check [--json] | bolt stats | bolt fmt [--check] | bolt serve [--db sqlite] | bolt spec

@@ -16,12 +16,14 @@
 // Login helpers for endpoints: hash_password, check_password, sign_token, request.user, need_login.
 //
 // Data is saved as plain JSON files (one per resource) so there is nothing
-// to install and you can read or edit the data by hand.
+// to install and you can read or edit the data by hand. For a single-file
+// database use SQLite instead:  bolt serve --db sqlite
 
 import fs from 'fs';
 import crypto from 'crypto';
 import http from 'http';
 import path from 'path';
+import { createRequire } from 'module';
 import { generateWithRuntime } from '../generator/generator.js';
 import { FunctionDef } from '../parser/ast.js';
 
@@ -150,7 +152,70 @@ export function compileEndpoint(endpoint, extra = {}) {
   return build(...names.map(n => all[n]));
 }
 
-export function createApiServer({ resources = [], endpoints = [], dataDir }) {
+// ── Storage: where the records live ───────────────────────────────────
+//   json    one file per resource in .bolt-data/ (default, easy to read and edit)
+//   sqlite  one database file, .bolt-data/bolt.db (needs Node 22.5 or newer)
+// Both keep the same shape: a resource is a list of records.
+
+function jsonStorage(dataDir) {
+  const file = name => path.join(dataDir, `${name}.json`);
+  return {
+    kind: 'json',
+    read(name) {
+      try {
+        const rows = JSON.parse(fs.readFileSync(file(name), 'utf-8'));
+        return Array.isArray(rows) ? rows : [];
+      } catch {
+        return [];
+      }
+    },
+    write(name, rows) {
+      fs.mkdirSync(dataDir, { recursive: true });
+      fs.writeFileSync(file(name), JSON.stringify(rows, null, 2));
+    }
+  };
+}
+
+function sqliteStorage(dataDir) {
+  let sqlite;
+  try {
+    sqlite = createRequire(import.meta.url)('node:sqlite');
+  } catch {
+    throw new Error('SQLite needs Node 22.5 or newer. Update Node, or use the default JSON storage (remove --db sqlite).');
+  }
+  fs.mkdirSync(dataDir, { recursive: true });
+  const db = new sqlite.DatabaseSync(path.join(dataDir, 'bolt.db'));
+  db.exec('CREATE TABLE IF NOT EXISTS records (resource TEXT NOT NULL, id INTEGER NOT NULL, data TEXT NOT NULL, PRIMARY KEY (resource, id))');
+  const json = jsonStorage(dataDir);
+
+  return {
+    kind: 'sqlite',
+    read(name) {
+      const rows = db.prepare('SELECT data FROM records WHERE resource = ? ORDER BY id').all(name).map(r => JSON.parse(r.data));
+      if (rows.length === 0) {
+        // first time on SQLite: bring over records saved earlier as JSON
+        const old = json.read(name);
+        if (old.length) { this.write(name, old); return old; }
+      }
+      return rows;
+    },
+    write(name, rows) {
+      db.exec('BEGIN');
+      try {
+        db.prepare('DELETE FROM records WHERE resource = ?').run(name);
+        const insert = db.prepare('INSERT INTO records (resource, id, data) VALUES (?, ?, ?)');
+        for (const row of rows) insert.run(name, Number(row.id), JSON.stringify(row));
+        db.exec('COMMIT');
+      } catch (e) {
+        db.exec('ROLLBACK');
+        throw e;
+      }
+    }
+  };
+}
+
+export function createApiServer({ resources = [], endpoints = [], dataDir, storage = 'json' }) {
+  const store = storage === 'sqlite' ? sqliteStorage(dataDir) : jsonStorage(dataDir);
   let currentResources = resources;
   let routes = [];
   const cache = new Map(); // resource name -> array of records
@@ -190,24 +255,15 @@ export function createApiServer({ resources = [], endpoints = [], dataDir }) {
     return copy;
   };
 
-  const fileFor = r => path.join(dataDir, `${r.name}.json`);
-
   function load(r) {
     if (cache.has(r.name)) return cache.get(r.name);
-    let rows = [];
-    try {
-      rows = JSON.parse(fs.readFileSync(fileFor(r), 'utf-8'));
-      if (!Array.isArray(rows)) rows = [];
-    } catch {
-      rows = [];
-    }
+    const rows = store.read(r.name);
     cache.set(r.name, rows);
     return rows;
   }
 
   function save(r) {
-    fs.mkdirSync(dataDir, { recursive: true });
-    fs.writeFileSync(fileFor(r), JSON.stringify(cache.get(r.name), null, 2));
+    store.write(r.name, cache.get(r.name));
   }
 
   function send(res, status, data) {
@@ -341,6 +397,7 @@ export function createApiServer({ resources = [], endpoints = [], dataDir }) {
     server,
     setResources(list) { currentResources = list; },
     setEndpoints,
+    storage: store.kind,
     setApi({ resources: r = currentResources, endpoints: e = [] }) { currentResources = r; setEndpoints(e); },
     listen(port) {
       return new Promise((resolve, reject) => {
